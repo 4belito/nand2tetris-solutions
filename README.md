@@ -1,6 +1,6 @@
 # Nand2Tetris Solutions
 
-🧠 Step-by-step solutions to the [Nand2Tetris](https://www.nand2tetris.org/) course — from building logic gates to a full computer system.
+🧠 Step-by-step solutions to the [Nand2Tetris](https://www.nand2tetris.org/) course.
 
 ---
 
@@ -25,7 +25,7 @@
 
 ## 📦 Contents
 
-This repository contains my personal implementations for:
+This repository contains my implementations for:
 
 - **Project 1:** Logic gates (`.hdl`)
 - **Project 2:** ALU design
@@ -40,4 +40,4 @@ This repository contains my personal implementations for:
 
 ## ⚠️ Disclaimer
 
-These solutions are for **educational purposes only**. If you're taking the course, try solving the projects on your own — that's where the real learning happens! 💡
+These solutions are for **educational purposes only**. If you're taking the course, try solving the projects on your own; that's where the real learning happens! 💡
