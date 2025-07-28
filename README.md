@@ -1,16 +1,16 @@
 # Nand2Tetris Solutions
 
-Step-by-step solutions to the [Nand2Tetris](https://www.nand2tetris.org/) course.
+Step-by-step solutions to the [Nand2Tetris](https://www.nand2tetris.org/) course. *Build a Modern Computer From First Principles*
 
 ---
 
 ## 📚 Course Links
 
-### Part 1 — *Build a Modern Computer From First Principles*
+### Part 1
 - 🎥 [YouTube playlist](https://www.youtube.com/playlist?list=PLNMIACtpT9BfztU0P92qlw8Gd4vxvvfT1)
 - 🎓 [Coursera course](https://www.coursera.org/learn/build-a-computer)
 
-### Part 2 — *Build a Modern Computer System From the Ground Up*
+### Part 2 
 - 🎥 [YouTube playlist](https://www.youtube.com/playlist?list=PLrDd_kMiAuNmllp9vuPqCuttC1XL9VyVh)
 - 🎓 [Coursera course](https://www.coursera.org/learn/nand2tetris2)
 
