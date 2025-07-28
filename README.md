@@ -1,6 +1,6 @@
 # Nand2Tetris Solutions
 
-🧠 Step-by-step solutions to the [Nand2Tetris](https://www.nand2tetris.org/) course.
+Step-by-step solutions to the [Nand2Tetris](https://www.nand2tetris.org/) course.
 
 ---
 
