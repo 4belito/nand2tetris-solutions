@@ -35,6 +35,110 @@ D=M
 M=M-1
 A=M
 D=M-D
+@TRUE0
+D;JEQ
+@SP
+A=M
+M=0
+@END0
+0;JMP
+(TRUE0)
+    @SP
+    A=M
+    M=-1
+(END0)
+// increment stack pointer
+@SP
+M=M+1
+
+// push constant 17
+// Create value 17
+@17
+D=A
+// push from D
+@SP
+A=M
+M=D
+// increment stack pointer
+@SP
+M=M+1
+
+// push constant 16
+// Create value 16
+@16
+D=A
+// push from D
+@SP
+A=M
+M=D
+// increment stack pointer
+@SP
+M=M+1
+
+// eq
+// pop to D
+// Get value from stack
+@SP
+M=M-1
+A=M
+D=M
+// Get value from stack
+@SP
+M=M-1
+A=M
+D=M-D
+@TRUE1
+D;JEQ
+@SP
+A=M
+M=0
+@END1
+0;JMP
+(TRUE1)
+    @SP
+    A=M
+    M=-1
+(END1)
+// increment stack pointer
+@SP
+M=M+1
+
+// push constant 16
+// Create value 16
+@16
+D=A
+// push from D
+@SP
+A=M
+M=D
+// increment stack pointer
+@SP
+M=M+1
+
+// push constant 17
+// Create value 17
+@17
+D=A
+// push from D
+@SP
+A=M
+M=D
+// increment stack pointer
+@SP
+M=M+1
+
+// eq
+// pop to D
+// Get value from stack
+@SP
+M=M-1
+A=M
+D=M
+// Get value from stack
+@SP
+M=M-1
+A=M
+D=M-D
 @TRUE2
 D;JEQ
 @SP
@@ -51,9 +155,9 @@ M=0
 @SP
 M=M+1
 
-// push constant 17
-// Create value 17
-@17
+// push constant 892
+// Create value 892
+@892
 D=A
 // push from D
 @SP
@@ -63,9 +167,9 @@ M=D
 @SP
 M=M+1
 
-// push constant 16
-// Create value 16
-@16
+// push constant 891
+// Create value 891
+@891
 D=A
 // push from D
 @SP
@@ -75,7 +179,111 @@ M=D
 @SP
 M=M+1
 
-// eq
+// lt
+// pop to D
+// Get value from stack
+@SP
+M=M-1
+A=M
+D=M
+// Get value from stack
+@SP
+M=M-1
+A=M
+D=M-D
+@TRUE3
+D;JLT
+@SP
+A=M
+M=0
+@END3
+0;JMP
+(TRUE3)
+    @SP
+    A=M
+    M=-1
+(END3)
+// increment stack pointer
+@SP
+M=M+1
+
+// push constant 891
+// Create value 891
+@891
+D=A
+// push from D
+@SP
+A=M
+M=D
+// increment stack pointer
+@SP
+M=M+1
+
+// push constant 892
+// Create value 892
+@892
+D=A
+// push from D
+@SP
+A=M
+M=D
+// increment stack pointer
+@SP
+M=M+1
+
+// lt
+// pop to D
+// Get value from stack
+@SP
+M=M-1
+A=M
+D=M
+// Get value from stack
+@SP
+M=M-1
+A=M
+D=M-D
+@TRUE4
+D;JLT
+@SP
+A=M
+M=0
+@END4
+0;JMP
+(TRUE4)
+    @SP
+    A=M
+    M=-1
+(END4)
+// increment stack pointer
+@SP
+M=M+1
+
+// push constant 891
+// Create value 891
+@891
+D=A
+// push from D
+@SP
+A=M
+M=D
+// increment stack pointer
+@SP
+M=M+1
+
+// push constant 891
+// Create value 891
+@891
+D=A
+// push from D
+@SP
+A=M
+M=D
+// increment stack pointer
+@SP
+M=M+1
+
+// lt
 // pop to D
 // Get value from stack
 @SP
@@ -88,7 +296,7 @@ M=M-1
 A=M
 D=M-D
 @TRUE5
-D;JEQ
+D;JLT
 @SP
 A=M
 M=0
@@ -103,9 +311,9 @@ M=0
 @SP
 M=M+1
 
-// push constant 16
-// Create value 16
-@16
+// push constant 32767
+// Create value 32767
+@32767
 D=A
 // push from D
 @SP
@@ -115,9 +323,9 @@ M=D
 @SP
 M=M+1
 
-// push constant 17
-// Create value 17
-@17
+// push constant 32766
+// Create value 32766
+@32766
 D=A
 // push from D
 @SP
@@ -127,7 +335,111 @@ M=D
 @SP
 M=M+1
 
-// eq
+// gt
+// pop to D
+// Get value from stack
+@SP
+M=M-1
+A=M
+D=M
+// Get value from stack
+@SP
+M=M-1
+A=M
+D=M-D
+@TRUE6
+D;JGT
+@SP
+A=M
+M=0
+@END6
+0;JMP
+(TRUE6)
+    @SP
+    A=M
+    M=-1
+(END6)
+// increment stack pointer
+@SP
+M=M+1
+
+// push constant 32766
+// Create value 32766
+@32766
+D=A
+// push from D
+@SP
+A=M
+M=D
+// increment stack pointer
+@SP
+M=M+1
+
+// push constant 32767
+// Create value 32767
+@32767
+D=A
+// push from D
+@SP
+A=M
+M=D
+// increment stack pointer
+@SP
+M=M+1
+
+// gt
+// pop to D
+// Get value from stack
+@SP
+M=M-1
+A=M
+D=M
+// Get value from stack
+@SP
+M=M-1
+A=M
+D=M-D
+@TRUE7
+D;JGT
+@SP
+A=M
+M=0
+@END7
+0;JMP
+(TRUE7)
+    @SP
+    A=M
+    M=-1
+(END7)
+// increment stack pointer
+@SP
+M=M+1
+
+// push constant 32766
+// Create value 32766
+@32766
+D=A
+// push from D
+@SP
+A=M
+M=D
+// increment stack pointer
+@SP
+M=M+1
+
+// push constant 32766
+// Create value 32766
+@32766
+D=A
+// push from D
+@SP
+A=M
+M=D
+// increment stack pointer
+@SP
+M=M+1
+
+// gt
 // pop to D
 // Get value from stack
 @SP
@@ -140,7 +452,7 @@ M=M-1
 A=M
 D=M-D
 @TRUE8
-D;JEQ
+D;JGT
 @SP
 A=M
 M=0
@@ -151,318 +463,6 @@ M=0
     A=M
     M=-1
 (END8)
-// increment stack pointer
-@SP
-M=M+1
-
-// push constant 892
-// Create value 892
-@892
-D=A
-// push from D
-@SP
-A=M
-M=D
-// increment stack pointer
-@SP
-M=M+1
-
-// push constant 891
-// Create value 891
-@891
-D=A
-// push from D
-@SP
-A=M
-M=D
-// increment stack pointer
-@SP
-M=M+1
-
-// lt
-// pop to D
-// Get value from stack
-@SP
-M=M-1
-A=M
-D=M
-// Get value from stack
-@SP
-M=M-1
-A=M
-D=M-D
-@TRUE11
-D;JLT
-@SP
-A=M
-M=0
-@END11
-0;JMP
-(TRUE11)
-    @SP
-    A=M
-    M=-1
-(END11)
-// increment stack pointer
-@SP
-M=M+1
-
-// push constant 891
-// Create value 891
-@891
-D=A
-// push from D
-@SP
-A=M
-M=D
-// increment stack pointer
-@SP
-M=M+1
-
-// push constant 892
-// Create value 892
-@892
-D=A
-// push from D
-@SP
-A=M
-M=D
-// increment stack pointer
-@SP
-M=M+1
-
-// lt
-// pop to D
-// Get value from stack
-@SP
-M=M-1
-A=M
-D=M
-// Get value from stack
-@SP
-M=M-1
-A=M
-D=M-D
-@TRUE14
-D;JLT
-@SP
-A=M
-M=0
-@END14
-0;JMP
-(TRUE14)
-    @SP
-    A=M
-    M=-1
-(END14)
-// increment stack pointer
-@SP
-M=M+1
-
-// push constant 891
-// Create value 891
-@891
-D=A
-// push from D
-@SP
-A=M
-M=D
-// increment stack pointer
-@SP
-M=M+1
-
-// push constant 891
-// Create value 891
-@891
-D=A
-// push from D
-@SP
-A=M
-M=D
-// increment stack pointer
-@SP
-M=M+1
-
-// lt
-// pop to D
-// Get value from stack
-@SP
-M=M-1
-A=M
-D=M
-// Get value from stack
-@SP
-M=M-1
-A=M
-D=M-D
-@TRUE17
-D;JLT
-@SP
-A=M
-M=0
-@END17
-0;JMP
-(TRUE17)
-    @SP
-    A=M
-    M=-1
-(END17)
-// increment stack pointer
-@SP
-M=M+1
-
-// push constant 32767
-// Create value 32767
-@32767
-D=A
-// push from D
-@SP
-A=M
-M=D
-// increment stack pointer
-@SP
-M=M+1
-
-// push constant 32766
-// Create value 32766
-@32766
-D=A
-// push from D
-@SP
-A=M
-M=D
-// increment stack pointer
-@SP
-M=M+1
-
-// gt
-// pop to D
-// Get value from stack
-@SP
-M=M-1
-A=M
-D=M
-// Get value from stack
-@SP
-M=M-1
-A=M
-D=M-D
-@TRUE20
-D;JGT
-@SP
-A=M
-M=0
-@END20
-0;JMP
-(TRUE20)
-    @SP
-    A=M
-    M=-1
-(END20)
-// increment stack pointer
-@SP
-M=M+1
-
-// push constant 32766
-// Create value 32766
-@32766
-D=A
-// push from D
-@SP
-A=M
-M=D
-// increment stack pointer
-@SP
-M=M+1
-
-// push constant 32767
-// Create value 32767
-@32767
-D=A
-// push from D
-@SP
-A=M
-M=D
-// increment stack pointer
-@SP
-M=M+1
-
-// gt
-// pop to D
-// Get value from stack
-@SP
-M=M-1
-A=M
-D=M
-// Get value from stack
-@SP
-M=M-1
-A=M
-D=M-D
-@TRUE23
-D;JGT
-@SP
-A=M
-M=0
-@END23
-0;JMP
-(TRUE23)
-    @SP
-    A=M
-    M=-1
-(END23)
-// increment stack pointer
-@SP
-M=M+1
-
-// push constant 32766
-// Create value 32766
-@32766
-D=A
-// push from D
-@SP
-A=M
-M=D
-// increment stack pointer
-@SP
-M=M+1
-
-// push constant 32766
-// Create value 32766
-@32766
-D=A
-// push from D
-@SP
-A=M
-M=D
-// increment stack pointer
-@SP
-M=M+1
-
-// gt
-// pop to D
-// Get value from stack
-@SP
-M=M-1
-A=M
-D=M
-// Get value from stack
-@SP
-M=M-1
-A=M
-D=M-D
-@TRUE26
-D;JGT
-@SP
-A=M
-M=0
-@END26
-0;JMP
-(TRUE26)
-    @SP
-    A=M
-    M=-1
-(END26)
 // increment stack pointer
 @SP
 M=M+1
