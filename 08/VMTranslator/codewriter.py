@@ -68,7 +68,21 @@ class CodeWriter:
             raise ValueError(f"Unknown command: {cmd}")
         self.file.write(assembly_code + "\n")
 
+    def writeBranching(self, cmd: str, label: str) -> None:
+        """
+        Translates the given branching VM command into Hack assembly and writes to file.
+        """
+        if cmd == "label":
+            assembly_code = self._label(label)
+        elif cmd == "goto":
+            assembly_code = self._goto(label)
+        elif cmd == "if-goto":
+            assembly_code = self._if_goto(label)
+        else:
+            raise ValueError(f"Unknown command: {cmd}")
+        self.file.write(assembly_code + "\n")
 
+    
     def close(self):
         '''Finalizes the assembly code by adding an END loop and closes the output file.'''
         #self.file.write(self._end() + "\n") 
@@ -251,6 +265,31 @@ D=M
 {self._push_fromD()}'''
             case _:
                 raise ValueError(f"Unknown segment: {segment}")
+            
+# --- Branching helpers ---
+    def _label(self, label: str) -> str:
+        """
+        Translates a label command into Hack assembly.
+        """
+        return f'''
+({label})'''
+    
+    def _goto(self, label: str) -> str:
+        """
+        Translates a goto command into Hack assembly.
+        """
+        return f'''// goto {label}
+@{label}
+0;JMP'''        
+    
+    def _if_goto(self, label: str) -> str:
+        """
+        Translates an if-goto command into Hack assembly.
+        """
+        return f'''// if-goto {label}
+{self._pop_toD()}
+@{label}
+D;JNE'''    
 
 
 
