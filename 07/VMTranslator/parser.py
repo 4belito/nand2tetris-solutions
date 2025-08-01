@@ -17,9 +17,11 @@ class Parser:
         self.keyword = None
 
     def has_more_commands(self):
+        '''Checks if there are more commands to parse.'''
         return self.instruction_index < self.n_instructions
 
     def advance(self):
+        '''Advances to the next command in the instruction list.'''
         if self.has_more_commands():
             self.instruction = self.instructions[self.instruction_index]
             self.instruction_index += 1
@@ -29,6 +31,7 @@ class Parser:
         return False
 
     def command_type(self):
+        '''Determines the type of the current command.'''
         if not self.instruction:
             return None
 
@@ -55,11 +58,13 @@ class Parser:
                 raise ValueError(f"Unknown command type: {self.instruction}")
             
     def arg1(self):
+        '''Returns the first argument of the current command.'''
         if len(self.tokens) > 1:
             return self.tokens[1]
         return None 
     
     def arg2(self):
+        '''Returns the second argument of the current command.'''
         if len(self.tokens) > 2:
             return int(self.tokens[2])
         return None

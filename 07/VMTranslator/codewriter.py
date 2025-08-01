@@ -1,12 +1,14 @@
 """
-CMDS: Provides translation of VM commands into Hack assembly code.
+CodeWriter class for translating VM commands to Hack assembly code.
+This class handles arithmetic operations, memory access commands, and manages the output file.
+It provides methods to write arithmetic operations, push and pop commands, and finalize the assembly code
 """
 
 import os
 
 class CodeWriter:
+    """A class to write Hack assembly code from VM commands."""
 
-    # Arithmetic and Memory command maps
     ARITH_MAP = {
         "add": "+",
         "sub": "-",
@@ -68,7 +70,8 @@ class CodeWriter:
 
 
     def close(self):
-        self.file.write(self._end() + "\n")  # optionally finalize with END loop
+        '''Finalizes the assembly code by adding an END loop and closes the output file.'''
+        self.file.write(self._end() + "\n") 
         self.file.close()
 
 
