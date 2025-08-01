@@ -5,7 +5,6 @@ It takes a VM file as input and generates an assembly file with the same name bu
 
 
 import argparse
-import os
 from parser import Parser
 from codewriter import CodeWriter
 
