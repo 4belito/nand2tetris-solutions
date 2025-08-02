@@ -1,6 +1,7 @@
+//Assembly code for BasicLoop.asm
 
 // push constant 0
-// Create value 0
+// get address 0
 @0
 D=A
 // push from D
@@ -12,33 +13,25 @@ M=D
 M=M+1
 
 // pop local 0
-// Calculate address
-// Get value from LCL
-@LCL
-D=M
-@0
-D=D+A
-// Store D in reg R13
-@R13
-M=D
+ // pop to LCL
 // pop to D
-// Get value from stack
+// get value from stack
 @SP
-M=M-1
-A=M
+AM=M-1
 D=M
-// Store D in address saved in R13
-@R13
+// store D in address saved in LCL
+@LCL
 A=M
 M=D
 
+// label LOOP
 (LOOP)
 
 // push argument 0
-// Calculate address
-// Get value from ARG
+// get value from ARG
 @ARG
 D=M
+// calculate address
 @0
 D=D+A
 A=D
@@ -52,10 +45,10 @@ M=D
 M=M+1
 
 // push local 0
-// Calculate address
-// Get value from LCL
+// get value from LCL
 @LCL
 D=M
+// calculate address
 @0
 D=D+A
 A=D
@@ -68,48 +61,38 @@ M=D
 @SP
 M=M+1
 
+
 // add
 // pop to D
-// Get value from stack
+// get value from stack
 @SP
-M=M-1
-A=M
+AM=M-1
 D=M
-// Get value from stack
+// get value from stack
 @SP
-M=M-1
-A=M
+AM=M-1
 M=D+M
 // increment stack pointer
 @SP
 M=M+1
 
 // pop local 0
-// Calculate address
-// Get value from LCL
-@LCL
-D=M
-@0
-D=D+A
-// Store D in reg R13
-@R13
-M=D
+ // pop to LCL
 // pop to D
-// Get value from stack
+// get value from stack
 @SP
-M=M-1
-A=M
+AM=M-1
 D=M
-// Store D in address saved in R13
-@R13
+// store D in address saved in LCL
+@LCL
 A=M
 M=D
 
 // push argument 0
-// Calculate address
-// Get value from ARG
+// get value from ARG
 @ARG
 D=M
+// calculate address
 @0
 D=D+A
 A=D
@@ -123,7 +106,7 @@ M=D
 M=M+1
 
 // push constant 1
-// Create value 1
+// get address 1
 @1
 D=A
 // push from D
@@ -134,48 +117,38 @@ M=D
 @SP
 M=M+1
 
+
 // sub
 // pop to D
-// Get value from stack
+// get value from stack
 @SP
-M=M-1
-A=M
+AM=M-1
 D=M
-// Get value from stack
+// get value from stack
 @SP
-M=M-1
-A=M
+AM=M-1
 M=M-D
 // increment stack pointer
 @SP
 M=M+1
 
 // pop argument 0
-// Calculate address
-// Get value from ARG
-@ARG
-D=M
-@0
-D=D+A
-// Store D in reg R13
-@R13
-M=D
+ // pop to ARG
 // pop to D
-// Get value from stack
+// get value from stack
 @SP
-M=M-1
-A=M
+AM=M-1
 D=M
-// Store D in address saved in R13
-@R13
+// store D in address saved in ARG
+@ARG
 A=M
 M=D
 
 // push argument 0
-// Calculate address
-// Get value from ARG
+// get value from ARG
 @ARG
 D=M
+// calculate address
 @0
 D=D+A
 A=D
@@ -187,21 +160,21 @@ M=D
 // increment stack pointer
 @SP
 M=M+1
+
 // if-goto LOOP
 // pop to D
-// Get value from stack
+// get value from stack
 @SP
-M=M-1
-A=M
+AM=M-1
 D=M
 @LOOP
 D;JNE
 
 // push local 0
-// Calculate address
-// Get value from LCL
+// get value from LCL
 @LCL
 D=M
+// calculate address
 @0
 D=D+A
 A=D
@@ -213,7 +186,3 @@ M=D
 // increment stack pointer
 @SP
 M=M+1
-// end of execution
-(END)
-    @END
-    0;JMP

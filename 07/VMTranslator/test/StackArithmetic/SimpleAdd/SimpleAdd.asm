@@ -1,6 +1,7 @@
+//Assembly code for SimpleAdd.asm
 
 // push constant 7
-// Create value 7
+// get address 7
 @7
 D=A
 // push from D
@@ -12,7 +13,7 @@ M=D
 M=M+1
 
 // push constant 8
-// Create value 8
+// get address 8
 @8
 D=A
 // push from D
@@ -23,22 +24,17 @@ M=D
 @SP
 M=M+1
 
+
 // add
 // pop to D
-// Get value from stack
+// get value from stack
 @SP
-M=M-1
-A=M
+AM=M-1
 D=M
-// Get value from stack
+// get value from stack
 @SP
-M=M-1
-A=M
+AM=M-1
 M=D+M
 // increment stack pointer
 @SP
 M=M+1
-// end of execution
-(END)
-    @END
-    0;JMP

@@ -5,7 +5,7 @@ It takes a VM file as input and generates an assembly file with the same name bu
 
 
 import argparse
-from parser import Parser
+from parser import Parser, CMDType
 from codewriter import CodeWriter
 
 def main():
@@ -21,10 +21,12 @@ def main():
         vm_parser.advance()
         cmd_type = vm_parser.command_type()
         match cmd_type:
-            case "C_ARITHMETIC":
-                writer.writeArithmetic(vm_parser.keyword)
-            case "C_PUSH" | "C_POP":
-                writer.writePushPop(vm_parser.keyword, vm_parser.arg1(), vm_parser.arg2())
+            case CMDType.C_ARITHMETIC:
+                writer.write_arithmetic(vm_parser.keyword)
+            case CMDType.C_PUSH | CMDType.C_POP:
+                writer.write_push_pop(cmd_type, vm_parser.arg1(), vm_parser.arg2())
+            case _:
+                raise ValueError(f"Unknown command type: {cmd_type}")
 
     writer.close()
     print(f"Translated from {filepath} to {output_file} successfully.")

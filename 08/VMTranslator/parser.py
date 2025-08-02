@@ -1,3 +1,19 @@
+from dataclasses import dataclass
+import os
+
+@dataclass
+class CMDType:
+    """Enum-like class to represent different command types."""
+    C_ARITHMETIC = "C_ARITHMETIC"
+    C_PUSH = "C_PUSH"
+    C_POP = "C_POP"
+    C_LABEL = "C_LABEL"
+    C_GOTO = "C_GOTO"
+    C_IF = "C_IF"
+    C_FUNCTION = "C_FUNCTION"
+    C_RETURN = "C_RETURN"
+    C_CALL = "C_CALL"
+
 class Parser:
     """
     A class to parse VM commands from a file.
@@ -16,11 +32,11 @@ class Parser:
         self.tokens = None
         self.keyword = None
 
-    def has_more_commands(self):
+    def has_more_commands(self) -> bool:
         '''Checks if there are more commands to parse.'''
         return self.instruction_index < self.n_instructions
 
-    def advance(self):
+    def advance(self) -> bool:
         '''Advances to the next command in the instruction list.'''
         if self.has_more_commands():
             self.instruction = self.instructions[self.instruction_index]
@@ -30,40 +46,40 @@ class Parser:
             return True
         return False
 
-    def command_type(self):
+    def command_type(self) -> CMDType:
         '''Determines the type of the current command.'''
         if not self.instruction:
             return None
 
         match (len(self.tokens), self.keyword):
             case (1, self.keyword) if self.keyword in {"add", "sub", "neg", "eq", "gt", "lt", "and", "or", "not"}:
-                return "C_ARITHMETIC"
+                return CMDType.C_ARITHMETIC
             case (3, "push"):
-                return "C_PUSH"
+                return CMDType.C_PUSH
             case (3, "pop"):
-                return "C_POP"
+                return CMDType.C_POP            
             case (2, "label"):
-                return "C_LABEL"
+                return CMDType.C_LABEL
             case (2, "goto"):
-                return "C_GOTO"
+                return CMDType.C_GOTO
             case (2, "if-goto"):
-                return "C_IF"
+                return CMDType.C_IF
             case (3, "function"):
-                return "C_FUNCTION"
+                return CMDType.C_FUNCTION
             case (3, "call"):
-                return "C_CALL"
+                return CMDType.C_CALL
             case (1, "return"):
-                return "C_RETURN"
+                return CMDType.C_RETURN
             case _:
                 raise ValueError(f"Unknown command type: {self.instruction}")
-            
-    def arg1(self):
+
+    def arg1(self) -> str | None:
         '''Returns the first argument of the current command.'''
         if len(self.tokens) > 1:
             return self.tokens[1]
         return None 
-    
-    def arg2(self):
+
+    def arg2(self) -> int | None:
         '''Returns the second argument of the current command.'''
         if len(self.tokens) > 2:
             return int(self.tokens[2])

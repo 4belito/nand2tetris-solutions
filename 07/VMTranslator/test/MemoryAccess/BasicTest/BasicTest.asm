@@ -1,6 +1,7 @@
+//Assembly code for BasicTest.asm
 
 // push constant 10
-// Create value 10
+// get address 10
 @10
 D=A
 // push from D
@@ -12,28 +13,19 @@ M=D
 M=M+1
 
 // pop local 0
-// Calculate address
-// Get value from LCL
-@LCL
-D=M
-@0
-D=D+A
-// Store D in reg R13
-@R13
-M=D
+ // pop to LCL
 // pop to D
-// Get value from stack
+// get value from stack
 @SP
-M=M-1
-A=M
+AM=M-1
 D=M
-// Store D in address saved in R13
-@R13
+// store D in address saved in LCL
+@LCL
 A=M
 M=D
 
 // push constant 21
-// Create value 21
+// get address 21
 @21
 D=A
 // push from D
@@ -45,7 +37,7 @@ M=D
 M=M+1
 
 // push constant 22
-// Create value 22
+// get address 22
 @22
 D=A
 // push from D
@@ -57,49 +49,49 @@ M=D
 M=M+1
 
 // pop argument 2
-// Calculate address
-// Get value from ARG
+// get address of argument 2
+// get value from ARG
 @ARG
 D=M
+// calculate address
 @2
 D=D+A
-// Store D in reg R13
+// store D in reg R13
 @R13
-M=D
+M=D // pop to R13
 // pop to D
-// Get value from stack
+// get value from stack
 @SP
-M=M-1
-A=M
+AM=M-1
 D=M
-// Store D in address saved in R13
+// store D in address saved in R13
 @R13
 A=M
 M=D
 
 // pop argument 1
-// Calculate address
-// Get value from ARG
+// get address of argument 1
+// get value from ARG
 @ARG
 D=M
+// calculate address
 @1
 D=D+A
-// Store D in reg R13
+// store D in reg R13
 @R13
-M=D
+M=D // pop to R13
 // pop to D
-// Get value from stack
+// get value from stack
 @SP
-M=M-1
-A=M
+AM=M-1
 D=M
-// Store D in address saved in R13
+// store D in address saved in R13
 @R13
 A=M
 M=D
 
 // push constant 36
-// Create value 36
+// get address 36
 @36
 D=A
 // push from D
@@ -111,28 +103,28 @@ M=D
 M=M+1
 
 // pop this 6
-// Calculate address
-// Get value from THIS
+// get address of this 6
+// get value from THIS
 @THIS
 D=M
+// calculate address
 @6
 D=D+A
-// Store D in reg R13
+// store D in reg R13
 @R13
-M=D
+M=D // pop to R13
 // pop to D
-// Get value from stack
+// get value from stack
 @SP
-M=M-1
-A=M
+AM=M-1
 D=M
-// Store D in address saved in R13
+// store D in address saved in R13
 @R13
 A=M
 M=D
 
 // push constant 42
-// Create value 42
+// get address 42
 @42
 D=A
 // push from D
@@ -144,7 +136,7 @@ M=D
 M=M+1
 
 // push constant 45
-// Create value 45
+// get address 45
 @45
 D=A
 // push from D
@@ -156,49 +148,49 @@ M=D
 M=M+1
 
 // pop that 5
-// Calculate address
-// Get value from THAT
+// get address of that 5
+// get value from THAT
 @THAT
 D=M
+// calculate address
 @5
 D=D+A
-// Store D in reg R13
+// store D in reg R13
 @R13
-M=D
+M=D // pop to R13
 // pop to D
-// Get value from stack
+// get value from stack
 @SP
-M=M-1
-A=M
+AM=M-1
 D=M
-// Store D in address saved in R13
+// store D in address saved in R13
 @R13
 A=M
 M=D
 
 // pop that 2
-// Calculate address
-// Get value from THAT
+// get address of that 2
+// get value from THAT
 @THAT
 D=M
+// calculate address
 @2
 D=D+A
-// Store D in reg R13
+// store D in reg R13
 @R13
-M=D
+M=D // pop to R13
 // pop to D
-// Get value from stack
+// get value from stack
 @SP
-M=M-1
-A=M
+AM=M-1
 D=M
-// Store D in address saved in R13
+// store D in address saved in R13
 @R13
 A=M
 M=D
 
 // push constant 510
-// Create value 510
+// get address 510
 @510
 D=A
 // push from D
@@ -211,21 +203,19 @@ M=M+1
 
 // pop temp 6
 // pop to D
-// Get value from stack
+// get value from stack
 @SP
-M=M-1
-A=M
+AM=M-1
 D=M
-// Store D in reg 11
+// store D in reg 11
 @11
 M=D
 
-
 // push local 0
-// Calculate address
-// Get value from LCL
+// get value from LCL
 @LCL
 D=M
+// calculate address
 @0
 D=D+A
 A=D
@@ -239,10 +229,10 @@ M=D
 M=M+1
 
 // push that 5
-// Calculate address
-// Get value from THAT
+// get value from THAT
 @THAT
 D=M
+// calculate address
 @5
 D=D+A
 A=D
@@ -255,27 +245,26 @@ M=D
 @SP
 M=M+1
 
+
 // add
 // pop to D
-// Get value from stack
+// get value from stack
 @SP
-M=M-1
-A=M
+AM=M-1
 D=M
-// Get value from stack
+// get value from stack
 @SP
-M=M-1
-A=M
+AM=M-1
 M=D+M
 // increment stack pointer
 @SP
 M=M+1
 
 // push argument 1
-// Calculate address
-// Get value from ARG
+// get value from ARG
 @ARG
 D=M
+// calculate address
 @1
 D=D+A
 A=D
@@ -288,27 +277,26 @@ M=D
 @SP
 M=M+1
 
+
 // sub
 // pop to D
-// Get value from stack
+// get value from stack
 @SP
-M=M-1
-A=M
+AM=M-1
 D=M
-// Get value from stack
+// get value from stack
 @SP
-M=M-1
-A=M
+AM=M-1
 M=M-D
 // increment stack pointer
 @SP
 M=M+1
 
 // push this 6
-// Calculate address
-// Get value from THIS
+// get value from THIS
 @THIS
 D=M
+// calculate address
 @6
 D=D+A
 A=D
@@ -322,10 +310,10 @@ M=D
 M=M+1
 
 // push this 6
-// Calculate address
-// Get value from THIS
+// get value from THIS
 @THIS
 D=M
+// calculate address
 @6
 D=D+A
 A=D
@@ -338,40 +326,38 @@ M=D
 @SP
 M=M+1
 
+
 // add
 // pop to D
-// Get value from stack
+// get value from stack
 @SP
-M=M-1
-A=M
+AM=M-1
 D=M
-// Get value from stack
+// get value from stack
 @SP
-M=M-1
-A=M
+AM=M-1
 M=D+M
 // increment stack pointer
 @SP
 M=M+1
 
+
 // sub
 // pop to D
-// Get value from stack
+// get value from stack
 @SP
-M=M-1
-A=M
+AM=M-1
 D=M
-// Get value from stack
+// get value from stack
 @SP
-M=M-1
-A=M
+AM=M-1
 M=M-D
 // increment stack pointer
 @SP
 M=M+1
 
 // push temp 6
-// Get value from 11
+// get value from 11
 @11
 D=M
 // push from D
@@ -382,22 +368,17 @@ M=D
 @SP
 M=M+1
 
+
 // add
 // pop to D
-// Get value from stack
+// get value from stack
 @SP
-M=M-1
-A=M
+AM=M-1
 D=M
-// Get value from stack
+// get value from stack
 @SP
-M=M-1
-A=M
+AM=M-1
 M=D+M
 // increment stack pointer
 @SP
 M=M+1
-// end of execution
-(END)
-    @END
-    0;JMP
