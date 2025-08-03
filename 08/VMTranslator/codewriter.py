@@ -85,21 +85,33 @@ class CodeWriter:
             raise ValueError(f"Unknown command: {cmd}")
         self.file.write("\n" + assembly_code + "\n")
 
-    def write_branching(self, cmd: str, label: str) -> None:
+    def write_label(self, label: str) -> None:
         """
-        Translates the given branching VM command into Hack assembly and writes to file.
+        Translates the label VM command into Hack assembly and writes to file.
         """
-        match cmd:
-            case CMDType.C_LABEL:
-                assembly_code = self._label(label)
-            case CMDType.C_GOTO:
-                assembly_code = self._goto(label)
-            case CMDType.C_IF:
-                assembly_code = self._if_goto(label)
-            case _:
-                raise ValueError(f"Unknown branching command: {cmd}")
-        # Write the assembly code for the branching command
-        self.file.write("\n" + assembly_code + "\n")    
+        self.file.write("\n" + self._label(label) + "\n")    
+
+    def write_goto(self, label: str) -> None:
+        """
+        Translates the goto VM command into Hack assembly and writes to file.
+        """
+        self.file.write("\n" + self._goto(label) + "\n")
+
+    def write_if(self, label: str) -> None:
+        """Translates the if-goto VM command into Hack assembly and writes to file.
+        """
+        self.file.write("\n" + self._if_goto(label) + "\n")  
+
+    def write_function(self, function_name: str, num_locals: int) -> None:
+        """
+        Translates the given function VM command into Hack assembly and writes to file.
+        Initializes local variables to 0.
+        """
+        assembly_code = f'// function {function_name} {num_locals}\n'
+        assembly_code += f'({function_name})\n'
+        push0='D=0\n' + f'{self._push_fromD()}\n'
+        assembly_code += num_locals*push0
+        self.file.write("\n" + assembly_code)
 
     def write_call(self, function_name: str, num_args: int) -> None:
         """
@@ -120,17 +132,6 @@ class CodeWriter:
         
         self.file.write("\n" + assembly_code + "\n")
 
-    def write_function(self, function_name: str, num_locals: int) -> None:
-        """
-        Translates the given function VM command into Hack assembly and writes to file.
-        Initializes local variables to 0.
-        """
-        assembly_code = f'// function {function_name} {num_locals}\n'
-        assembly_code += f'({function_name})\n'
-        push0='D=0\n' + f'{self._push_fromD()}\n'
-        assembly_code += num_locals*push0
-        self.file.write("\n" + assembly_code)
-
     def write_return(self) -> None:
         """
         Translates the return VM command into Hack assembly and writes to file.
@@ -150,7 +151,6 @@ class CodeWriter:
 {self._goto_at_ptr(address_reg=RET_REG)}'''
         self.file.write("\n" + assembly_code + "\n")
         
-
     def close(self):
         '''Close the output file.'''
         self.file.close()

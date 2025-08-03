@@ -1,7 +1,5 @@
 // Assembly code SimpleAdd.asm
 
-// Translated from SimpleAdd.vm
-
 // push constant 7
 // get address 7
 @7

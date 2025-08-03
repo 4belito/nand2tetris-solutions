@@ -13,10 +13,9 @@ def main():
     parser.add_argument("filepath", help="vm file to read")
     args = parser.parse_args()
     filepath = args.filepath
-    output_file = filepath.replace(".vm", ".asm")
+    output_filepath = filepath.replace(".vm", ".asm")
+    writer = CodeWriter(output_filepath)  
     vm_parser = Parser(filepath)
-    writer = CodeWriter(output_file)
-
     while vm_parser.has_more_commands():
         vm_parser.advance()
         cmd_type = vm_parser.command_type()
@@ -29,7 +28,7 @@ def main():
                 raise ValueError(f"Unknown command type: {cmd_type}")
 
     writer.close()
-    print(f"Translated from {filepath} to {output_file} successfully.")
+    print(f"✅ Translated {filepath} successfully.")
 
 
 if __name__ == "__main__":

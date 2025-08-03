@@ -9,6 +9,7 @@ from parser import CMDType
 TEMP_BASE = 5
 WORK_REG = "R13"
 
+
 class CodeWriter:
     """A class to write Hack assembly code from VM commands."""
     ARITH_MAP = {
@@ -23,11 +24,11 @@ class CodeWriter:
         "not": "!"
     }
     SEG_MAP = {"local": "LCL", "argument": "ARG", "this": "THIS", "that": "THAT"}
-
-    def __init__(self, filepath: str):
-        full_file_name = os.path.basename(filepath)
+    
+    def __init__(self, output_filepath: str):
+        full_file_name = os.path.basename(output_filepath)
         self.file_name = os.path.splitext(full_file_name)[0]
-        self.file = open(filepath, "w")
+        self.file = open(output_filepath, "w")
         self.bool_counter = 0
         self.file.write("// Assembly code " + full_file_name + "\n")
 
@@ -46,7 +47,6 @@ class CodeWriter:
                 raise ValueError(f"Unknown arithmetic command: {op}")
         self.file.write("\n" + assembly_code + "\n")
 
-
     def write_push_pop(self, cmd: str, segment: str, index: int) -> None:
         """
         Translates the given push or pop VM command into Hack assembly and writes to file.
@@ -59,7 +59,6 @@ class CodeWriter:
             raise ValueError(f"Unknown command: {cmd}")
         self.file.write("\n" + assembly_code + "\n")
         
-
     def close(self):
         '''Close the output file.'''
         self.file.close()
@@ -120,8 +119,7 @@ M=D'''
 # --- Arithmetic helpers ---
     def _arithmetic_compare(self, op: str) -> str:
         # eq, gt, lt
-        compare_asm = f'''
-// {op}
+        compare_asm = f'''// {op}
 {self._pop_toD()}
 {self._point_last()}
 D=M-D
@@ -143,8 +141,7 @@ M=-1
 
     def _arithmetic_operation1(self, op: str) -> str:
         # neg, not
-        return f'''
-// {op}
+        return f'''// {op}
 {self._point_last()}
 M={self.ARITH_MAP[op]}M
 {self._increment()}'''
@@ -155,8 +152,7 @@ M={self.ARITH_MAP[op]}M
         else:
             operation = f"D{self.ARITH_MAP[op]}M"
         # add, sub, and, or
-        return f'''
-// {op}
+        return f'''// {op}
 {self._pop_toD()}
 {self._point_last()}
 M={operation}
@@ -237,3 +233,4 @@ D=M
 {self._push_fromD()}'''
             case _:
                 raise ValueError(f"Unknown segment: {segment}")
+  

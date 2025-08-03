@@ -1,7 +1,5 @@
 // Assembly code StaticTest.asm
 
-// Translated from StaticTest.vm
-
 // push constant 111
 // get address 111
 @111

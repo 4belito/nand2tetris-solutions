@@ -32,8 +32,12 @@ def main():
                         writer.write_arithmetic(vm_parser.keyword)
                     case CMDType.C_PUSH | CMDType.C_POP:
                         writer.write_push_pop(cmd_type, vm_parser.arg1(), vm_parser.arg2())
-                    case CMDType.C_LABEL | CMDType.C_GOTO | CMDType.C_IF:
-                        writer.write_branching(cmd_type, vm_parser.arg1())
+                    case CMDType.C_LABEL:
+                        writer.write_label(vm_parser.arg1())
+                    case CMDType.C_GOTO:
+                        writer.write_goto(vm_parser.arg1())
+                    case CMDType.C_IF:
+                        writer.write_if(vm_parser.arg1())
                     case CMDType.C_FUNCTION:
                         writer.write_function(vm_parser.arg1(), vm_parser.arg2())
                     case CMDType.C_RETURN:

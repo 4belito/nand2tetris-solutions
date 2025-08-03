@@ -1,7 +1,5 @@
 // Assembly code BasicTest.asm
 
-// Translated from BasicTest.vm
-
 // push constant 10
 // get address 10
 @10

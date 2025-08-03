@@ -1,7 +1,5 @@
 // Assembly code StackTest.asm
 
-// Translated from StackTest.vm
-
 // push constant 17
 // get address 17
 @17
