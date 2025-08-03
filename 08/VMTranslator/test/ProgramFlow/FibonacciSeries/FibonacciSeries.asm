@@ -1,4 +1,6 @@
-//Assembly code for FibonacciSeries.asm
+// Assembly code FibonacciSeries.asm
+
+// Translated from FibonacciSeries.vm
 
 // push argument 1
 // get value from ARG
@@ -40,7 +42,7 @@ M=D
 M=M+1
 
 // pop that 0
- // pop to THAT
+// pop to THAT
 // pop to D
 // get value from stack
 @SP
@@ -73,7 +75,8 @@ D=M
 D=D+A
 // store D in reg R13
 @R13
-M=D // pop to R13
+M=D
+// pop to R13
 // pop to D
 // get value from stack
 @SP
@@ -113,7 +116,6 @@ M=D
 @SP
 M=M+1
 
-
 // sub
 // pop to D
 // get value from stack
@@ -129,7 +131,7 @@ M=M-D
 M=M+1
 
 // pop argument 0
- // pop to ARG
+// pop to ARG
 // pop to D
 // get value from stack
 @SP
@@ -210,7 +212,6 @@ M=D
 @SP
 M=M+1
 
-
 // add
 // pop to D
 // get value from stack
@@ -235,7 +236,8 @@ D=M
 D=D+A
 // store D in reg R13
 @R13
-M=D // pop to R13
+M=D
+// pop to R13
 // pop to D
 // get value from stack
 @SP
@@ -269,7 +271,6 @@ M=D
 // increment stack pointer
 @SP
 M=M+1
-
 
 // add
 // pop to D
@@ -324,7 +325,6 @@ M=D
 @SP
 M=M+1
 
-
 // sub
 // pop to D
 // get value from stack
@@ -340,7 +340,7 @@ M=M-D
 M=M+1
 
 // pop argument 0
- // pop to ARG
+// pop to ARG
 // pop to D
 // get value from stack
 @SP

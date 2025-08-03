@@ -7,8 +7,6 @@ import os
 from parser import CMDType
 
 TEMP_BASE = 5
-FRAME_REG = "R14"
-RET_REG = "R15"
 WORK_REG = "R13"
 
 class CodeWriter:
@@ -27,12 +25,11 @@ class CodeWriter:
     SEG_MAP = {"local": "LCL", "argument": "ARG", "this": "THIS", "that": "THAT"}
 
     def __init__(self, filepath: str):
-        self.filepath = filepath
-        self.file_name = os.path.basename(filepath)
+        full_file_name = os.path.basename(filepath)
+        self.file_name = os.path.splitext(full_file_name)[0]
         self.file = open(filepath, "w")
         self.bool_counter = 0
-        self.return_counter = 0
-        self.file.write("//Assembly code for " + self.file_name + "\n")
+        self.file.write("// Assembly code " + full_file_name + "\n")
 
     def write_arithmetic(self, op: str) -> None:
         """
@@ -187,8 +184,9 @@ M={operation}
                     assembly_code += f'''// get address of {segment} {index}
 {self._load_reg_value(reg=self.SEG_MAP[segment])}
 {self._calculate_address(index=index)}
-{self._storeD(reg=temp_reg)}'''
-                assembly_code += f''' // pop to {temp_reg}
+{self._storeD(reg=temp_reg)}
+'''
+                assembly_code += f'''// pop to {temp_reg}
 {self._pop_toD()}
 {self._storeD_at_ptr(address_reg=temp_reg)}'''
                 return assembly_code

@@ -7,9 +7,10 @@ import os
 from parser import CMDType
 
 TEMP_BASE = 5
+WORK_REG = "R13"
 FRAME_REG = "R14"
 RET_REG = "R15"
-WORK_REG = "R13"
+
 
 class CodeWriter:
     """A class to write Hack assembly code from VM commands."""
@@ -25,14 +26,36 @@ class CodeWriter:
         "not": "!"
     }
     SEG_MAP = {"local": "LCL", "argument": "ARG", "this": "THIS", "that": "THAT"}
-
-    def __init__(self, filepath: str):
-        self.filepath = filepath
-        self.file_name = os.path.basename(filepath)
-        self.file = open(filepath, "w")
+    
+    def __init__(self, output_filepath: str):
+        full_file_name = os.path.basename(output_filepath)
+        self.file_name = os.path.splitext(full_file_name)[0]
+        self.file = open(output_filepath, "w")
         self.bool_counter = 0
         self.return_counter = 0
-        self.file.write("//Assembly code for " + self.file_name + "\n")
+        self.file.write("// Assembly code " + full_file_name + "\n")
+        if self.file_name == "Sys":
+            self.write_init()
+
+    def set_file_name(self, file_name: str) -> None:
+        """
+        Sets the file name for the current VM file being translated.
+        This is used for static segment handling.
+        """
+        self.file_name = file_name
+        self.file.write("\n// Translated from " + file_name + ".vm\n")
+
+    def write_init(self):
+        """
+        Generates the initialization code that sets up the VM.
+        """
+        vm_code =f'''
+// Initialization code
+{self._load_symbolA(256)}  // Set SP to 256
+{self._storeD("SP")}  // SP = 256
+'''
+        self.file.write(vm_code)
+        self.write_call(function_name="Sys.init", num_args=0)
 
     def write_arithmetic(self, op: str) -> None:
         """
@@ -188,8 +211,7 @@ M=D'''
 # --- Arithmetic helpers ---
     def _arithmetic_compare(self, op: str) -> str:
         # eq, gt, lt
-        compare_asm = f'''
-// {op}
+        compare_asm = f'''// {op}
 {self._pop_toD()}
 {self._point_last()}
 D=M-D
@@ -211,8 +233,7 @@ M=-1
 
     def _arithmetic_operation1(self, op: str) -> str:
         # neg, not
-        return f'''
-// {op}
+        return f'''// {op}
 {self._point_last()}
 M={self.ARITH_MAP[op]}M
 {self._increment()}'''
@@ -223,8 +244,7 @@ M={self.ARITH_MAP[op]}M
         else:
             operation = f"D{self.ARITH_MAP[op]}M"
         # add, sub, and, or
-        return f'''
-// {op}
+        return f'''// {op}
 {self._pop_toD()}
 {self._point_last()}
 M={operation}
@@ -252,8 +272,9 @@ M={operation}
                     assembly_code += f'''// get address of {segment} {index}
 {self._load_reg_value(reg=self.SEG_MAP[segment])}
 {self._calculate_address(index=index)}
-{self._storeD(reg=temp_reg)}'''
-                assembly_code += f''' // pop to {temp_reg}
+{self._storeD(reg=temp_reg)}
+'''
+                assembly_code += f'''// pop to {temp_reg}
 {self._pop_toD()}
 {self._storeD_at_ptr(address_reg=temp_reg)}'''
                 return assembly_code
@@ -405,4 +426,5 @@ D=M'''
         return f'''// reposition SP
 @ARG
 D=M+1
-{self._storeD("SP")}            // SP = ARG + 1'''
+{self._storeD("SP")}            // SP = ARG + 1''' 
+

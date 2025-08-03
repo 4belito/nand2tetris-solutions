@@ -1,4 +1,6 @@
-//Assembly code for BasicLoop.asm
+// Assembly code BasicLoop.asm
+
+// Translated from BasicLoop.vm
 
 // push constant 0
 // get address 0
@@ -13,7 +15,7 @@ M=D
 M=M+1
 
 // pop local 0
- // pop to LCL
+// pop to LCL
 // pop to D
 // get value from stack
 @SP
@@ -61,7 +63,6 @@ M=D
 @SP
 M=M+1
 
-
 // add
 // pop to D
 // get value from stack
@@ -77,7 +78,7 @@ M=D+M
 M=M+1
 
 // pop local 0
- // pop to LCL
+// pop to LCL
 // pop to D
 // get value from stack
 @SP
@@ -117,7 +118,6 @@ M=D
 @SP
 M=M+1
 
-
 // sub
 // pop to D
 // get value from stack
@@ -133,7 +133,7 @@ M=M-D
 M=M+1
 
 // pop argument 0
- // pop to ARG
+// pop to ARG
 // pop to D
 // get value from stack
 @SP

@@ -1,4 +1,6 @@
-//Assembly code for SimpleFunction.asm
+// Assembly code SimpleFunction.asm
+
+// Translated from SimpleFunction.vm
 
 // function SimpleFunction.test 2
 (SimpleFunction.test)
@@ -53,7 +55,6 @@ M=D
 @SP
 M=M+1
 
-
 // add
 // pop to D
 // get value from stack
@@ -67,7 +68,6 @@ M=D+M
 // increment stack pointer
 @SP
 M=M+1
-
 
 // not
 // get value from stack
@@ -94,7 +94,6 @@ M=D
 // increment stack pointer
 @SP
 M=M+1
-
 
 // add
 // pop to D
@@ -127,7 +126,6 @@ M=D
 @SP
 M=M+1
 
-
 // sub
 // pop to D
 // get value from stack
@@ -157,7 +155,7 @@ D=M
 @R15
 M=D            // R15 = RET
 // pop argument 0
- // pop to ARG
+// pop to ARG
 // pop to D
 // get value from stack
 @SP

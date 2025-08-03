@@ -1,5 +1,7 @@
 // Assembly code SimpleAdd.asm
 
+// Translated from SimpleAdd.vm
+
 // push constant 7
 // get address 7
 @7
@@ -23,7 +25,6 @@ M=D
 // increment stack pointer
 @SP
 M=M+1
-
 
 // add
 // pop to D
