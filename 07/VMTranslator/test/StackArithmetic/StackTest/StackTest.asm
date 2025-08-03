@@ -1,16 +1,6 @@
 // Assembly code StackTest.asm
 
-// push constant 17
-// get address 17
-@17
-D=A
-// push from D
-@SP
-A=M
-M=D
-// increment stack pointer
-@SP
-M=M+1
+// Translated from StackTest.vm
 
 // push constant 17
 // get address 17
@@ -24,6 +14,17 @@ M=D
 @SP
 M=M+1
 
+// push constant 17
+// get address 17
+@17
+D=A
+// push from D
+@SP
+A=M
+M=D
+// increment stack pointer
+@SP
+M=M+1
 
 // eq
 // pop to D
@@ -75,7 +76,6 @@ M=D
 @SP
 M=M+1
 
-
 // eq
 // pop to D
 // get value from stack
@@ -125,7 +125,6 @@ M=D
 // increment stack pointer
 @SP
 M=M+1
-
 
 // eq
 // pop to D
@@ -177,7 +176,6 @@ M=D
 @SP
 M=M+1
 
-
 // lt
 // pop to D
 // get value from stack
@@ -227,7 +225,6 @@ M=D
 // increment stack pointer
 @SP
 M=M+1
-
 
 // lt
 // pop to D
@@ -279,7 +276,6 @@ M=D
 @SP
 M=M+1
 
-
 // lt
 // pop to D
 // get value from stack
@@ -329,7 +325,6 @@ M=D
 // increment stack pointer
 @SP
 M=M+1
-
 
 // gt
 // pop to D
@@ -381,7 +376,6 @@ M=D
 @SP
 M=M+1
 
-
 // gt
 // pop to D
 // get value from stack
@@ -431,7 +425,6 @@ M=D
 // increment stack pointer
 @SP
 M=M+1
-
 
 // gt
 // pop to D
@@ -495,7 +488,6 @@ M=D
 @SP
 M=M+1
 
-
 // add
 // pop to D
 // get value from stack
@@ -522,7 +514,6 @@ M=D
 @SP
 M=M+1
 
-
 // sub
 // pop to D
 // get value from stack
@@ -537,7 +528,6 @@ M=M-D
 @SP
 M=M+1
 
-
 // neg
 // get value from stack
 @SP
@@ -546,7 +536,6 @@ M=-M
 // increment stack pointer
 @SP
 M=M+1
-
 
 // and
 // pop to D
@@ -574,7 +563,6 @@ M=D
 @SP
 M=M+1
 
-
 // or
 // pop to D
 // get value from stack
@@ -588,7 +576,6 @@ M=D|M
 // increment stack pointer
 @SP
 M=M+1
-
 
 // not
 // get value from stack

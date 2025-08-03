@@ -1,5 +1,7 @@
 // Assembly code PointerTest.asm
 
+// Translated from PointerTest.vm
+
 // push constant 3030
 // get address 3030
 @3030
@@ -136,7 +138,6 @@ M=D
 @SP
 M=M+1
 
-
 // add
 // pop to D
 // get value from stack
@@ -168,7 +169,6 @@ M=D
 @SP
 M=M+1
 
-
 // sub
 // pop to D
 // get value from stack
@@ -199,7 +199,6 @@ M=D
 // increment stack pointer
 @SP
 M=M+1
-
 
 // add
 // pop to D

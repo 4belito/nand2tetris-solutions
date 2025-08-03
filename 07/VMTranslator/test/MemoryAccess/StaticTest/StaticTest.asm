@@ -1,5 +1,7 @@
 // Assembly code StaticTest.asm
 
+// Translated from StaticTest.vm
+
 // push constant 111
 // get address 111
 @111
@@ -90,7 +92,6 @@ M=D
 @SP
 M=M+1
 
-
 // sub
 // pop to D
 // get value from stack
@@ -116,7 +117,6 @@ M=D
 // increment stack pointer
 @SP
 M=M+1
-
 
 // add
 // pop to D

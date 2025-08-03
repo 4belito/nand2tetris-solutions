@@ -1,5 +1,7 @@
 // Assembly code BasicTest.asm
 
+// Translated from BasicTest.vm
+
 // push constant 10
 // get address 10
 @10
@@ -250,7 +252,6 @@ M=D
 @SP
 M=M+1
 
-
 // add
 // pop to D
 // get value from stack
@@ -282,7 +283,6 @@ M=D
 @SP
 M=M+1
 
-
 // sub
 // pop to D
 // get value from stack
@@ -331,7 +331,6 @@ M=D
 @SP
 M=M+1
 
-
 // add
 // pop to D
 // get value from stack
@@ -345,7 +344,6 @@ M=D+M
 // increment stack pointer
 @SP
 M=M+1
-
 
 // sub
 // pop to D
@@ -372,7 +370,6 @@ M=D
 // increment stack pointer
 @SP
 M=M+1
-
 
 // add
 // pop to D
