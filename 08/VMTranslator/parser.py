@@ -1,3 +1,9 @@
+"""
+parser.py
+
+This module provides the `Parser` class for parsing VM commands and the `CMDType` class for command types.
+"""
+
 from dataclasses import dataclass
 import os
 
