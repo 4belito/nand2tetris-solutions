@@ -1,0 +1,232 @@
+function Snake.new 0
+    push constant 2
+    call Memory.alloc 1
+    pop pointer 0
+    push argument 0
+    pop this 0
+    push argument 1
+    pop this 1
+    push pointer 0
+    call Snake.show 1
+    pop temp 0
+    push pointer 0
+    return
+function Snake.dispose 0
+    push argument 0
+    pop pointer 0
+    push pointer 0
+    call Memory.deAlloc 1
+    pop temp 0
+    push constant 0
+    return
+function Snake.show 0
+    push argument 0
+    pop pointer 0
+    push constant 1
+    neg
+    call Screen.setColor 1
+    pop temp 0
+    push pointer 0
+    call Snake.draw 1
+    pop temp 0
+    push constant 0
+    return
+function Snake.hide 0
+    push argument 0
+    pop pointer 0
+    push constant 0
+    call Screen.setColor 1
+    pop temp 0
+    push pointer 0
+    call Snake.draw 1
+    pop temp 0
+    push constant 0
+    return
+function Snake.draw 1
+    push argument 0
+    pop pointer 0
+    push constant 0
+    pop local 0
+label Snake_0
+    push local 0
+    push this 1
+    push constant 2
+    call Math.multiply 2
+    lt
+    not
+    if-goto Snake_1
+    push constant 5
+    push local 0
+    push this 0
+    add
+    pop pointer 1
+    push that 0
+    call Math.multiply 2
+    push constant 5
+    push local 0
+    push constant 1
+    add
+    push this 0
+    add
+    pop pointer 1
+    push that 0
+    call Math.multiply 2
+    push constant 5
+    push local 0
+    push this 0
+    add
+    pop pointer 1
+    push that 0
+    call Math.multiply 2
+    push constant 4
+    add
+    push constant 5
+    push local 0
+    push constant 1
+    add
+    push this 0
+    add
+    pop pointer 1
+    push that 0
+    call Math.multiply 2
+    push constant 4
+    add
+    call Screen.drawRectangle 4
+    pop temp 0
+    push local 0
+    push constant 2
+    add
+    pop local 0
+    goto Snake_0
+label Snake_1
+    push constant 0
+    return
+function Snake.move 3
+    push argument 0
+    pop pointer 0
+    push constant 0
+    push this 0
+    add
+    pop pointer 1
+    push that 0
+    push argument 1
+    add
+    pop local 0
+    push constant 1
+    push this 0
+    add
+    pop pointer 1
+    push that 0
+    push argument 2
+    add
+    pop local 1
+    push local 0
+    push constant 0
+    lt
+    push constant 5
+    push local 0
+    call Math.multiply 2
+    push constant 511
+    push constant 4
+    sub
+    gt
+    or
+    push local 1
+    push constant 0
+    lt
+    or
+    push constant 5
+    push local 1
+    call Math.multiply 2
+    push constant 255
+    push constant 4
+    sub
+    gt
+    or
+    not
+    if-goto Snake_3
+    push constant 0
+    return
+    goto Snake_2
+label Snake_3
+label Snake_2
+    push pointer 0
+    call Snake.hide 1
+    pop temp 0
+    push this 1
+    push constant 1
+    sub
+    pop local 2
+label Snake_4
+    push local 2
+    push constant 0
+    gt
+    not
+    if-goto Snake_5
+    push constant 2
+    push local 2
+    call Math.multiply 2
+    push this 0
+    add
+    push constant 2
+    push local 2
+    push constant 1
+    sub
+    call Math.multiply 2
+    push this 0
+    add
+    pop pointer 1
+    push that 0
+    pop temp 0
+    pop pointer 1
+    push temp 0
+    pop that 0
+    push constant 2
+    push local 2
+    call Math.multiply 2
+    push constant 1
+    add
+    push this 0
+    add
+    push constant 2
+    push local 2
+    push constant 1
+    sub
+    call Math.multiply 2
+    push constant 1
+    add
+    push this 0
+    add
+    pop pointer 1
+    push that 0
+    pop temp 0
+    pop pointer 1
+    push temp 0
+    pop that 0
+    push local 2
+    push constant 1
+    sub
+    pop local 2
+    goto Snake_4
+label Snake_5
+    push constant 0
+    push this 0
+    add
+    push local 0
+    pop temp 0
+    pop pointer 1
+    push temp 0
+    pop that 0
+    push constant 1
+    push this 0
+    add
+    push local 1
+    pop temp 0
+    pop pointer 1
+    push temp 0
+    pop that 0
+    push pointer 0
+    call Snake.show 1
+    pop temp 0
+    push constant 0
+    return

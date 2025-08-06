@@ -1,0 +1,220 @@
+function SnakeGame.new 3
+    push constant 2
+    call Memory.alloc 1
+    pop pointer 0
+    push constant 10
+    pop local 1
+    push constant 2
+    push local 1
+    call Math.multiply 2
+    call Array.new 1
+    pop local 0
+    push constant 0
+    pop local 2
+label SnakeGame_0
+    push local 2
+    push local 1
+    lt
+    not
+    if-goto SnakeGame_1
+    push local 2
+    push constant 2
+    call Math.multiply 2
+    push local 0
+    add
+    push local 2
+    pop temp 0
+    pop pointer 1
+    push temp 0
+    pop that 0
+    push local 2
+    push constant 2
+    call Math.multiply 2
+    push constant 1
+    add
+    push local 0
+    add
+    push constant 0
+    pop temp 0
+    pop pointer 1
+    push temp 0
+    pop that 0
+    push local 2
+    push constant 1
+    add
+    pop local 2
+    goto SnakeGame_0
+label SnakeGame_1
+    push local 0
+    push local 1
+    call Snake.new 2
+    pop this 0
+    push constant 2
+    pop this 1
+    push pointer 0
+    return
+function SnakeGame.dispose 0
+    push argument 0
+    pop pointer 0
+    push this 0
+    call Snake.dispose 1
+    pop temp 0
+    push pointer 0
+    call Memory.deAlloc 1
+    pop temp 0
+    push constant 0
+    return
+function SnakeGame.moveSnake 0
+    push argument 0
+    pop pointer 0
+    push this 1
+    push constant 1
+    eq
+    not
+    if-goto SnakeGame_3
+    push this 0
+    push constant 0
+    push constant 1
+    neg
+    call Snake.move 3
+    pop temp 0
+    goto SnakeGame_2
+label SnakeGame_3
+label SnakeGame_2
+    push this 1
+    push constant 2
+    eq
+    not
+    if-goto SnakeGame_5
+    push this 0
+    push constant 0
+    push constant 1
+    call Snake.move 3
+    pop temp 0
+    goto SnakeGame_4
+label SnakeGame_5
+label SnakeGame_4
+    push this 1
+    push constant 3
+    eq
+    not
+    if-goto SnakeGame_7
+    push this 0
+    push constant 1
+    neg
+    push constant 0
+    call Snake.move 3
+    pop temp 0
+    goto SnakeGame_6
+label SnakeGame_7
+label SnakeGame_6
+    push this 1
+    push constant 4
+    eq
+    not
+    if-goto SnakeGame_9
+    push this 0
+    push constant 1
+    push constant 0
+    call Snake.move 3
+    pop temp 0
+    goto SnakeGame_8
+label SnakeGame_9
+label SnakeGame_8
+    push constant 5
+    call Sys.wait 1
+    pop temp 0
+    push constant 0
+    return
+function SnakeGame.run 2
+    push argument 0
+    pop pointer 0
+    push constant 0
+    pop local 1
+label SnakeGame_10
+    push local 1
+    not
+    not
+    if-goto SnakeGame_11
+label SnakeGame_12
+    push local 0
+    push constant 0
+    eq
+    not
+    if-goto SnakeGame_13
+    call Keyboard.keyPressed 0
+    pop local 0
+    push pointer 0
+    call SnakeGame.moveSnake 1
+    pop temp 0
+    goto SnakeGame_12
+label SnakeGame_13
+    push local 0
+    push constant 81
+    eq
+    not
+    if-goto SnakeGame_15
+    push constant 1
+    neg
+    pop local 1
+    goto SnakeGame_14
+label SnakeGame_15
+label SnakeGame_14
+    push local 0
+    push constant 131
+    eq
+    not
+    if-goto SnakeGame_17
+    push constant 1
+    pop this 1
+    goto SnakeGame_16
+label SnakeGame_17
+label SnakeGame_16
+    push local 0
+    push constant 133
+    eq
+    not
+    if-goto SnakeGame_19
+    push constant 2
+    pop this 1
+    goto SnakeGame_18
+label SnakeGame_19
+label SnakeGame_18
+    push local 0
+    push constant 130
+    eq
+    not
+    if-goto SnakeGame_21
+    push constant 3
+    pop this 1
+    goto SnakeGame_20
+label SnakeGame_21
+label SnakeGame_20
+    push local 0
+    push constant 132
+    eq
+    not
+    if-goto SnakeGame_23
+    push constant 4
+    pop this 1
+    goto SnakeGame_22
+label SnakeGame_23
+label SnakeGame_22
+label SnakeGame_24
+    push local 0
+    push constant 0
+    eq
+    not
+    not
+    if-goto SnakeGame_25
+    call Keyboard.keyPressed 0
+    pop local 0
+    push pointer 0
+    call SnakeGame.moveSnake 1
+    pop temp 0
+    goto SnakeGame_24
+label SnakeGame_25
+    goto SnakeGame_10
+label SnakeGame_11
+    push constant 0
+    return

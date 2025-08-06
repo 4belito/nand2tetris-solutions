@@ -1,0 +1,71 @@
+class Snake{
+
+    field Array snake; // (x0, y0, x1, y1, ...) array of body points
+    field int length;  // number of body points (segments)
+
+    /** Constructs and draws a new snake from. */
+    constructor Snake new(Array asnake,int alength) {
+        let snake = asnake;
+        let length = alength;
+        do show();
+        return this;
+    }
+
+    /** Disposes this snake. */
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    /** Shows the snake. */
+    method void show() {
+        do Screen.setColor(true);
+        do draw();
+        return;
+    }
+
+    /** Hides the snake. */
+    method void hide() {
+        do Screen.setColor(false);
+	    do draw();
+        return;
+    }
+
+    /** Draws all segments of the snake on the screen */
+    method void draw() {
+        var int i;
+        let i = 0;
+        // Each segment is a point (x, y)
+        // So total array length = length * 2
+        while (i < (length * 2)) {
+            do Screen.drawRectangle(5*snake[i], 5*snake[i + 1],(5*snake[i])+4, (5*snake[i + 1])+4);
+            let i = i + 2; // next point
+        }
+        return;
+    }
+
+    method void move(int dx, int dy) {
+        var int hx, hy; // head coordinates
+        var int i;
+        let hx = snake[0] + dx;
+        let hy = snake[1] + dy;
+        // do Output.printInt(hx);
+        // do Output.printInt(hy);
+        if ((hx < 0) | ((5 * hx) > (511-4)) | (hy < 0) | ((5 * hy) > (255-4))) {
+            return; // out of bounds, do not move
+        }
+        do hide(); // hide the snake before moving
+        // Shift all body segments from tail to head
+        let i = length - 1;
+        while (i > 0) {
+            let snake[2 * i] = snake[2 * (i - 1)];
+            let snake[(2 * i) + 1] = snake[(2 * (i - 1)) + 1];
+            let i = i - 1;
+        }
+        // Update the head position
+        let snake[0] = hx;
+        let snake[1] = hy;
+        do show(); // show the snake after moving
+        return;
+    }
+    }
