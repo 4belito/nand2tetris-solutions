@@ -1,67 +1,162 @@
 class SnakeGame {
-   field Snake snake; // the snake of this game
-   field int direction; // the snake's current direction: 
-                        // 0=none, 1=up, 2=down, 3=left, 4=right
+    field Snake snake; // the snake of this game
+    field Rat rat; // the rat item of this game
+    field int delay; // the delay between moves
+    field int xlength; // the width of the game panel
+    field int ylength; // the length of the game panel
+    field int resol; // the size of the snake segments
+    field int maxlength; // the maximum length of the snake
+    field int state; // the state of the game (0 = running, 1 = win, 2 = game over)
 
-   /** Constructs a new snake game. */
-   constructor SnakeGame new() {
+
+    /** Constructs a new snake game. */
+    constructor SnakeGame new(int ainitialength,int amaxlength,int assed,int adealy,int aresol) {
         // The initial snake is located in (0,0), has size 30, and is not moving.
-        var Array asnake;
-        var int alength,i;
-        let alength = 10;   // initial length = 10 segments
-        let asnake = Array.new(2*alength); // initial length = 10 segments (20 coordinates)
+        var Array ax, ay, adir;
+        var int initialength,i;
+        var int seed;
+        let maxlength = amaxlength;   // initial length = 5 segments
+        let initialength = ainitialength;
+        let seed = assed;
+        let delay = adealy; // set the delay
+        let resol = aresol; // size of the snake segments
+
+        let ylength = 238;
+        let xlength = 511;
+        
+
+        // Initialize the game state
+        let ax = Array.new(maxlength);
+        let ay = Array.new(maxlength);
+        let adir = Array.new(maxlength);
         let i = 0;
-        while (i < alength) {
-            let asnake[i * 2] = i;     // x-coordinate
-            let asnake[(i * 2) + 1] = 0; // y-coordinate
+        while (i < initialength) {
+            let ax[i] = initialength - 1 - i; // x-coordinate
+            let ay[i] = 0; // y-coordinate
+            let adir[i] = 4; // initial direction = 4 (down)
             let i = i + 1;
         }
-        let snake = Snake.new(asnake, alength);
-        let direction = 2; // initial direction = down
+
+        let snake = Snake.new(ax, ay, adir, initialength, maxlength, resol);
+        let rat = Rat.new(seed, xlength, ylength, resol); // place the rat at (15, 15)
+    
+        // Draw game panel
+        do Screen.clearScreen();
+        do draw_board();
+        do snake.draw();
         return this;
-   }
+    }
 
-   /** Disposes this game. */
-   method void dispose() {
-      do snake.dispose();
-      do Memory.deAlloc(this);
-      return;
-   }
+    method void draw_board() {
+        // Draws the game panel
+        do Screen.setColor(true);
+        do Screen.drawLine(0, ylength, xlength, ylength); // draw the bottom line
+        do Output.moveCursor(22,0);
+        do Output.printString(" Length:");
+        do Output.printInt(snake.getLength());
+        do Output.moveCursor(22, 53); // move the cursor to the bottom right
+        do Output.printString("Snake Game");
+        return;
+    }
 
-   /** Moves the snake in the current direction. */
-   method void moveSnake() {
-      if (direction = 1) { do snake.move(0, -1); }
-      if (direction = 2) { do snake.move(0, 1); }
-      if (direction = 3) { do snake.move(-1, 0); }
-      if (direction = 4) { do snake.move(1, 0); }
-      do Sys.wait(5);  // delays the next movement
-      return;
-   }
+    /** Disposes this game. */
+    method void dispose() {
+        do snake.dispose();
+        do rat.dispose();
+        do Memory.deAlloc(this);
+        return;
+    }
 
-   /** Runs the game: handles the user's inputs and moves the snake accordingly */
-   method void run() {
-      var char key;  // the key currently pressed by the user
-      var boolean exit;
-      let exit = false;
-      
-      while (~exit) {
-         // waits for a key to be pressed
-         while (key = 0) {
-            let key = Keyboard.keyPressed();
-            do moveSnake();
-         }
-         if (key = 81)  { let exit = true; }     // q key
-         if (key = 131) { let direction = 1; }   // up arrow
-         if (key = 133) { let direction = 2; }   // down arrow
-         if (key = 130) { let direction = 3; }   // left arrow
-         if (key = 132) { let direction = 4; }   // right arrow
+    method void move_snake() {
+        // Moves the snake according to its direction
+        var int dir,x,y,hx,hy; // head coordinates
+        let dir = snake.getHeadDir();
+        let x = snake.getHeadX();
+        let y = snake.getHeadY();
+        if (dir = 1) { let hx = x; let hy = y - 1; } // up
+        if (dir = 2) { let hx = x; let hy = y + 1; } // down
+        if (dir = 3) { let hx = x - 1; let hy = y; } // left
+        if (dir = 4) { let hx = x + 1; let hy = y; } // right
+        // check if the new head position is within bounds
+        if ((hx < 0) | ((resol * (hx+1)) > (xlength+1)) | (hy < 0) | ((resol * (hy+1)) > (ylength+1))) {
+            let state = 2;
+            return; // out of bounds, do not move
+        }
+        else {
+            do snake.erase();
+            do snake.move(hx, hy);
+            do search_rat(); // check if the snake has eaten the rat
+            do snake.draw();
+            do Sys.wait(delay);
+        }
+        return;
+    }
 
-         // waits for the key to be released
-         while (~(key = 0)) {
-            let key = Keyboard.keyPressed();
-            do moveSnake();
-         }
-     } // while
-     return;
-   }
+    method void search_rat() {
+        if ((snake.getHeadX() = rat.getX()) & (snake.getHeadY() = rat.getY())) {
+            do snake.eat(); // eat the rat
+            do rat.recover();
+            do Output.moveCursor(22,8);
+            do Output.printInt(snake.getLength());
+        }
+        return;
+    }
+
+    method void checkSelfCollision() {
+        // Checks if the game is over
+        var int i, hx, hy;
+        let hx = snake.getHeadX();
+        let hy = snake.getHeadY();
+        let i = 1; // start checking from the second segment
+        while (i < snake.getLength()) {
+            if ((hx = snake.getX(i)) & (hy = snake.getY(i))) {
+                let state = 2; // game over
+                return; // game over, snake has collided with itself
+            }
+            let i = i + 1;
+        }
+        return; // game is not over
+    }
+    /** Runs the game: handles the user's inputs and moves the snake accordingly */
+    method void run() {
+        var char key;  // the key currently pressed by the user
+        let state = 0;
+        while (state = 0) {
+            do rat.draw();
+            // waits for a key to be pressed
+            while ((key = 0) & (state = 0)){
+                let key = Keyboard.keyPressed();
+                do move_snake(); // move the snake
+            }
+            if (key = 113)  {let state = 3;}     // q key
+            if (key = 131) { do snake.setDir(1); }   // up arrow
+            if (key = 133) { do snake.setDir(2); }   // down arrow
+            if (key = 130) { do snake.setDir(3); }   // left arrow
+            if (key = 132) { do snake.setDir(4); }   // right arrow
+
+            // waits for the key to be released
+            while (~(key = 0) & (state = 0)) {
+                let key = Keyboard.keyPressed();
+                do move_snake(); // move the snake
+            }
+            if (snake.getLength() = maxlength) {
+                let state = 1; // win state
+            }else {
+                do checkSelfCollision(); // check if the snake has collided with itself
+            }
+             // redraw the rat
+        } 
+        if (state = 2) {
+            do snake.draw_crash();
+            do Output.moveCursor(10,27);
+	        do Output.printString("Game Over");
+	    }
+        if (state = 1) {
+            do Output.moveCursor(10,27);
+	        do Output.printString("You Win!");
+        }
+        do Sys.wait(3000); // wait for a second before exiting
+        do Screen.clearScreen();
+        return;
+    }
 }

@@ -1,0 +1,45 @@
+function Random.new 0
+    push constant 2
+    call Memory.alloc 1
+    pop pointer 0
+    push argument 0
+    pop this 0
+    push argument 1
+    pop this 1
+    push pointer 0
+    return
+function Random.next 0
+    push argument 0
+    pop pointer 0
+    push pointer 0
+    push constant 47
+    push this 0
+    call Math.multiply 2
+    push constant 12345
+    add
+    push this 1
+    push constant 1
+    add
+    call Random.mod 3
+    pop this 0
+    push this 0
+    return
+function Random.dispose 0
+    push argument 0
+    pop pointer 0
+    push pointer 0
+    call Memory.deAlloc 1
+    pop temp 0
+    push constant 0
+    return
+function Random.mod 0
+    push argument 0
+    pop pointer 0
+    push argument 1
+    push argument 2
+    push argument 1
+    push argument 2
+    call Math.divide 2
+    call Math.multiply 2
+    sub
+    return

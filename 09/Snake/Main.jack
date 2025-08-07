@@ -1,9 +1,36 @@
 class Main {
     function void main() {
         var SnakeGame game;
-        let game = SnakeGame.new();
-        do game.run();
-        do game.dispose();
+        var int initialength, maxlength, seed, delay,resol,key;
+        let initialength = 5;
+        let maxlength = 20;
+        let seed = 0;
+        let delay = 70;
+        let resol = 9;
+        let key = 0;
+        while (key = 0) { // wait for space key to start
+            do Output.moveCursor(9,25);
+            do Output.printString("Snake Game!!");
+            do Output.moveCursor(10,25);
+            do Output.printString("Press space to start");
+            do Output.moveCursor(11,25);
+            do Output.printString("Press q to quit");
+            while (~((key = 32) | (key = 113))){
+                let key = Keyboard.keyPressed();
+                do Sys.wait(10); // wait for a short time
+            }
+            if (key = 32) { // space key
+                let game = SnakeGame.new(initialength, maxlength, seed, delay, resol);
+                do game.run();
+                let key = 0; // reset key
+                let seed = seed + 1; // change the seed for the next game
+            }
+            if (key = 113) { // q key
+                do Screen.clearScreen();
+                do game.dispose();
+                return; // exit the game
+            }
+        }
         return;
     }
 }
