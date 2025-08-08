@@ -1,24 +1,20 @@
 class Random {
     field int seed; // current seed value
-    field int max;  // inclusive upper bound
+    field int sup;  // inclusive upper bound
 
-    constructor Random new(int aseed, int amax) {
-        let seed = aseed;
-        let max = amax;
+    constructor Random new(int aseed, int asup) {
+        let seed = aseed; // use the provided seed
+        let sup = asup;
         return this;
     }
 
-    /** Returns the next pseudo-random number between min and max (inclusive) */
+    /** Returns the next pseudo-random number between 0 and sup-1 (inclusive) */
     method int next() {
-        let seed = mod(47 * seed + 12345 , max+1); // simple LCG
+        let seed = Helper.mod(61 * seed + 79, sup); // simple LCG
         return seed;
     }
     method void dispose() {
         do Memory.deAlloc(this);
         return;
-    }
-
-    method int mod(int a, int b) {
-        return a - (b * (a / b));
     }
 }

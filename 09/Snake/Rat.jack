@@ -1,16 +1,13 @@
 class Rat {
     field int x; // the x-coordinate of the rat
     field int y; // the y-coordinate of the rat
-    field Random randx; // the size of the rat (default is 5x5 pixels)
-    field Random randy; // the size of the rat (default is 5x5 pixels)
-    field int size; // the size of the rat (default is 5x5 pixels)
+    field Random randx; // the random x-coordinate generator
+    field Random randy; // the random y-coordinate generator
     /** Constructs a new rat at the specified position. */
-    constructor Rat new(int seed, int xmax, int ymax,int asize) {
-        let randx = Random.new(seed, ((xmax+2)/asize)-1);
-        let randy = Random.new(seed, ((ymax+2)/asize)-1);
-        let size = asize;
-        let x = randx.next(); // random x-coordinate
-        let y = randy.next(); // random y-coordinate
+    constructor Rat new(int seed, int axsup, int aysup) {
+        let randx = Random.new(seed, axsup);
+        let randy = Random.new(seed, aysup);
+        do recover(); // recover the position of the rat
         return this;
     }
 
@@ -22,24 +19,9 @@ class Rat {
         return;
     }
 
-    method void recover() {
+    method void  recover() {
         let x = randx.next();
         let y = randy.next();
-        do draw();
-        return;
-    }
-
-    /** Draws the food item on the screen. */
-    method void draw() {
-        do Screen.setColor(true);
-        do Screen.drawCircle(size*x+(size/2),size*y+(size/2),(size/2)-1);
-        return;
-    } 
-
-    /** Erases the food item from the screen. */
-    method void erase() {
-        do Screen.setColor(false);
-        do Screen.drawCircle(size*x+(size/2),size*y+(size/2),(size/2)-1);
         return;
     }
 

@@ -11,16 +11,13 @@ function Random.new 0
 function Random.next 0
     push argument 0
     pop pointer 0
-    push pointer 0
-    push constant 47
+    push constant 61
     push this 0
     call Math.multiply 2
-    push constant 12345
+    push constant 79
     add
     push this 1
-    push constant 1
-    add
-    call Random.mod 3
+    call Helper.mod 2
     pop this 0
     push this 0
     return
@@ -31,15 +28,4 @@ function Random.dispose 0
     call Memory.deAlloc 1
     pop temp 0
     push constant 0
-    return
-function Random.mod 0
-    push argument 0
-    pop pointer 0
-    push argument 1
-    push argument 2
-    push argument 1
-    push argument 2
-    call Math.divide 2
-    call Math.multiply 2
-    sub
     return

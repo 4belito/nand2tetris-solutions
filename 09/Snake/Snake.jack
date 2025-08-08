@@ -1,20 +1,17 @@
 class Snake{
-
     field Array x; // (x0,x1, x2, ...) array of body points
     field Array y; // (y0,y1, y2, ...) array of body points
     field Array dir; // (d0,d1, d2, ...) array of directions (1-up, 2-down, 3-left, 4-right)
     field int length;  // number of body points (segments)
     field int maxlength; // maximum length of the snake
-    field int size; // random seed for the snake
 
     /** Constructs and draws a new snake from. */
-    constructor Snake new(Array ax,Array ay,Array adir, int alength, int amaxlength, int asize) {
+    constructor Snake new(Array ax,Array ay,Array adir, int alength, int amaxlength) {
         let x = ax;
         let y = ay;
         let dir = adir;
         let length = alength;
         let maxlength = amaxlength;
-        let size = asize;
         return this;
     }
 
@@ -32,16 +29,28 @@ class Snake{
         return;
     }
 
-    method int getX(int index) {
-        return x[index];
+    method boolean selfCollision() {
+        var int i;
+        let i = 1; // start checking from the second segment
+        while (i < length) {
+            if ((x[0] = x[i]) & (y[0] = y[i])) {
+                return true; //  snake has collided with itself
+            }
+            let i = i + 1;
+        }
+        return false; // game is not over
     }
 
-    method int getY(int index) {
-        return y[index];
+    method Array getX() {
+        return x;
     }
 
-    method int getDir(int index) {
-        return dir[index];
+    method Array getY() {
+        return y;
+    }
+
+    method Array getDir() {
+        return dir;
     }     
 
     method int getHeadX() {
@@ -75,115 +84,6 @@ class Snake{
 
         // Update length
         let length = length + 1;
-        return;
-    }
-
-    /** Erases the snake. */
-    method void erase() {
-        var int i;
-        var int xh, yh; // head coordinates
-        do Screen.setColor(false);     
-        let i = 0;
-        while (i < length) {
-            do Screen.drawRectangle(size*x[i], size*y[i],size*(x[i]+1)-1, size*(y[i]+1)-1);
-            let i = i + 1; // next point
-        }
-        return;
-    }
-
-    /** Draws all segments of the snake on the screen */
-    method void draw_crash() {
-        var int i;
-        var int hx, hy; // head coordinates
-        var int mid; // middle of the segment
-        // Draws the snake head
-        let hx = size*x[0];
-        let hy = size*y[0];
-        do Screen.setColor(false); // set color to black
-        do Screen.drawLine(hx, hy, hx+size-1, hy+size-1); // draw the head
-        do Screen.drawLine(hx+size-1, hy, hx, hy+size-1); // draw the head
-        return;
-    }
-    
-
-    method void draw() {
-        var int i;
-        var int hx, hy; // head coordinates
-        var int tx, ty; // tail coordinates
-        var int mid; // middle of the segment
-        // Draws the snake positions
-        do Screen.setColor(true); // set color to black
-        let i = 0;
-        // Each segment is a point (x, y)
-        // So total array length = length * 2
-        let mid = size / 2;
-        while (i < length) {
-            do Screen.setColor(true); 
-            do Screen.drawRectangle(size*x[i], size*y[i],size*(x[i]+1)-1, (size*(y[i]+1)-1));
-            if ((i>0)|(i<length-1)) {
-                // Draw the segment
-                do Screen.setColor(false);
-                do Screen.drawPixel(size*x[i]+mid, size*y[i]+mid);
-            }
-            let i = i + 1; // next point
-        }     
-
-        // Draws the snake head
-        let hx = size*x[0];
-        let hy = size*y[0];
-        do Screen.setColor(false); // set color to black
-        do Screen.drawPixel(hx, hy);
-        do Screen.drawPixel(hx, hy+size-1);
-        do Screen.drawPixel(hx+size-1, hy);
-        do Screen.drawPixel(hx+size-1, hy+size-1);
-        if (dir[0]>2) {
-            // direction is left or right
-            do Screen.drawPixel(hx+mid, hy+mid-1);
-            do Screen.drawPixel(hx+mid, hy+mid+1);
-        }
-        else{
-            // direction is up or down
-            do Screen.drawPixel(hx+mid+1, hy+mid);
-            do Screen.drawPixel(hx+mid-1, hy+mid);
-        }
-
-        // Draws the snake tail
-        let i = length - 1;
-        let tx = size*x[i];
-        let ty = size*y[i];
-        // do Output.printInt(i);
-        if (dir[i]=1){
-            // direction is up
-            do Screen.drawPixel(tx, ty+size-1);
-            do Screen.drawPixel(tx+size-1, ty+size-1);
-            }
-        if (dir[i]=2){
-                // direction is down
-                do Screen.drawPixel(tx, ty);
-                do Screen.drawPixel(tx+1, ty);
-                do Screen.drawPixel(tx, ty+1);
-                do Screen.drawPixel(tx+size-1, ty);
-                do Screen.drawPixel(tx+size-2, ty);
-                do Screen.drawPixel(tx+size-1, ty+1);
-            }
-        if (dir[i]=3){
-                // direction is left
-                do Screen.drawPixel(tx+size-1, ty);
-                do Screen.drawPixel(tx+size-2, ty);
-                do Screen.drawPixel(tx+size-1, ty+1);
-                do Screen.drawPixel(tx+size-1, ty+size-1);
-                do Screen.drawPixel(tx+size-1, ty+size-2);
-                do Screen.drawPixel(tx+size-2, ty+size-1);
-            }       
-        if (dir[i]=4){
-                // direction is right
-                do Screen.drawPixel(tx, ty);
-                do Screen.drawPixel(tx+1, ty);
-                do Screen.drawPixel(tx, ty+1);
-                do Screen.drawPixel(tx, ty+size-1);
-                do Screen.drawPixel(tx, ty+size-2);
-                do Screen.drawPixel(tx+1, ty+size-1);
-        }    
         return;
     }
 

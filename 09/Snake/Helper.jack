@@ -1,0 +1,6 @@
+class Helper {
+    /** Draws a filled rectangle on the screen. */
+    function int mod(int a, int b) {
+        return a - (b * (a / b));
+    }
+}
