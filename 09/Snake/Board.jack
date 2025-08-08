@@ -1,0 +1,316 @@
+/**
+ * Nand2Tetris – Project 9 (Snake): Board
+ *
+ * Responsible for:
+ * - Board geometry (tile <-> pixel conversions)
+ * - Drawing the playfield border and HUD
+ * - Rendering and hiding entities (snake, rat)
+ */
+
+class Board {
+    // Config (immutable after ctor)
+    field int fieldWidth, fieldHeight;   // pixels
+    field int tileSize;                  // pixels per tile
+
+    // Derived offsets/frames
+    field int leftFrame, rightFrame, topFrame, bottomFrame;
+    field int xBoardSize, yBoardSize;    // tiles
+
+    // Direction constants
+    static int DIR_UP;    // = 1
+    static int DIR_DOWN;  // = 2
+    static int DIR_LEFT;  // = 3
+    static int DIR_RIGHT; // = 4
+
+    constructor Board new(int aWidth, int aHeight, int aTileSize) {
+        var int xoff, yoff;
+        let fieldWidth  = aWidth;
+        let fieldHeight = aHeight;
+        let tileSize    = aTileSize;
+
+        // Direction constants
+        let DIR_UP = 1;
+        let DIR_DOWN = 2;
+        let DIR_LEFT = 3;
+        let DIR_RIGHT = 4;
+
+        let xoff = Helper.mod(fieldWidth, tileSize);
+        let yoff = Helper.mod(fieldHeight, tileSize);
+
+        let leftFrame   = xoff / 2;
+        let rightFrame  = xoff - leftFrame;
+        let topFrame    = yoff / 2;
+        let bottomFrame = yoff - topFrame;
+
+        let xBoardSize  = fieldWidth  / tileSize;
+        let yBoardSize  = fieldHeight / tileSize;
+
+        return this;
+}
+
+    /** Converts a tile coordinate to a pixel coordinate */
+    method int pixX(int x) { return tileSize * x + leftFrame; }
+    method int pixY(int y) { return tileSize * y + topFrame; }
+
+    /** @return tile size in pixels. */
+    method int getTileSize() { return tileSize; }
+    /** @return board width in pixels. */
+    method int pWidth() { return fieldWidth; }
+    /** @return board height in pixels. */
+    method int pHeight() { return fieldHeight; }
+    /** @return board width in tiles. */
+    method int width()  { return xBoardSize; }
+    /** @return board height in tiles. */
+    method int height() { return yBoardSize; }
+    
+    /** constant directions */
+    method int dirLEFT()   { return DIR_LEFT; }
+    method int dirRIGHT()  { return DIR_RIGHT; }
+    method int dirUP()    { return DIR_UP; }
+    method int dirDOWN()  { return DIR_DOWN; }
+
+    /** Draws the board frames (if any) and a footer line at the bottom.*/
+    method void drawBorder() {
+        do Screen.setColor(true);
+        if (topFrame>0)    { do Screen.drawRectangle(0, 0, fieldWidth-1, topFrame-1); }
+        if (bottomFrame>0) { do Screen.drawRectangle(0, fieldHeight-bottomFrame, fieldWidth-1, fieldHeight-1); }
+        if (leftFrame>0)   { do Screen.drawRectangle(0, 0, leftFrame-1, fieldHeight-1); }
+        if (rightFrame>0)  { do Screen.drawRectangle(fieldWidth-rightFrame, 0, fieldWidth-1, fieldHeight-1); }
+        do Screen.drawLine(0, fieldHeight, fieldWidth-1, fieldHeight);
+        return;
+    }
+
+    /** Prints current length at a fixed HUD position (bottom row). */
+    method void printLen(int len) {
+        do Output.moveCursor(22, 0);
+        do Output.printString(" Length:");
+        do Output.printInt(len);
+        return;
+    }
+
+    /** Prints current level at a fixed HUD position (bottom row). */
+    method void printLevel(int lvl) {
+        do Output.moveCursor(22, 28);
+        do Output.printString(" Level:");
+        do Output.printInt(lvl);
+        return;
+    }
+
+    /** Prints target/win length at a fixed HUD position (bottom row). */
+    method void printGoal(int goal) {
+        do Output.moveCursor(22, 53);
+        do Output.printString(" Target:");
+        do Output.printInt(goal);
+        return;
+    }
+
+    /** Clears the screen, draws the footer line, HUD entries, and the border*/
+    method void draw(int level, Snake snake) {
+        //* Draws the game board */
+        do Screen.clearScreen();
+        do Screen.setColor(true);
+        do Screen.drawLine(0, fieldHeight-1, fieldWidth-1, fieldHeight-1);
+
+        do printLen(snake.getLength());
+        do printLevel(level);
+        do printGoal(snake.getMaxLength());
+        do drawBorder(); // draw the game border
+        return;
+    }
+
+    /** Renders the entire snake: body segments, head (eyes), and tail cap.*/
+    method void show_snake(Snake snake) {
+        var int i;
+        var Array x, y, dir; // snake segments
+        var int hx, hy; // head coordinates
+        var int tx, ty; // tail coordinates
+        var int mid,length,quar; // middle of the segment
+
+        do Screen.setColor(true);
+        let x = snake.getX();
+        let y = snake.getY();
+        let dir = snake.getDir();
+        let length = snake.getLength();
+        let mid = tileSize / 2;
+        let quar = tileSize / 4;
+        do draw_snake_body(x, y, dir, length, mid, quar); // Draw the snake body
+        do draw_snake_head(x[0], y[0], mid, quar, dir[0]); // Draw the snake head
+        do draw_snake_tail(x[length-1], y[length-1], dir[length-1]); // Draw the snake tail
+        return;
+    }
+
+    method void draw_snake_head(int ahx,int ahy,int amid,int aquar ,int adir) {// head coordinates
+        var int hx, hy,mid, quar,dir,s; // head coordinates
+        let hx = pixX(ahx);
+        let hy = pixY(ahy);
+        let mid = amid;
+        let quar = aquar;
+        let dir = adir;
+        let s = tileSize;
+        do Screen.setColor(false); // set color to black
+        do Screen.drawPixel(hx, hy);
+        do Screen.drawPixel(hx, hy+s-1);
+        do Screen.drawPixel(hx+s-1, hy);
+        do Screen.drawPixel(hx+s-1, hy+s-1);
+        if (dir>2) {
+            // direction is left or right
+            do Screen.drawCircle(hx+mid, hy+mid-quar, quar/2);
+            do Screen.drawCircle(hx+mid, hy+mid+quar, quar/2);
+        }
+        else{
+            // direction is up or down
+            do Screen.drawCircle(hx+mid+quar, hy+mid,quar/2);
+            do Screen.drawCircle(hx+mid-quar, hy+mid,quar/2);
+        }
+        return;
+    }
+
+    method void draw_snake_body(Array ax, Array ay, Array adir,int length,int amid,int aquar) {// body coordinates
+        var int i, mid, quar; // middle of the segment
+        var Array x, y, dir; // snake segments
+        var int px, py, px1, py1; // pixel coords
+        let mid = amid;
+        let quar = aquar;
+        let x = ax;
+        let y = ay;
+        let dir = adir;
+        let i = 0;
+        while (i < length) {
+            let px = pixX(x[i]);
+            let py = pixY(y[i]);
+            let px1 = pixX(x[i]+1);
+            let py1 = pixY(y[i]+1);
+            do Screen.setColor(true); 
+            do Screen.drawRectangle(px, py, px1-1, py1-1);
+            if ((i>0)&(i<(length-1))) {
+                // Draw the segment      
+                do Screen.setColor(false);
+                if (dir[i]>2) {
+                    do Screen.drawLine(px+mid-quar, py+mid, px+mid+quar, py+mid);
+                }else {
+                    do Screen.drawLine(px+mid, py+mid-quar, px+mid, py+mid+quar);
+                }
+            }
+            let i = i + 1;
+        }     
+        return;
+    }
+
+    method void draw_snake_tail(int atx,int aty,int adir) {// tail coordinates
+        var int tx, ty,tx1,ty1,dir; // tail coordinates
+        let tx = pixX(atx);
+        let ty = pixY(aty);
+        let tx1 = pixX(atx+1);
+        let ty1 = pixY(aty+1);
+        let dir = adir;
+        // do Output.printInt(i);
+        if (dir=DIR_UP){
+            // direction is up
+            do Screen.drawPixel(tx, ty1-1);
+            do Screen.drawPixel(tx1-1, ty1-1);
+            }
+        if (dir=DIR_DOWN){
+                // direction is down
+                do Screen.drawPixel(tx, ty);
+                do Screen.drawPixel(tx+1, ty);
+                do Screen.drawPixel(tx, ty+1);
+                do Screen.drawPixel(tx1-1, ty);
+                do Screen.drawPixel(tx1-2, ty);
+                do Screen.drawPixel(tx1-1, ty+1);
+            }
+        if (dir=DIR_LEFT){
+                // direction is left
+                do Screen.drawPixel(tx1-1, ty);
+                do Screen.drawPixel(tx1-2, ty);
+                do Screen.drawPixel(tx1-1, ty+1);
+                do Screen.drawPixel(tx1-1, ty1-1);
+                do Screen.drawPixel(tx1-1, ty1-2);
+                do Screen.drawPixel(tx1-2, ty1-1);
+            }       
+        if (dir=DIR_RIGHT){
+                // direction is right
+                do Screen.drawPixel(tx, ty);
+                do Screen.drawPixel(tx+1, ty);
+                do Screen.drawPixel(tx, ty+1);
+                do Screen.drawPixel(tx, ty1-1);
+                do Screen.drawPixel(tx, ty1-2);
+                do Screen.drawPixel(tx+1, ty1-1);
+        }    
+        return;
+    }
+
+    method void hide_snake(Snake snake){
+        var int i;
+        var Array x, y; // head coordinates
+        let x = snake.getX();
+        let y = snake.getY();
+        let i = 0;
+        do Screen.setColor(false);     
+        while (i < snake.getLength()) {
+            do Screen.drawRectangle(pixX(x[i]), pixY(y[i]), pixX(x[i]+1)-1, pixY(y[i]+1)-1);
+            let i = i + 1; // next point
+        }
+        return;
+    }
+
+    /** Draws an X over the head tile to indicate a crash.*/
+    method void show_snake_crash(Snake snake) {
+        var int i;
+        var int hx, hy,s; // head coordinates
+        var int mid; // middle of the segment
+        // Draws the snake head
+        let hx = pixX(snake.getHeadX());
+        let hy = pixY(snake.getHeadY());
+        let s = getTileSize();
+        do Screen.setColor(false); // set color to black
+        do Screen.drawLine(hx, hy, hx+s-1, hy+s-1); // draw the head
+        do Screen.drawLine(hx+s-1, hy, hx, hy+s-1); // draw the head
+        return;
+    }
+
+    /** If head coincides with the rat, grows the snake and respawns the rat. */
+    method void search_rat(Snake snake, Rat rat) {
+        if ((snake.getHeadX() = rat.getX()) & (snake.getHeadY() = rat.getY())) {
+            do snake.eat(); // eat the rat
+            do hide_rat(rat); // hide the rat
+            do rat.recover();
+            while (snake.contains(rat.getX(), rat.getY(), 0)) {
+                do rat.recover();
+            }
+            do show_rat(rat); // show the rat
+            do Output.moveCursor(22,8);
+            do Output.printInt(snake.getLength());
+        }
+        return;
+    }
+
+    /** Shows the rat at its current tile. */
+    method void show_rat(Rat rat) {
+        do Screen.setColor(true);
+        do draw_rat(rat);
+        return;
+    }
+
+    /** Hides the rat by overdrawing it with background color. */
+    method void hide_rat(Rat rat) {
+        do Screen.setColor(false);
+        do draw_rat(rat);
+        return;
+    }
+
+    /** Low-level helper to draw the rat at current coordinates. */
+    method void draw_rat(Rat rat) {
+        var int px, py,s; // rat coordinates
+        let px = pixX(rat.getX());
+        let py = pixY(rat.getY());
+        let s = getTileSize();
+        do Screen.drawCircle(px+(s/2),py+(s/2),(s/2)-1);
+        return;
+    } 
+
+    /** Clears the entire screen (both playfield and HUD). */
+    method void clearAll() { do Screen.clearScreen(); return; }
+
+    /** Deallocates this Board object. No-op for statics. */
+    method void dispose() { do Memory.deAlloc(this); return; }
+}

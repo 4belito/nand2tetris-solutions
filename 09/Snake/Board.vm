@@ -1,0 +1,1122 @@
+function Board.new 2
+    push constant 9
+    call Memory.alloc 1
+    pop pointer 0
+    push argument 0
+    pop this 0
+    push argument 1
+    pop this 1
+    push argument 2
+    pop this 2
+    push constant 1
+    pop static 0
+    push constant 2
+    pop static 1
+    push constant 3
+    pop static 2
+    push constant 4
+    pop static 3
+    push this 0
+    push this 2
+    call Helper.mod 2
+    pop local 0
+    push this 1
+    push this 2
+    call Helper.mod 2
+    pop local 1
+    push local 0
+    push constant 2
+    call Math.divide 2
+    pop this 3
+    push local 0
+    push this 3
+    sub
+    pop this 4
+    push local 1
+    push constant 2
+    call Math.divide 2
+    pop this 5
+    push local 1
+    push this 5
+    sub
+    pop this 6
+    push this 0
+    push this 2
+    call Math.divide 2
+    pop this 7
+    push this 1
+    push this 2
+    call Math.divide 2
+    pop this 8
+    push pointer 0
+    return
+function Board.pixX 0
+    push argument 0
+    pop pointer 0
+    push this 2
+    push argument 1
+    call Math.multiply 2
+    push this 3
+    add
+    return
+function Board.pixY 0
+    push argument 0
+    pop pointer 0
+    push this 2
+    push argument 1
+    call Math.multiply 2
+    push this 5
+    add
+    return
+function Board.getTileSize 0
+    push argument 0
+    pop pointer 0
+    push this 2
+    return
+function Board.pWidth 0
+    push argument 0
+    pop pointer 0
+    push this 0
+    return
+function Board.pHeight 0
+    push argument 0
+    pop pointer 0
+    push this 1
+    return
+function Board.width 0
+    push argument 0
+    pop pointer 0
+    push this 7
+    return
+function Board.height 0
+    push argument 0
+    pop pointer 0
+    push this 8
+    return
+function Board.dirLEFT 0
+    push argument 0
+    pop pointer 0
+    push static 2
+    return
+function Board.dirRIGHT 0
+    push argument 0
+    pop pointer 0
+    push static 3
+    return
+function Board.dirUP 0
+    push argument 0
+    pop pointer 0
+    push static 0
+    return
+function Board.dirDOWN 0
+    push argument 0
+    pop pointer 0
+    push static 1
+    return
+function Board.drawBorder 0
+    push argument 0
+    pop pointer 0
+    push constant 1
+    neg
+    call Screen.setColor 1
+    pop temp 0
+    push this 5
+    push constant 0
+    gt
+    not
+    if-goto Board_1
+    push constant 0
+    push constant 0
+    push this 0
+    push constant 1
+    sub
+    push this 5
+    push constant 1
+    sub
+    call Screen.drawRectangle 4
+    pop temp 0
+    goto Board_0
+label Board_1
+label Board_0
+    push this 6
+    push constant 0
+    gt
+    not
+    if-goto Board_3
+    push constant 0
+    push this 1
+    push this 6
+    sub
+    push this 0
+    push constant 1
+    sub
+    push this 1
+    push constant 1
+    sub
+    call Screen.drawRectangle 4
+    pop temp 0
+    goto Board_2
+label Board_3
+label Board_2
+    push this 3
+    push constant 0
+    gt
+    not
+    if-goto Board_5
+    push constant 0
+    push constant 0
+    push this 3
+    push constant 1
+    sub
+    push this 1
+    push constant 1
+    sub
+    call Screen.drawRectangle 4
+    pop temp 0
+    goto Board_4
+label Board_5
+label Board_4
+    push this 4
+    push constant 0
+    gt
+    not
+    if-goto Board_7
+    push this 0
+    push this 4
+    sub
+    push constant 0
+    push this 0
+    push constant 1
+    sub
+    push this 1
+    push constant 1
+    sub
+    call Screen.drawRectangle 4
+    pop temp 0
+    goto Board_6
+label Board_7
+label Board_6
+    push constant 0
+    push this 1
+    push this 0
+    push constant 1
+    sub
+    push this 1
+    call Screen.drawLine 4
+    pop temp 0
+    push constant 0
+    return
+function Board.printLen 0
+    push argument 0
+    pop pointer 0
+    push constant 22
+    push constant 0
+    call Output.moveCursor 2
+    pop temp 0
+    push constant 8
+    call String.new 1
+    push constant 32
+    call String.appendChar 2
+    push constant 76
+    call String.appendChar 2
+    push constant 101
+    call String.appendChar 2
+    push constant 110
+    call String.appendChar 2
+    push constant 103
+    call String.appendChar 2
+    push constant 116
+    call String.appendChar 2
+    push constant 104
+    call String.appendChar 2
+    push constant 58
+    call String.appendChar 2
+    call Output.printString 1
+    pop temp 0
+    push argument 1
+    call Output.printInt 1
+    pop temp 0
+    push constant 0
+    return
+function Board.printLevel 0
+    push argument 0
+    pop pointer 0
+    push constant 22
+    push constant 28
+    call Output.moveCursor 2
+    pop temp 0
+    push constant 7
+    call String.new 1
+    push constant 32
+    call String.appendChar 2
+    push constant 76
+    call String.appendChar 2
+    push constant 101
+    call String.appendChar 2
+    push constant 118
+    call String.appendChar 2
+    push constant 101
+    call String.appendChar 2
+    push constant 108
+    call String.appendChar 2
+    push constant 58
+    call String.appendChar 2
+    call Output.printString 1
+    pop temp 0
+    push argument 1
+    call Output.printInt 1
+    pop temp 0
+    push constant 0
+    return
+function Board.printGoal 0
+    push argument 0
+    pop pointer 0
+    push constant 22
+    push constant 53
+    call Output.moveCursor 2
+    pop temp 0
+    push constant 8
+    call String.new 1
+    push constant 32
+    call String.appendChar 2
+    push constant 84
+    call String.appendChar 2
+    push constant 97
+    call String.appendChar 2
+    push constant 114
+    call String.appendChar 2
+    push constant 103
+    call String.appendChar 2
+    push constant 101
+    call String.appendChar 2
+    push constant 116
+    call String.appendChar 2
+    push constant 58
+    call String.appendChar 2
+    call Output.printString 1
+    pop temp 0
+    push argument 1
+    call Output.printInt 1
+    pop temp 0
+    push constant 0
+    return
+function Board.draw 0
+    push argument 0
+    pop pointer 0
+    call Screen.clearScreen 0
+    pop temp 0
+    push constant 1
+    neg
+    call Screen.setColor 1
+    pop temp 0
+    push constant 0
+    push this 1
+    push constant 1
+    sub
+    push this 0
+    push constant 1
+    sub
+    push this 1
+    push constant 1
+    sub
+    call Screen.drawLine 4
+    pop temp 0
+    push pointer 0
+    push argument 2
+    call Snake.getLength 1
+    call Board.printLen 2
+    pop temp 0
+    push pointer 0
+    push argument 1
+    call Board.printLevel 2
+    pop temp 0
+    push pointer 0
+    push argument 2
+    call Snake.getMaxLength 1
+    call Board.printGoal 2
+    pop temp 0
+    push pointer 0
+    call Board.drawBorder 1
+    pop temp 0
+    push constant 0
+    return
+function Board.show_snake 11
+    push argument 0
+    pop pointer 0
+    push constant 1
+    neg
+    call Screen.setColor 1
+    pop temp 0
+    push argument 1
+    call Snake.getX 1
+    pop local 1
+    push argument 1
+    call Snake.getY 1
+    pop local 2
+    push argument 1
+    call Snake.getDir 1
+    pop local 3
+    push argument 1
+    call Snake.getLength 1
+    pop local 9
+    push this 2
+    push constant 2
+    call Math.divide 2
+    pop local 8
+    push this 2
+    push constant 4
+    call Math.divide 2
+    pop local 10
+    push pointer 0
+    push local 1
+    push local 2
+    push local 3
+    push local 9
+    push local 8
+    push local 10
+    call Board.draw_snake_body 7
+    pop temp 0
+    push pointer 0
+    push constant 0
+    push local 1
+    add
+    pop pointer 1
+    push that 0
+    push constant 0
+    push local 2
+    add
+    pop pointer 1
+    push that 0
+    push local 8
+    push local 10
+    push constant 0
+    push local 3
+    add
+    pop pointer 1
+    push that 0
+    call Board.draw_snake_head 6
+    pop temp 0
+    push pointer 0
+    push local 9
+    push constant 1
+    sub
+    push local 1
+    add
+    pop pointer 1
+    push that 0
+    push local 9
+    push constant 1
+    sub
+    push local 2
+    add
+    pop pointer 1
+    push that 0
+    push local 9
+    push constant 1
+    sub
+    push local 3
+    add
+    pop pointer 1
+    push that 0
+    call Board.draw_snake_tail 4
+    pop temp 0
+    push constant 0
+    return
+function Board.draw_snake_head 6
+    push argument 0
+    pop pointer 0
+    push pointer 0
+    push argument 1
+    call Board.pixX 2
+    pop local 0
+    push pointer 0
+    push argument 2
+    call Board.pixY 2
+    pop local 1
+    push argument 3
+    pop local 2
+    push argument 4
+    pop local 3
+    push argument 5
+    pop local 4
+    push this 2
+    pop local 5
+    push constant 0
+    call Screen.setColor 1
+    pop temp 0
+    push local 0
+    push local 1
+    call Screen.drawPixel 2
+    pop temp 0
+    push local 0
+    push local 1
+    push local 5
+    add
+    push constant 1
+    sub
+    call Screen.drawPixel 2
+    pop temp 0
+    push local 0
+    push local 5
+    add
+    push constant 1
+    sub
+    push local 1
+    call Screen.drawPixel 2
+    pop temp 0
+    push local 0
+    push local 5
+    add
+    push constant 1
+    sub
+    push local 1
+    push local 5
+    add
+    push constant 1
+    sub
+    call Screen.drawPixel 2
+    pop temp 0
+    push local 4
+    push constant 2
+    gt
+    not
+    if-goto Board_9
+    push local 0
+    push local 2
+    add
+    push local 1
+    push local 2
+    add
+    push local 3
+    sub
+    push local 3
+    push constant 2
+    call Math.divide 2
+    call Screen.drawCircle 3
+    pop temp 0
+    push local 0
+    push local 2
+    add
+    push local 1
+    push local 2
+    add
+    push local 3
+    add
+    push local 3
+    push constant 2
+    call Math.divide 2
+    call Screen.drawCircle 3
+    pop temp 0
+    goto Board_8
+label Board_9
+    push local 0
+    push local 2
+    add
+    push local 3
+    add
+    push local 1
+    push local 2
+    add
+    push local 3
+    push constant 2
+    call Math.divide 2
+    call Screen.drawCircle 3
+    pop temp 0
+    push local 0
+    push local 2
+    add
+    push local 3
+    sub
+    push local 1
+    push local 2
+    add
+    push local 3
+    push constant 2
+    call Math.divide 2
+    call Screen.drawCircle 3
+    pop temp 0
+label Board_8
+    push constant 0
+    return
+function Board.draw_snake_body 10
+    push argument 0
+    pop pointer 0
+    push argument 5
+    pop local 1
+    push argument 6
+    pop local 2
+    push argument 1
+    pop local 3
+    push argument 2
+    pop local 4
+    push argument 3
+    pop local 5
+    push constant 0
+    pop local 0
+label Board_10
+    push local 0
+    push argument 4
+    lt
+    not
+    if-goto Board_11
+    push pointer 0
+    push local 0
+    push local 3
+    add
+    pop pointer 1
+    push that 0
+    call Board.pixX 2
+    pop local 6
+    push pointer 0
+    push local 0
+    push local 4
+    add
+    pop pointer 1
+    push that 0
+    call Board.pixY 2
+    pop local 7
+    push pointer 0
+    push local 0
+    push local 3
+    add
+    pop pointer 1
+    push that 0
+    push constant 1
+    add
+    call Board.pixX 2
+    pop local 8
+    push pointer 0
+    push local 0
+    push local 4
+    add
+    pop pointer 1
+    push that 0
+    push constant 1
+    add
+    call Board.pixY 2
+    pop local 9
+    push constant 1
+    neg
+    call Screen.setColor 1
+    pop temp 0
+    push local 6
+    push local 7
+    push local 8
+    push constant 1
+    sub
+    push local 9
+    push constant 1
+    sub
+    call Screen.drawRectangle 4
+    pop temp 0
+    push local 0
+    push constant 0
+    gt
+    push local 0
+    push argument 4
+    push constant 1
+    sub
+    lt
+    and
+    not
+    if-goto Board_13
+    push constant 0
+    call Screen.setColor 1
+    pop temp 0
+    push local 0
+    push local 5
+    add
+    pop pointer 1
+    push that 0
+    push constant 2
+    gt
+    not
+    if-goto Board_15
+    push local 6
+    push local 1
+    add
+    push local 2
+    sub
+    push local 7
+    push local 1
+    add
+    push local 6
+    push local 1
+    add
+    push local 2
+    add
+    push local 7
+    push local 1
+    add
+    call Screen.drawLine 4
+    pop temp 0
+    goto Board_14
+label Board_15
+    push local 6
+    push local 1
+    add
+    push local 7
+    push local 1
+    add
+    push local 2
+    sub
+    push local 6
+    push local 1
+    add
+    push local 7
+    push local 1
+    add
+    push local 2
+    add
+    call Screen.drawLine 4
+    pop temp 0
+label Board_14
+    goto Board_12
+label Board_13
+label Board_12
+    push local 0
+    push constant 1
+    add
+    pop local 0
+    goto Board_10
+label Board_11
+    push constant 0
+    return
+function Board.draw_snake_tail 5
+    push argument 0
+    pop pointer 0
+    push pointer 0
+    push argument 1
+    call Board.pixX 2
+    pop local 0
+    push pointer 0
+    push argument 2
+    call Board.pixY 2
+    pop local 1
+    push pointer 0
+    push argument 1
+    push constant 1
+    add
+    call Board.pixX 2
+    pop local 2
+    push pointer 0
+    push argument 2
+    push constant 1
+    add
+    call Board.pixY 2
+    pop local 3
+    push argument 3
+    pop local 4
+    push local 4
+    push static 0
+    eq
+    not
+    if-goto Board_17
+    push local 0
+    push local 3
+    push constant 1
+    sub
+    call Screen.drawPixel 2
+    pop temp 0
+    push local 2
+    push constant 1
+    sub
+    push local 3
+    push constant 1
+    sub
+    call Screen.drawPixel 2
+    pop temp 0
+    goto Board_16
+label Board_17
+label Board_16
+    push local 4
+    push static 1
+    eq
+    not
+    if-goto Board_19
+    push local 0
+    push local 1
+    call Screen.drawPixel 2
+    pop temp 0
+    push local 0
+    push constant 1
+    add
+    push local 1
+    call Screen.drawPixel 2
+    pop temp 0
+    push local 0
+    push local 1
+    push constant 1
+    add
+    call Screen.drawPixel 2
+    pop temp 0
+    push local 2
+    push constant 1
+    sub
+    push local 1
+    call Screen.drawPixel 2
+    pop temp 0
+    push local 2
+    push constant 2
+    sub
+    push local 1
+    call Screen.drawPixel 2
+    pop temp 0
+    push local 2
+    push constant 1
+    sub
+    push local 1
+    push constant 1
+    add
+    call Screen.drawPixel 2
+    pop temp 0
+    goto Board_18
+label Board_19
+label Board_18
+    push local 4
+    push static 2
+    eq
+    not
+    if-goto Board_21
+    push local 2
+    push constant 1
+    sub
+    push local 1
+    call Screen.drawPixel 2
+    pop temp 0
+    push local 2
+    push constant 2
+    sub
+    push local 1
+    call Screen.drawPixel 2
+    pop temp 0
+    push local 2
+    push constant 1
+    sub
+    push local 1
+    push constant 1
+    add
+    call Screen.drawPixel 2
+    pop temp 0
+    push local 2
+    push constant 1
+    sub
+    push local 3
+    push constant 1
+    sub
+    call Screen.drawPixel 2
+    pop temp 0
+    push local 2
+    push constant 1
+    sub
+    push local 3
+    push constant 2
+    sub
+    call Screen.drawPixel 2
+    pop temp 0
+    push local 2
+    push constant 2
+    sub
+    push local 3
+    push constant 1
+    sub
+    call Screen.drawPixel 2
+    pop temp 0
+    goto Board_20
+label Board_21
+label Board_20
+    push local 4
+    push static 3
+    eq
+    not
+    if-goto Board_23
+    push local 0
+    push local 1
+    call Screen.drawPixel 2
+    pop temp 0
+    push local 0
+    push constant 1
+    add
+    push local 1
+    call Screen.drawPixel 2
+    pop temp 0
+    push local 0
+    push local 1
+    push constant 1
+    add
+    call Screen.drawPixel 2
+    pop temp 0
+    push local 0
+    push local 3
+    push constant 1
+    sub
+    call Screen.drawPixel 2
+    pop temp 0
+    push local 0
+    push local 3
+    push constant 2
+    sub
+    call Screen.drawPixel 2
+    pop temp 0
+    push local 0
+    push constant 1
+    add
+    push local 3
+    push constant 1
+    sub
+    call Screen.drawPixel 2
+    pop temp 0
+    goto Board_22
+label Board_23
+label Board_22
+    push constant 0
+    return
+function Board.hide_snake 3
+    push argument 0
+    pop pointer 0
+    push argument 1
+    call Snake.getX 1
+    pop local 1
+    push argument 1
+    call Snake.getY 1
+    pop local 2
+    push constant 0
+    pop local 0
+    push constant 0
+    call Screen.setColor 1
+    pop temp 0
+label Board_24
+    push local 0
+    push argument 1
+    call Snake.getLength 1
+    lt
+    not
+    if-goto Board_25
+    push pointer 0
+    push local 0
+    push local 1
+    add
+    pop pointer 1
+    push that 0
+    call Board.pixX 2
+    push pointer 0
+    push local 0
+    push local 2
+    add
+    pop pointer 1
+    push that 0
+    call Board.pixY 2
+    push pointer 0
+    push local 0
+    push local 1
+    add
+    pop pointer 1
+    push that 0
+    push constant 1
+    add
+    call Board.pixX 2
+    push constant 1
+    sub
+    push pointer 0
+    push local 0
+    push local 2
+    add
+    pop pointer 1
+    push that 0
+    push constant 1
+    add
+    call Board.pixY 2
+    push constant 1
+    sub
+    call Screen.drawRectangle 4
+    pop temp 0
+    push local 0
+    push constant 1
+    add
+    pop local 0
+    goto Board_24
+label Board_25
+    push constant 0
+    return
+function Board.show_snake_crash 5
+    push argument 0
+    pop pointer 0
+    push pointer 0
+    push argument 1
+    call Snake.getHeadX 1
+    call Board.pixX 2
+    pop local 1
+    push pointer 0
+    push argument 1
+    call Snake.getHeadY 1
+    call Board.pixY 2
+    pop local 2
+    push pointer 0
+    call Board.getTileSize 1
+    pop local 3
+    push constant 0
+    call Screen.setColor 1
+    pop temp 0
+    push local 1
+    push local 2
+    push local 1
+    push local 3
+    add
+    push constant 1
+    sub
+    push local 2
+    push local 3
+    add
+    push constant 1
+    sub
+    call Screen.drawLine 4
+    pop temp 0
+    push local 1
+    push local 3
+    add
+    push constant 1
+    sub
+    push local 2
+    push local 1
+    push local 2
+    push local 3
+    add
+    push constant 1
+    sub
+    call Screen.drawLine 4
+    pop temp 0
+    push constant 0
+    return
+function Board.search_rat 0
+    push argument 0
+    pop pointer 0
+    push argument 1
+    call Snake.getHeadX 1
+    push argument 2
+    call Rat.getX 1
+    eq
+    push argument 1
+    call Snake.getHeadY 1
+    push argument 2
+    call Rat.getY 1
+    eq
+    and
+    not
+    if-goto Board_27
+    push argument 1
+    call Snake.eat 1
+    pop temp 0
+    push pointer 0
+    push argument 2
+    call Board.hide_rat 2
+    pop temp 0
+    push argument 2
+    call Rat.recover 1
+    pop temp 0
+label Board_28
+    push argument 1
+    push argument 2
+    call Rat.getX 1
+    push argument 2
+    call Rat.getY 1
+    push constant 0
+    call Snake.contains 4
+    not
+    if-goto Board_29
+    push argument 2
+    call Rat.recover 1
+    pop temp 0
+    goto Board_28
+label Board_29
+    push pointer 0
+    push argument 2
+    call Board.show_rat 2
+    pop temp 0
+    push constant 22
+    push constant 8
+    call Output.moveCursor 2
+    pop temp 0
+    push argument 1
+    call Snake.getLength 1
+    call Output.printInt 1
+    pop temp 0
+    goto Board_26
+label Board_27
+label Board_26
+    push constant 0
+    return
+function Board.show_rat 0
+    push argument 0
+    pop pointer 0
+    push constant 1
+    neg
+    call Screen.setColor 1
+    pop temp 0
+    push pointer 0
+    push argument 1
+    call Board.draw_rat 2
+    pop temp 0
+    push constant 0
+    return
+function Board.hide_rat 0
+    push argument 0
+    pop pointer 0
+    push constant 0
+    call Screen.setColor 1
+    pop temp 0
+    push pointer 0
+    push argument 1
+    call Board.draw_rat 2
+    pop temp 0
+    push constant 0
+    return
+function Board.draw_rat 3
+    push argument 0
+    pop pointer 0
+    push pointer 0
+    push argument 1
+    call Rat.getX 1
+    call Board.pixX 2
+    pop local 0
+    push pointer 0
+    push argument 1
+    call Rat.getY 1
+    call Board.pixY 2
+    pop local 1
+    push pointer 0
+    call Board.getTileSize 1
+    pop local 2
+    push local 0
+    push local 2
+    push constant 2
+    call Math.divide 2
+    add
+    push local 1
+    push local 2
+    push constant 2
+    call Math.divide 2
+    add
+    push local 2
+    push constant 2
+    call Math.divide 2
+    push constant 1
+    sub
+    call Screen.drawCircle 3
+    pop temp 0
+    push constant 0
+    return
+function Board.clearAll 0
+    push argument 0
+    pop pointer 0
+    call Screen.clearScreen 0
+    pop temp 0
+    push constant 0
+    return
+function Board.dispose 0
+    push argument 0
+    pop pointer 0
+    push pointer 0
+    call Memory.deAlloc 1
+    pop temp 0
+    push constant 0
+    return

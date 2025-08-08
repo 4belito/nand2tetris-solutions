@@ -1,107 +1,14 @@
-function Main.main 6
+function Main.main 1
     push constant 5
-    pop local 1
-    push constant 20
-    pop local 2
+    push constant 10
     push constant 0
-    pop local 3
-    push constant 1
-    pop local 4
-    push constant 0
-    pop local 5
-label Main_0
-    push local 5
-    push constant 0
-    eq
-    push local 4
-    push constant 6
-    lt
-    and
-    not
-    if-goto Main_1
-    call SnakeGame.printInstructions 0
-    pop temp 0
-label Main_2
-    push local 5
-    push constant 32
-    eq
-    push local 5
-    push constant 113
-    eq
-    or
-    not
-    not
-    if-goto Main_3
-    call Keyboard.keyPressed 0
-    pop local 5
-    push local 3
-    push constant 511
-    gt
-    not
-    if-goto Main_5
-    push constant 0
-    pop local 3
-    goto Main_4
-label Main_5
-    push local 3
-    push constant 1
-    add
-    pop local 3
-label Main_4
-    goto Main_2
-label Main_3
-    push local 5
-    push constant 32
-    eq
-    not
-    if-goto Main_7
-    push local 1
-    push local 2
-    push local 4
-    push local 3
-    call SnakeGame.new 4
+    call SnakeGame.new 3
     pop local 0
     push local 0
-    call SnakeGame.run 1
-    pop temp 0
-    push local 0
-    call SnakeGame.getState 1
-    push constant 1
-    eq
-    push local 4
-    push constant 6
-    lt
-    and
-    not
-    if-goto Main_9
-    push local 4
-    push constant 1
-    add
-    pop local 4
-    goto Main_8
-label Main_9
-label Main_8
-    push constant 0
-    pop local 5
-    goto Main_6
-label Main_7
-label Main_6
-    push local 5
-    push constant 113
-    eq
-    not
-    if-goto Main_11
-    call Screen.clearScreen 0
+    call SnakeGame.runAllLevels 1
     pop temp 0
     push local 0
     call SnakeGame.dispose 1
     pop temp 0
-    push constant 0
-    return
-    goto Main_10
-label Main_11
-label Main_10
-    goto Main_0
-label Main_1
     push constant 0
     return

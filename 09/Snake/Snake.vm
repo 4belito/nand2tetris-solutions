@@ -47,10 +47,10 @@ label Snake_1
 label Snake_0
     push constant 0
     return
-function Snake.selfCollision 1
+function Snake.contains 1
     push argument 0
     pop pointer 0
-    push constant 1
+    push argument 3
     pop local 0
 label Snake_2
     push local 0
@@ -58,27 +58,19 @@ label Snake_2
     lt
     not
     if-goto Snake_3
-    push constant 0
-    push this 0
-    add
-    pop pointer 1
-    push that 0
     push local 0
     push this 0
     add
     pop pointer 1
     push that 0
+    push argument 1
     eq
-    push constant 0
-    push this 1
-    add
-    pop pointer 1
-    push that 0
     push local 0
     push this 1
     add
     pop pointer 1
     push that 0
+    push argument 2
     eq
     and
     not
@@ -96,6 +88,23 @@ label Snake_4
     goto Snake_2
 label Snake_3
     push constant 0
+    return
+function Snake.selfCollision 0
+    push argument 0
+    pop pointer 0
+    push pointer 0
+    push constant 0
+    push this 0
+    add
+    pop pointer 1
+    push that 0
+    push constant 0
+    push this 1
+    add
+    pop pointer 1
+    push that 0
+    push constant 1
+    call Snake.contains 4
     return
 function Snake.getX 0
     push argument 0
@@ -143,6 +152,11 @@ function Snake.getLength 0
     push argument 0
     pop pointer 0
     push this 3
+    return
+function Snake.getMaxLength 0
+    push argument 0
+    pop pointer 0
+    push this 4
     return
 function Snake.eat 4
     push argument 0
@@ -289,4 +303,63 @@ label Snake_9
     push temp 0
     pop that 0
     push constant 0
+    return
+function Snake.new_default 4
+    push argument 1
+    call Array.new 1
+    pop local 0
+    push argument 1
+    call Array.new 1
+    pop local 1
+    push argument 1
+    call Array.new 1
+    pop local 2
+    push constant 0
+    pop local 3
+label Snake_10
+    push local 3
+    push argument 0
+    lt
+    not
+    if-goto Snake_11
+    push local 3
+    push local 0
+    add
+    push argument 0
+    push constant 1
+    sub
+    push local 3
+    sub
+    pop temp 0
+    pop pointer 1
+    push temp 0
+    pop that 0
+    push local 3
+    push local 1
+    add
+    push constant 0
+    pop temp 0
+    pop pointer 1
+    push temp 0
+    pop that 0
+    push local 3
+    push local 2
+    add
+    push constant 4
+    pop temp 0
+    pop pointer 1
+    push temp 0
+    pop that 0
+    push local 3
+    push constant 1
+    add
+    pop local 3
+    goto Snake_10
+label Snake_11
+    push local 0
+    push local 1
+    push local 2
+    push argument 0
+    push argument 1
+    call Snake.new 5
     return

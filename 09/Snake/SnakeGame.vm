@@ -1,106 +1,386 @@
-function SnakeGame.new 5
-    push constant 6
+function SnakeGame.new 0
+    push constant 9
     call Memory.alloc 1
     pop pointer 0
-    push constant 512
-    pop static 0
-    push constant 239
-    pop static 1
-    push constant 19
-    pop static 2
-    push argument 1
-    pop this 2
-    push argument 0
-    pop local 3
-    push argument 3
-    pop static 9
     push argument 2
     pop this 0
-    push pointer 0
-    push this 0
-    call SnakeGame.getDelay 2
-    pop this 1
-    push pointer 0
-    call SnakeGame.configure_board 1
-    pop temp 0
-    push this 2
-    call Array.new 1
-    pop local 0
-    push this 2
-    call Array.new 1
-    pop local 1
-    push this 2
-    call Array.new 1
-    pop local 2
-    push constant 0
-    pop local 4
-label SnakeGame_0
-    push local 4
-    push local 3
-    lt
-    not
-    if-goto SnakeGame_1
-    push local 4
-    push local 0
-    add
-    push local 3
-    push constant 1
-    sub
-    push local 4
-    sub
-    pop temp 0
-    pop pointer 1
-    push temp 0
-    pop that 0
-    push local 4
-    push local 1
-    add
-    push constant 0
-    pop temp 0
-    pop pointer 1
-    push temp 0
-    pop that 0
-    push local 4
-    push local 2
-    add
-    push constant 4
-    pop temp 0
-    pop pointer 1
-    push temp 0
-    pop that 0
-    push local 4
-    push constant 1
-    add
-    pop local 4
-    goto SnakeGame_0
-label SnakeGame_1
-    push local 0
-    push local 1
-    push local 2
-    push local 3
-    push this 2
-    call Snake.new 5
+    push argument 0
     pop this 3
-    push static 9
-    push static 7
-    push static 8
-    call Rat.new 3
+    push argument 1
     pop this 4
     push pointer 0
-    call SnakeGame.draw_board 1
+    push constant 1
+    call SnakeGame.setLevel 2
     pop temp 0
     push pointer 0
-    call SnakeGame.show_snake 1
+    call SnakeGame.reset 1
     pop temp 0
     push pointer 0
-    call SnakeGame.show_rat 1
+    return
+function SnakeGame.setLevel 0
+    push argument 0
+    pop pointer 0
+    push argument 1
+    pop this 1
+    push pointer 0
+    push this 1
+    call SnakeGame.getDelay 2
+    pop this 2
+    push constant 0
+    return
+function SnakeGame.reset 0
+    push argument 0
+    pop pointer 0
+    push constant 0
+    pop this 8
+    push constant 512
+    push constant 239
+    push constant 19
+    call Board.new 3
+    pop this 5
+    push this 3
+    push this 4
+    call Snake.new_default 2
+    pop this 6
+    push this 0
+    push this 5
+    call Board.width 1
+    push this 5
+    call Board.height 1
+    call Rat.new 3
+    pop this 7
+    push constant 0
+    return
+function SnakeGame.show 0
+    push argument 0
+    pop pointer 0
+    push this 5
+    push this 1
+    push this 6
+    call Board.draw 3
+    pop temp 0
+    push this 5
+    push this 6
+    call Board.show_snake 2
+    pop temp 0
+    push this 5
+    push this 7
+    call Board.show_rat 2
+    pop temp 0
+    push constant 0
+    return
+function SnakeGame.runAllLevels 1
+    push argument 0
+    pop pointer 0
+    push constant 0
+    pop local 0
+label SnakeGame_0
+    push local 0
+    push constant 0
+    eq
+    push this 1
+    push constant 6
+    lt
+    and
+    not
+    if-goto SnakeGame_1
+    push pointer 0
+    call SnakeGame.printInstructions 1
+    pop temp 0
+label SnakeGame_2
+    push local 0
+    push constant 32
+    eq
+    push local 0
+    push constant 113
+    eq
+    or
+    not
+    not
+    if-goto SnakeGame_3
+    call Keyboard.keyPressed 0
+    pop local 0
+    push this 0
+    push constant 511
+    gt
+    not
+    if-goto SnakeGame_5
+    push constant 0
+    pop this 0
+    goto SnakeGame_4
+label SnakeGame_5
+    push this 0
+    push constant 1
+    add
+    pop this 0
+label SnakeGame_4
+    goto SnakeGame_2
+label SnakeGame_3
+    push local 0
+    push constant 32
+    eq
+    not
+    if-goto SnakeGame_7
+    push this 5
+    call Board.clearAll 1
     pop temp 0
     push pointer 0
+    call SnakeGame.run 1
+    pop temp 0
+    push this 8
+    push constant 1
+    eq
+    not
+    if-goto SnakeGame_9
+    push pointer 0
+    push this 1
+    push constant 1
+    add
+    call SnakeGame.setLevel 2
+    pop temp 0
+    goto SnakeGame_8
+label SnakeGame_9
+label SnakeGame_8
+    push constant 0
+    pop local 0
+    goto SnakeGame_6
+label SnakeGame_7
+label SnakeGame_6
+    push local 0
+    push constant 113
+    eq
+    not
+    if-goto SnakeGame_11
+    push constant 0
+    return
+    goto SnakeGame_10
+label SnakeGame_11
+label SnakeGame_10
+    push pointer 0
+    call SnakeGame.reset 1
+    pop temp 0
+    goto SnakeGame_0
+label SnakeGame_1
+    push constant 0
+    return
+function SnakeGame.run 1
+    push argument 0
+    pop pointer 0
+    push pointer 0
+    call SnakeGame.show 1
+    pop temp 0
+label SnakeGame_12
+    push this 8
+    push constant 0
+    eq
+    not
+    if-goto SnakeGame_13
+label SnakeGame_14
+    push local 0
+    push constant 0
+    eq
+    push this 8
+    push constant 0
+    eq
+    and
+    not
+    if-goto SnakeGame_15
+    call Keyboard.keyPressed 0
+    pop local 0
+    push pointer 0
+    call SnakeGame.move_snake 1
+    pop temp 0
+    goto SnakeGame_14
+label SnakeGame_15
+    push local 0
+    push constant 113
+    eq
+    not
+    if-goto SnakeGame_17
+    push constant 3
+    pop this 8
+    goto SnakeGame_16
+label SnakeGame_17
+label SnakeGame_16
+    push local 0
+    push constant 131
+    eq
+    not
+    if-goto SnakeGame_19
+    push this 6
+    push this 5
+    call Board.dirUP 1
+    call Snake.setDir 2
+    pop temp 0
+    goto SnakeGame_18
+label SnakeGame_19
+label SnakeGame_18
+    push local 0
+    push constant 133
+    eq
+    not
+    if-goto SnakeGame_21
+    push this 6
+    push this 5
+    call Board.dirDOWN 1
+    call Snake.setDir 2
+    pop temp 0
+    goto SnakeGame_20
+label SnakeGame_21
+label SnakeGame_20
+    push local 0
+    push constant 130
+    eq
+    not
+    if-goto SnakeGame_23
+    push this 6
+    push this 5
+    call Board.dirLEFT 1
+    call Snake.setDir 2
+    pop temp 0
+    goto SnakeGame_22
+label SnakeGame_23
+label SnakeGame_22
+    push local 0
+    push constant 132
+    eq
+    not
+    if-goto SnakeGame_25
+    push this 6
+    push this 5
+    call Board.dirRIGHT 1
+    call Snake.setDir 2
+    pop temp 0
+    goto SnakeGame_24
+label SnakeGame_25
+label SnakeGame_24
+label SnakeGame_26
+    push local 0
+    push constant 0
+    eq
+    not
+    push this 8
+    push constant 0
+    eq
+    and
+    not
+    if-goto SnakeGame_27
+    call Keyboard.keyPressed 0
+    pop local 0
+    push pointer 0
+    call SnakeGame.move_snake 1
+    pop temp 0
+    goto SnakeGame_26
+label SnakeGame_27
+    push this 6
+    call Snake.getLength 1
+    push this 6
+    call Snake.getMaxLength 1
+    eq
+    not
+    if-goto SnakeGame_29
+    push constant 1
+    pop this 8
+    goto SnakeGame_28
+label SnakeGame_29
+label SnakeGame_28
+    goto SnakeGame_12
+label SnakeGame_13
+    push this 8
+    push constant 2
+    eq
+    not
+    if-goto SnakeGame_31
+    push pointer 0
+    call SnakeGame.print_lose 1
+    pop temp 0
+    goto SnakeGame_30
+label SnakeGame_31
+label SnakeGame_30
+    push this 8
+    push constant 1
+    eq
+    not
+    if-goto SnakeGame_33
+    push pointer 0
+    call SnakeGame.print_win 1
+    pop temp 0
+    goto SnakeGame_32
+label SnakeGame_33
+label SnakeGame_32
+    push constant 2000
+    call Sys.wait 1
+    pop temp 0
+    push constant 0
+    return
+function SnakeGame.print_lose 0
+    push argument 0
+    pop pointer 0
+    push this 5
+    push this 6
+    call Board.show_snake_crash 2
+    pop temp 0
+    push constant 10
+    push constant 27
+    call Output.moveCursor 2
+    pop temp 0
+    push constant 9
+    call String.new 1
+    push constant 71
+    call String.appendChar 2
+    push constant 97
+    call String.appendChar 2
+    push constant 109
+    call String.appendChar 2
+    push constant 101
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 79
+    call String.appendChar 2
+    push constant 118
+    call String.appendChar 2
+    push constant 101
+    call String.appendChar 2
+    push constant 114
+    call String.appendChar 2
+    call Output.printString 1
+    pop temp 0
+    push constant 0
+    return
+function SnakeGame.print_win 0
+    push argument 0
+    pop pointer 0
+    push constant 10
+    push constant 27
+    call Output.moveCursor 2
+    pop temp 0
+    push constant 8
+    call String.new 1
+    push constant 89
+    call String.appendChar 2
+    push constant 111
+    call String.appendChar 2
+    push constant 117
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 87
+    call String.appendChar 2
+    push constant 105
+    call String.appendChar 2
+    push constant 110
+    call String.appendChar 2
+    push constant 33
+    call String.appendChar 2
+    call Output.printString 1
+    pop temp 0
+    push constant 0
     return
 function SnakeGame.getState 0
     push argument 0
     pop pointer 0
-    push this 5
+    push this 8
     return
 function SnakeGame.getDelay 0
     push argument 0
@@ -109,55 +389,57 @@ function SnakeGame.getDelay 0
     push constant 1
     eq
     not
-    if-goto SnakeGame_3
+    if-goto SnakeGame_35
     push constant 100
     return
-    goto SnakeGame_2
-label SnakeGame_3
-label SnakeGame_2
+    goto SnakeGame_34
+label SnakeGame_35
+label SnakeGame_34
     push argument 1
     push constant 2
     eq
     not
-    if-goto SnakeGame_5
+    if-goto SnakeGame_37
     push constant 80
     return
-    goto SnakeGame_4
-label SnakeGame_5
-label SnakeGame_4
+    goto SnakeGame_36
+label SnakeGame_37
+label SnakeGame_36
     push argument 1
     push constant 3
     eq
     not
-    if-goto SnakeGame_7
+    if-goto SnakeGame_39
     push constant 60
     return
-    goto SnakeGame_6
-label SnakeGame_7
-label SnakeGame_6
+    goto SnakeGame_38
+label SnakeGame_39
+label SnakeGame_38
     push argument 1
     push constant 4
     eq
     not
-    if-goto SnakeGame_9
+    if-goto SnakeGame_41
     push constant 40
     return
-    goto SnakeGame_8
-label SnakeGame_9
-label SnakeGame_8
+    goto SnakeGame_40
+label SnakeGame_41
+label SnakeGame_40
     push argument 1
     push constant 5
     eq
     not
-    if-goto SnakeGame_11
+    if-goto SnakeGame_43
     push constant 20
     return
-    goto SnakeGame_10
-label SnakeGame_11
-label SnakeGame_10
+    goto SnakeGame_42
+label SnakeGame_43
+label SnakeGame_42
     push constant 0
     return
 function SnakeGame.printInstructions 0
+    push argument 0
+    pop pointer 0
     call Screen.clearScreen 0
     pop temp 0
     push constant 9
@@ -352,1326 +634,144 @@ function SnakeGame.printInstructions 0
     pop temp 0
     push constant 0
     return
-function SnakeGame.configure_board 2
+function SnakeGame.move_snake 5
     push argument 0
     pop pointer 0
-    push static 0
-    push static 2
-    call Helper.mod 2
+    push this 6
+    call Snake.getHeadDir 1
     pop local 0
-    push static 1
-    push static 2
-    call Helper.mod 2
+    push this 6
+    call Snake.getHeadX 1
     pop local 1
+    push this 6
+    call Snake.getHeadY 1
+    pop local 2
     push local 0
-    push constant 2
-    call Math.divide 2
-    pop static 3
+    push this 5
+    call Board.dirUP 1
+    eq
+    not
+    if-goto SnakeGame_45
+    push local 1
+    pop local 3
+    push local 2
+    push constant 1
+    sub
+    pop local 4
+    goto SnakeGame_44
+label SnakeGame_45
+label SnakeGame_44
     push local 0
-    push static 3
-    sub
-    pop static 4
+    push this 5
+    call Board.dirDOWN 1
+    eq
+    not
+    if-goto SnakeGame_47
     push local 1
+    pop local 3
+    push local 2
+    push constant 1
+    add
+    pop local 4
+    goto SnakeGame_46
+label SnakeGame_47
+label SnakeGame_46
+    push local 0
+    push this 5
+    call Board.dirLEFT 1
+    eq
+    not
+    if-goto SnakeGame_49
+    push local 1
+    push constant 1
+    sub
+    pop local 3
+    push local 2
+    pop local 4
+    goto SnakeGame_48
+label SnakeGame_49
+label SnakeGame_48
+    push local 0
+    push this 5
+    call Board.dirRIGHT 1
+    eq
+    not
+    if-goto SnakeGame_51
+    push local 1
+    push constant 1
+    add
+    pop local 3
+    push local 2
+    pop local 4
+    goto SnakeGame_50
+label SnakeGame_51
+label SnakeGame_50
+    push local 3
+    push constant 0
+    lt
+    push local 3
+    push this 5
+    call Board.width 1
+    eq
+    or
+    push local 4
+    push constant 0
+    lt
+    or
+    push local 4
+    push this 5
+    call Board.height 1
+    eq
+    or
+    push this 6
+    call Snake.selfCollision 1
+    or
+    not
+    if-goto SnakeGame_53
     push constant 2
-    call Math.divide 2
-    pop static 5
-    push local 1
-    push static 5
-    sub
-    pop static 6
-    push static 0
-    push static 2
-    call Math.divide 2
-    pop static 7
-    push static 1
-    push static 2
-    call Math.divide 2
-    pop static 8
+    pop this 8
     push constant 0
     return
-function SnakeGame.draw_board 0
-    push argument 0
-    pop pointer 0
-    call Screen.clearScreen 0
+    goto SnakeGame_52
+label SnakeGame_53
+label SnakeGame_52
+    push this 5
+    push this 6
+    call Board.hide_snake 2
     pop temp 0
-    push constant 1
-    neg
-    call Screen.setColor 1
+    push this 6
+    push local 3
+    push local 4
+    call Snake.move 3
     pop temp 0
-    push constant 0
-    push static 1
-    push static 0
-    push constant 1
-    sub
-    push static 1
-    call Screen.drawLine 4
+    push this 5
+    push this 6
+    push this 7
+    call Board.search_rat 3
     pop temp 0
-    push constant 22
-    push constant 0
-    call Output.moveCursor 2
-    pop temp 0
-    push constant 8
-    call String.new 1
-    push constant 32
-    call String.appendChar 2
-    push constant 76
-    call String.appendChar 2
-    push constant 101
-    call String.appendChar 2
-    push constant 110
-    call String.appendChar 2
-    push constant 103
-    call String.appendChar 2
-    push constant 116
-    call String.appendChar 2
-    push constant 104
-    call String.appendChar 2
-    push constant 58
-    call String.appendChar 2
-    call Output.printString 1
-    pop temp 0
-    push this 3
-    call Snake.getLength 1
-    call Output.printInt 1
-    pop temp 0
-    push constant 22
-    push constant 28
-    call Output.moveCursor 2
-    pop temp 0
-    push constant 7
-    call String.new 1
-    push constant 32
-    call String.appendChar 2
-    push constant 76
-    call String.appendChar 2
-    push constant 101
-    call String.appendChar 2
-    push constant 118
-    call String.appendChar 2
-    push constant 101
-    call String.appendChar 2
-    push constant 108
-    call String.appendChar 2
-    push constant 58
-    call String.appendChar 2
-    call Output.printString 1
-    pop temp 0
-    push this 0
-    call Output.printInt 1
-    pop temp 0
-    push constant 22
-    push constant 56
-    call Output.moveCursor 2
-    pop temp 0
-    push constant 5
-    call String.new 1
-    push constant 71
-    call String.appendChar 2
-    push constant 111
-    call String.appendChar 2
-    push constant 97
-    call String.appendChar 2
-    push constant 108
-    call String.appendChar 2
-    push constant 58
-    call String.appendChar 2
-    call Output.printString 1
+    push this 5
+    push this 6
+    call Board.show_snake 2
     pop temp 0
     push this 2
-    call Output.printInt 1
+    call Sys.wait 1
     pop temp 0
-    push pointer 0
-    call SnakeGame.draw_border 1
-    pop temp 0
-    push constant 0
-    return
-function SnakeGame.draw_border 0
-    push argument 0
-    pop pointer 0
-    push constant 1
-    neg
-    call Screen.setColor 1
-    pop temp 0
-    push static 5
-    push constant 0
-    gt
-    not
-    if-goto SnakeGame_13
-    push constant 0
-    push constant 0
-    push static 0
-    push constant 1
-    sub
-    push static 5
-    push constant 1
-    sub
-    call Screen.drawRectangle 4
-    pop temp 0
-    goto SnakeGame_12
-label SnakeGame_13
-label SnakeGame_12
-    push static 6
-    push constant 0
-    gt
-    not
-    if-goto SnakeGame_15
-    push constant 0
-    push static 1
-    push static 6
-    sub
-    push static 0
-    push constant 1
-    sub
-    push static 1
-    push constant 1
-    sub
-    call Screen.drawRectangle 4
-    pop temp 0
-    goto SnakeGame_14
-label SnakeGame_15
-label SnakeGame_14
-    push static 3
-    push constant 0
-    gt
-    not
-    if-goto SnakeGame_17
-    push constant 0
-    push constant 0
-    push static 3
-    push constant 1
-    sub
-    push static 1
-    push constant 1
-    sub
-    call Screen.drawRectangle 4
-    pop temp 0
-    goto SnakeGame_16
-label SnakeGame_17
-label SnakeGame_16
-    push static 4
-    push constant 0
-    gt
-    not
-    if-goto SnakeGame_19
-    push static 0
-    push static 4
-    sub
-    push constant 0
-    push static 0
-    push constant 1
-    sub
-    push static 1
-    push constant 1
-    sub
-    call Screen.drawRectangle 4
-    pop temp 0
-    goto SnakeGame_18
-label SnakeGame_19
-label SnakeGame_18
     push constant 0
     return
 function SnakeGame.dispose 0
     push argument 0
     pop pointer 0
-    push this 3
+    push this 6
     call Snake.dispose 1
     pop temp 0
-    push this 4
+    push this 7
     call Rat.dispose 1
+    pop temp 0
+    push this 5
+    call Board.dispose 1
     pop temp 0
     push pointer 0
     call Memory.deAlloc 1
-    pop temp 0
-    push constant 0
-    return
-function SnakeGame.move_snake 5
-    push argument 0
-    pop pointer 0
-    push this 3
-    call Snake.getHeadDir 1
-    pop local 0
-    push this 3
-    call Snake.getHeadX 1
-    pop local 1
-    push this 3
-    call Snake.getHeadY 1
-    pop local 2
-    push local 0
-    push constant 1
-    eq
-    not
-    if-goto SnakeGame_21
-    push local 1
-    pop local 3
-    push local 2
-    push constant 1
-    sub
-    pop local 4
-    goto SnakeGame_20
-label SnakeGame_21
-label SnakeGame_20
-    push local 0
-    push constant 2
-    eq
-    not
-    if-goto SnakeGame_23
-    push local 1
-    pop local 3
-    push local 2
-    push constant 1
-    add
-    pop local 4
-    goto SnakeGame_22
-label SnakeGame_23
-label SnakeGame_22
-    push local 0
-    push constant 3
-    eq
-    not
-    if-goto SnakeGame_25
-    push local 1
-    push constant 1
-    sub
-    pop local 3
-    push local 2
-    pop local 4
-    goto SnakeGame_24
-label SnakeGame_25
-label SnakeGame_24
-    push local 0
-    push constant 4
-    eq
-    not
-    if-goto SnakeGame_27
-    push local 1
-    push constant 1
-    add
-    pop local 3
-    push local 2
-    pop local 4
-    goto SnakeGame_26
-label SnakeGame_27
-label SnakeGame_26
-    push local 3
-    push constant 0
-    lt
-    push local 3
-    push static 7
-    eq
-    or
-    push local 4
-    push constant 0
-    lt
-    or
-    push local 4
-    push static 8
-    eq
-    or
-    push this 3
-    call Snake.selfCollision 1
-    or
-    not
-    if-goto SnakeGame_29
-    push constant 2
-    pop this 5
-    push constant 0
-    return
-    goto SnakeGame_28
-label SnakeGame_29
-    push pointer 0
-    call SnakeGame.hide_snake 1
-    pop temp 0
-    push this 3
-    push local 3
-    push local 4
-    call Snake.move 3
-    pop temp 0
-    push pointer 0
-    call SnakeGame.search_rat 1
-    pop temp 0
-    push pointer 0
-    call SnakeGame.show_snake 1
-    pop temp 0
-    push this 1
-    call Sys.wait 1
-    pop temp 0
-    push pointer 0
-    call SnakeGame.show_rat 1
-    pop temp 0
-label SnakeGame_28
-    push constant 0
-    return
-function SnakeGame.search_rat 0
-    push argument 0
-    pop pointer 0
-    push this 3
-    call Snake.getHeadX 1
-    push this 4
-    call Rat.getX 1
-    eq
-    push this 3
-    call Snake.getHeadY 1
-    push this 4
-    call Rat.getY 1
-    eq
-    and
-    not
-    if-goto SnakeGame_31
-    push this 3
-    call Snake.eat 1
-    pop temp 0
-    push pointer 0
-    call SnakeGame.hide_rat 1
-    pop temp 0
-    push this 4
-    call Rat.recover 1
-    pop temp 0
-    push constant 22
-    push constant 8
-    call Output.moveCursor 2
-    pop temp 0
-    push this 3
-    call Snake.getLength 1
-    call Output.printInt 1
-    pop temp 0
-    goto SnakeGame_30
-label SnakeGame_31
-label SnakeGame_30
-    push constant 0
-    return
-function SnakeGame.xx 0
-    push argument 0
-    pop pointer 0
-    push static 2
-    push argument 1
-    call Math.multiply 2
-    push static 3
-    add
-    return
-function SnakeGame.yy 0
-    push argument 0
-    pop pointer 0
-    push static 2
-    push argument 1
-    call Math.multiply 2
-    push static 5
-    add
-    return
-function SnakeGame.hide_snake 3
-    push argument 0
-    pop pointer 0
-    push this 3
-    call Snake.getX 1
-    pop local 1
-    push this 3
-    call Snake.getY 1
-    pop local 2
-    push constant 0
-    pop local 0
-    push constant 0
-    call Screen.setColor 1
-    pop temp 0
-label SnakeGame_32
-    push local 0
-    push this 3
-    call Snake.getLength 1
-    lt
-    not
-    if-goto SnakeGame_33
-    push pointer 0
-    push local 0
-    push local 1
-    add
-    pop pointer 1
-    push that 0
-    call SnakeGame.xx 2
-    push pointer 0
-    push local 0
-    push local 2
-    add
-    pop pointer 1
-    push that 0
-    call SnakeGame.yy 2
-    push pointer 0
-    push local 0
-    push local 1
-    add
-    pop pointer 1
-    push that 0
-    push constant 1
-    add
-    call SnakeGame.xx 2
-    push constant 1
-    sub
-    push pointer 0
-    push local 0
-    push local 2
-    add
-    pop pointer 1
-    push that 0
-    push constant 1
-    add
-    call SnakeGame.yy 2
-    push constant 1
-    sub
-    call Screen.drawRectangle 4
-    pop temp 0
-    push local 0
-    push constant 1
-    add
-    pop local 0
-    goto SnakeGame_32
-label SnakeGame_33
-    push constant 0
-    return
-function SnakeGame.show_snake_crash 4
-    push argument 0
-    pop pointer 0
-    push this 3
-    call Snake.getHeadX 1
-    pop local 1
-    push this 3
-    call Snake.getHeadY 1
-    pop local 2
-    push constant 0
-    call Screen.setColor 1
-    pop temp 0
-    push pointer 0
-    push local 1
-    call SnakeGame.xx 2
-    push pointer 0
-    push local 2
-    call SnakeGame.yy 2
-    push pointer 0
-    push local 1
-    call SnakeGame.xx 2
-    push static 2
-    add
-    push constant 1
-    sub
-    push pointer 0
-    push local 2
-    call SnakeGame.yy 2
-    push static 2
-    add
-    push constant 1
-    sub
-    call Screen.drawLine 4
-    pop temp 0
-    push pointer 0
-    push local 1
-    call SnakeGame.xx 2
-    push static 2
-    add
-    push constant 1
-    sub
-    push pointer 0
-    push local 2
-    call SnakeGame.yy 2
-    push pointer 0
-    push local 1
-    call SnakeGame.xx 2
-    push pointer 0
-    push local 2
-    call SnakeGame.yy 2
-    push static 2
-    add
-    push constant 1
-    sub
-    call Screen.drawLine 4
-    pop temp 0
-    push constant 0
-    return
-function SnakeGame.show_snake 11
-    push argument 0
-    pop pointer 0
-    push constant 1
-    neg
-    call Screen.setColor 1
-    pop temp 0
-    push this 3
-    call Snake.getX 1
-    pop local 1
-    push this 3
-    call Snake.getY 1
-    pop local 2
-    push this 3
-    call Snake.getDir 1
-    pop local 3
-    push this 3
-    call Snake.getLength 1
-    pop local 9
-    push static 2
-    push constant 2
-    call Math.divide 2
-    pop local 8
-    push static 2
-    push constant 4
-    call Math.divide 2
-    pop local 10
-    push constant 0
-    pop local 0
-label SnakeGame_34
-    push local 0
-    push local 9
-    lt
-    not
-    if-goto SnakeGame_35
-    push constant 1
-    neg
-    call Screen.setColor 1
-    pop temp 0
-    push pointer 0
-    push local 0
-    push local 1
-    add
-    pop pointer 1
-    push that 0
-    call SnakeGame.xx 2
-    push pointer 0
-    push local 0
-    push local 2
-    add
-    pop pointer 1
-    push that 0
-    call SnakeGame.yy 2
-    push pointer 0
-    push local 0
-    push local 1
-    add
-    pop pointer 1
-    push that 0
-    push constant 1
-    add
-    call SnakeGame.xx 2
-    push constant 1
-    sub
-    push pointer 0
-    push local 0
-    push local 2
-    add
-    pop pointer 1
-    push that 0
-    push constant 1
-    add
-    call SnakeGame.yy 2
-    push constant 1
-    sub
-    call Screen.drawRectangle 4
-    pop temp 0
-    push local 0
-    push constant 0
-    gt
-    push local 0
-    push local 9
-    lt
-    push constant 1
-    sub
-    or
-    not
-    if-goto SnakeGame_37
-    push constant 0
-    call Screen.setColor 1
-    pop temp 0
-    push local 0
-    push local 3
-    add
-    pop pointer 1
-    push that 0
-    push constant 2
-    gt
-    not
-    if-goto SnakeGame_39
-    push pointer 0
-    push local 0
-    push local 1
-    add
-    pop pointer 1
-    push that 0
-    call SnakeGame.xx 2
-    push local 8
-    add
-    push local 10
-    sub
-    push pointer 0
-    push local 0
-    push local 2
-    add
-    pop pointer 1
-    push that 0
-    call SnakeGame.yy 2
-    push local 8
-    add
-    push pointer 0
-    push local 0
-    push local 1
-    add
-    pop pointer 1
-    push that 0
-    call SnakeGame.xx 2
-    push local 8
-    add
-    push local 10
-    add
-    push pointer 0
-    push local 0
-    push local 2
-    add
-    pop pointer 1
-    push that 0
-    call SnakeGame.yy 2
-    push local 8
-    add
-    call Screen.drawLine 4
-    pop temp 0
-    goto SnakeGame_38
-label SnakeGame_39
-    push pointer 0
-    push local 0
-    push local 1
-    add
-    pop pointer 1
-    push that 0
-    call SnakeGame.xx 2
-    push local 8
-    add
-    push pointer 0
-    push local 0
-    push local 2
-    add
-    pop pointer 1
-    push that 0
-    call SnakeGame.yy 2
-    push local 8
-    add
-    push local 10
-    sub
-    push pointer 0
-    push local 0
-    push local 1
-    add
-    pop pointer 1
-    push that 0
-    call SnakeGame.xx 2
-    push local 8
-    add
-    push pointer 0
-    push local 0
-    push local 2
-    add
-    pop pointer 1
-    push that 0
-    call SnakeGame.yy 2
-    push local 8
-    add
-    push local 10
-    add
-    call Screen.drawLine 4
-    pop temp 0
-label SnakeGame_38
-    goto SnakeGame_36
-label SnakeGame_37
-label SnakeGame_36
-    push local 0
-    push constant 1
-    add
-    pop local 0
-    goto SnakeGame_34
-label SnakeGame_35
-    push pointer 0
-    push constant 0
-    push local 1
-    add
-    pop pointer 1
-    push that 0
-    call SnakeGame.xx 2
-    pop local 4
-    push pointer 0
-    push constant 0
-    push local 2
-    add
-    pop pointer 1
-    push that 0
-    call SnakeGame.yy 2
-    pop local 5
-    push constant 0
-    call Screen.setColor 1
-    pop temp 0
-    push local 4
-    push local 5
-    call Screen.drawPixel 2
-    pop temp 0
-    push local 4
-    push local 5
-    push static 2
-    add
-    push constant 1
-    sub
-    call Screen.drawPixel 2
-    pop temp 0
-    push local 4
-    push static 2
-    add
-    push constant 1
-    sub
-    push local 5
-    call Screen.drawPixel 2
-    pop temp 0
-    push local 4
-    push static 2
-    add
-    push constant 1
-    sub
-    push local 5
-    push static 2
-    add
-    push constant 1
-    sub
-    call Screen.drawPixel 2
-    pop temp 0
-    push constant 0
-    push local 3
-    add
-    pop pointer 1
-    push that 0
-    push constant 2
-    gt
-    not
-    if-goto SnakeGame_41
-    push local 4
-    push local 8
-    add
-    push local 5
-    push local 8
-    add
-    push local 10
-    sub
-    push local 10
-    push constant 2
-    call Math.divide 2
-    call Screen.drawCircle 3
-    pop temp 0
-    push local 4
-    push local 8
-    add
-    push local 5
-    push local 8
-    add
-    push local 10
-    add
-    push local 10
-    push constant 2
-    call Math.divide 2
-    call Screen.drawCircle 3
-    pop temp 0
-    goto SnakeGame_40
-label SnakeGame_41
-    push local 4
-    push local 8
-    add
-    push local 10
-    add
-    push local 5
-    push local 8
-    add
-    push local 10
-    push constant 2
-    call Math.divide 2
-    call Screen.drawCircle 3
-    pop temp 0
-    push local 4
-    push local 8
-    add
-    push local 10
-    sub
-    push local 5
-    push local 8
-    add
-    push local 10
-    push constant 2
-    call Math.divide 2
-    call Screen.drawCircle 3
-    pop temp 0
-label SnakeGame_40
-    push local 9
-    push constant 1
-    sub
-    pop local 0
-    push pointer 0
-    push local 0
-    push local 1
-    add
-    pop pointer 1
-    push that 0
-    call SnakeGame.xx 2
-    pop local 6
-    push pointer 0
-    push local 0
-    push local 2
-    add
-    pop pointer 1
-    push that 0
-    call SnakeGame.yy 2
-    pop local 7
-    push local 0
-    push local 3
-    add
-    pop pointer 1
-    push that 0
-    push constant 1
-    eq
-    not
-    if-goto SnakeGame_43
-    push local 6
-    push local 7
-    push static 2
-    add
-    push constant 1
-    sub
-    call Screen.drawPixel 2
-    pop temp 0
-    push local 6
-    push static 2
-    add
-    push constant 1
-    sub
-    push local 7
-    push static 2
-    add
-    push constant 1
-    sub
-    call Screen.drawPixel 2
-    pop temp 0
-    goto SnakeGame_42
-label SnakeGame_43
-label SnakeGame_42
-    push local 0
-    push local 3
-    add
-    pop pointer 1
-    push that 0
-    push constant 2
-    eq
-    not
-    if-goto SnakeGame_45
-    push local 6
-    push local 7
-    call Screen.drawPixel 2
-    pop temp 0
-    push local 6
-    push constant 1
-    add
-    push local 7
-    call Screen.drawPixel 2
-    pop temp 0
-    push local 6
-    push local 7
-    push constant 1
-    add
-    call Screen.drawPixel 2
-    pop temp 0
-    push local 6
-    push static 2
-    add
-    push constant 1
-    sub
-    push local 7
-    call Screen.drawPixel 2
-    pop temp 0
-    push local 6
-    push static 2
-    add
-    push constant 2
-    sub
-    push local 7
-    call Screen.drawPixel 2
-    pop temp 0
-    push local 6
-    push static 2
-    add
-    push constant 1
-    sub
-    push local 7
-    push constant 1
-    add
-    call Screen.drawPixel 2
-    pop temp 0
-    goto SnakeGame_44
-label SnakeGame_45
-label SnakeGame_44
-    push local 0
-    push local 3
-    add
-    pop pointer 1
-    push that 0
-    push constant 3
-    eq
-    not
-    if-goto SnakeGame_47
-    push local 6
-    push static 2
-    add
-    push constant 1
-    sub
-    push local 7
-    call Screen.drawPixel 2
-    pop temp 0
-    push local 6
-    push static 2
-    add
-    push constant 2
-    sub
-    push local 7
-    call Screen.drawPixel 2
-    pop temp 0
-    push local 6
-    push static 2
-    add
-    push constant 1
-    sub
-    push local 7
-    push constant 1
-    add
-    call Screen.drawPixel 2
-    pop temp 0
-    push local 6
-    push static 2
-    add
-    push constant 1
-    sub
-    push local 7
-    push static 2
-    add
-    push constant 1
-    sub
-    call Screen.drawPixel 2
-    pop temp 0
-    push local 6
-    push static 2
-    add
-    push constant 1
-    sub
-    push local 7
-    push static 2
-    add
-    push constant 2
-    sub
-    call Screen.drawPixel 2
-    pop temp 0
-    push local 6
-    push static 2
-    add
-    push constant 2
-    sub
-    push local 7
-    push static 2
-    add
-    push constant 1
-    sub
-    call Screen.drawPixel 2
-    pop temp 0
-    goto SnakeGame_46
-label SnakeGame_47
-label SnakeGame_46
-    push local 0
-    push local 3
-    add
-    pop pointer 1
-    push that 0
-    push constant 4
-    eq
-    not
-    if-goto SnakeGame_49
-    push local 6
-    push local 7
-    call Screen.drawPixel 2
-    pop temp 0
-    push local 6
-    push constant 1
-    add
-    push local 7
-    call Screen.drawPixel 2
-    pop temp 0
-    push local 6
-    push local 7
-    push constant 1
-    add
-    call Screen.drawPixel 2
-    pop temp 0
-    push local 6
-    push local 7
-    push static 2
-    add
-    push constant 1
-    sub
-    call Screen.drawPixel 2
-    pop temp 0
-    push local 6
-    push local 7
-    push static 2
-    add
-    push constant 2
-    sub
-    call Screen.drawPixel 2
-    pop temp 0
-    push local 6
-    push constant 1
-    add
-    push local 7
-    push static 2
-    add
-    push constant 1
-    sub
-    call Screen.drawPixel 2
-    pop temp 0
-    goto SnakeGame_48
-label SnakeGame_49
-label SnakeGame_48
-    push constant 0
-    return
-function SnakeGame.draw_rat 2
-    push argument 0
-    pop pointer 0
-    push this 4
-    call Rat.getX 1
-    pop local 0
-    push this 4
-    call Rat.getY 1
-    pop local 1
-    push pointer 0
-    push local 0
-    call SnakeGame.xx 2
-    push static 2
-    push constant 2
-    call Math.divide 2
-    add
-    push pointer 0
-    push local 1
-    call SnakeGame.yy 2
-    push static 2
-    push constant 2
-    call Math.divide 2
-    add
-    push static 2
-    push constant 2
-    call Math.divide 2
-    push constant 1
-    sub
-    call Screen.drawCircle 3
-    pop temp 0
-    push constant 0
-    return
-function SnakeGame.show_rat 0
-    push argument 0
-    pop pointer 0
-    push constant 1
-    neg
-    call Screen.setColor 1
-    pop temp 0
-    push pointer 0
-    call SnakeGame.draw_rat 1
-    pop temp 0
-    push constant 0
-    return
-function SnakeGame.hide_rat 0
-    push argument 0
-    pop pointer 0
-    push constant 0
-    call Screen.setColor 1
-    pop temp 0
-    push pointer 0
-    call SnakeGame.draw_rat 1
-    pop temp 0
-    push constant 0
-    return
-function SnakeGame.run 1
-    push argument 0
-    pop pointer 0
-    push constant 0
-    pop this 5
-label SnakeGame_50
-    push this 5
-    push constant 0
-    eq
-    not
-    if-goto SnakeGame_51
-label SnakeGame_52
-    push local 0
-    push constant 0
-    eq
-    push this 5
-    push constant 0
-    eq
-    and
-    not
-    if-goto SnakeGame_53
-    call Keyboard.keyPressed 0
-    pop local 0
-    push pointer 0
-    call SnakeGame.move_snake 1
-    pop temp 0
-    goto SnakeGame_52
-label SnakeGame_53
-    push local 0
-    push constant 113
-    eq
-    not
-    if-goto SnakeGame_55
-    push constant 3
-    pop this 5
-    goto SnakeGame_54
-label SnakeGame_55
-label SnakeGame_54
-    push local 0
-    push constant 131
-    eq
-    not
-    if-goto SnakeGame_57
-    push this 3
-    push constant 1
-    call Snake.setDir 2
-    pop temp 0
-    goto SnakeGame_56
-label SnakeGame_57
-label SnakeGame_56
-    push local 0
-    push constant 133
-    eq
-    not
-    if-goto SnakeGame_59
-    push this 3
-    push constant 2
-    call Snake.setDir 2
-    pop temp 0
-    goto SnakeGame_58
-label SnakeGame_59
-label SnakeGame_58
-    push local 0
-    push constant 130
-    eq
-    not
-    if-goto SnakeGame_61
-    push this 3
-    push constant 3
-    call Snake.setDir 2
-    pop temp 0
-    goto SnakeGame_60
-label SnakeGame_61
-label SnakeGame_60
-    push local 0
-    push constant 132
-    eq
-    not
-    if-goto SnakeGame_63
-    push this 3
-    push constant 4
-    call Snake.setDir 2
-    pop temp 0
-    goto SnakeGame_62
-label SnakeGame_63
-label SnakeGame_62
-label SnakeGame_64
-    push local 0
-    push constant 0
-    eq
-    not
-    push this 5
-    push constant 0
-    eq
-    and
-    not
-    if-goto SnakeGame_65
-    call Keyboard.keyPressed 0
-    pop local 0
-    push pointer 0
-    call SnakeGame.move_snake 1
-    pop temp 0
-    goto SnakeGame_64
-label SnakeGame_65
-    push this 3
-    call Snake.getLength 1
-    push this 2
-    eq
-    not
-    if-goto SnakeGame_67
-    push constant 1
-    pop this 5
-    goto SnakeGame_66
-label SnakeGame_67
-label SnakeGame_66
-    goto SnakeGame_50
-label SnakeGame_51
-    push this 5
-    push constant 2
-    eq
-    not
-    if-goto SnakeGame_69
-    push pointer 0
-    call SnakeGame.show_snake_crash 1
-    pop temp 0
-    push constant 10
-    push constant 27
-    call Output.moveCursor 2
-    pop temp 0
-    push constant 9
-    call String.new 1
-    push constant 71
-    call String.appendChar 2
-    push constant 97
-    call String.appendChar 2
-    push constant 109
-    call String.appendChar 2
-    push constant 101
-    call String.appendChar 2
-    push constant 32
-    call String.appendChar 2
-    push constant 79
-    call String.appendChar 2
-    push constant 118
-    call String.appendChar 2
-    push constant 101
-    call String.appendChar 2
-    push constant 114
-    call String.appendChar 2
-    call Output.printString 1
-    pop temp 0
-    goto SnakeGame_68
-label SnakeGame_69
-label SnakeGame_68
-    push this 5
-    push constant 1
-    eq
-    not
-    if-goto SnakeGame_71
-    push constant 10
-    push constant 27
-    call Output.moveCursor 2
-    pop temp 0
-    push constant 8
-    call String.new 1
-    push constant 89
-    call String.appendChar 2
-    push constant 111
-    call String.appendChar 2
-    push constant 117
-    call String.appendChar 2
-    push constant 32
-    call String.appendChar 2
-    push constant 87
-    call String.appendChar 2
-    push constant 105
-    call String.appendChar 2
-    push constant 110
-    call String.appendChar 2
-    push constant 33
-    call String.appendChar 2
-    call Output.printString 1
-    pop temp 0
-    goto SnakeGame_70
-label SnakeGame_71
-label SnakeGame_70
-    push constant 2000
-    call Sys.wait 1
     pop temp 0
     push constant 0
     return

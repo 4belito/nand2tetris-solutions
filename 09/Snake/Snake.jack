@@ -1,3 +1,10 @@
+// Snake/Snake.jack
+/**
+ * Represents the snake in the Snake game.
+ * Part of project 9 from the Nand2Tetris course.
+ */
+
+
 class Snake{
     field Array x; // (x0,x1, x2, ...) array of body points
     field Array y; // (y0,y1, y2, ...) array of body points
@@ -5,7 +12,7 @@ class Snake{
     field int length;  // number of body points (segments)
     field int maxlength; // maximum length of the snake
 
-    /** Constructs and draws a new snake from. */
+    /** Constructs and draws a new snake from arrays. */
     constructor Snake new(Array ax,Array ay,Array adir, int alength, int amaxlength) {
         let x = ax;
         let y = ay;
@@ -29,46 +36,33 @@ class Snake{
         return;
     }
 
-    method boolean selfCollision() {
+    // Checks if the snake contains the point (ax,ay) starting from index i0
+    method boolean contains(int ax, int ay,int i0) {
         var int i;
-        let i = 1; // start checking from the second segment
+        let i = i0; // start checking from the specified index
         while (i < length) {
-            if ((x[0] = x[i]) & (y[0] = y[i])) {
-                return true; //  snake has collided with itself
+            if ((x[i] = ax) & (y[i] = ay)) {
+                return true; // snake contains the point
             }
             let i = i + 1;
         }
-        return false; // game is not over
+        return false; // snake does not contain the point
+    }
+    method boolean selfCollision() {
+        return contains(x[0], y[0], 1);
     }
 
-    method Array getX() {
-        return x;
-    }
+    /** Accessors */
+    method Array getX() {return x;}
+    method Array getY() {return y;}
+    method Array getDir() {return dir;}
+    method int getHeadX() {return x[0];}
+    method int getHeadY() {return y[0];}
+    method int getHeadDir() {return dir[0];}
+    method int getLength() { return length; }
+    method int getMaxLength() { return maxlength;}
 
-    method Array getY() {
-        return y;
-    }
-
-    method Array getDir() {
-        return dir;
-    }     
-
-    method int getHeadX() {
-        return x[0];
-    }
-
-    method int getHeadY() {
-        return y[0];
-    }
-
-    method int getHeadDir() {
-        return dir[0];
-    }
-
-    method int getLength() {
-        return length;
-    }
-
+    // eats a rat, increasing the snake's length by one segment
     method void eat() {
         // Increases the snake's length by one segment
         var int i;
@@ -87,6 +81,7 @@ class Snake{
         return;
     }
 
+    // Moves the snake by updating the coordinates of each segment
     method void move(int ahx, int ahy) {
         var int hx, hy; // head coordinates
         var int i;
@@ -105,5 +100,25 @@ class Snake{
         let x[0] = hx;
         let y[0] = hy;
         return;
+    }
+
+    // Creates a default snake of given initial length and maximum length
+    function Snake new_default(int initialength, int amaxlength) {
+        var Array ax, ay, adir;
+        var int i;
+
+        // Create default snake of length 5 at center of board
+        // Initialize the game state
+        let ax = Array.new(amaxlength);
+        let ay = Array.new(amaxlength);
+        let adir = Array.new(amaxlength);
+        let i = 0;
+        while (i < initialength) {
+            let ax[i] = initialength - 1 - i; // x-coordinate
+            let ay[i] = 0; // y-coordinate
+            let adir[i] = 4; // initial direction = right
+            let i = i + 1;
+        }
+        return Snake.new(ax, ay, adir, initialength, amaxlength);
     }
 }

@@ -1,394 +1,191 @@
+// Snake/SnakeGame.jack
+/**
+ * Entry point and main game loop for the Snake game.
+ * Part of project 9 from the Nand2Tetris course.
+ */
+
 class SnakeGame {
-    
-    // Inmutable variables
-    static int fieldWidth;
-    static int fieldHeight;
-    static int tileSize;
-    static int leftframe;
-    static int rightframe;
-    static int topframe;
-    static int bottomframe;
-    static int xboardsize;
-    static int yboardsize;
-
-    static int seed; // the seed for the random number generator
-    
-    field int level; // the level of the game
-    field int delay; // the delay between snake movements
-    field int maxlength; // the maximum length of the snake
-
-    // Mutable variables
-    field Snake snake; // the snake of this game
-    field Rat rat; // the rat item of this game
-    field int state; // the state of the game (0 = running, 1 = win, 2 = game over)
+   field int seed; // the seed for the random number generator
+   field int level; // the level of the game
+   field int delay; // the delay between snake movements
+   field int initialength; // initial length of the snake
+   field int maxlength;
 
 
-    /** Constructs a new snake game. */
-    constructor SnakeGame new(int ainitialength,int amaxlength,int alevel,int aseed) {
-        var Array ax, ay, adir;
-        var int initialength,i;
-        //var int seed;
-        let fieldWidth = 512; // width of the game board
-        let fieldHeight = 239; // height of the game board
-        let tileSize = 19; // size of the tile (5-50)
-
-        let maxlength = amaxlength;   // initial length = 5 segments
-        let initialength = ainitialength;
-        let seed = aseed;
-
-        let level = alevel; // level of the game
-        let delay = getDelay(level); // get the delay for the game
-
-        // Configure the game board
-        do configure_board();
-
-        // Initialize the game state
-        let ax = Array.new(maxlength);
-        let ay = Array.new(maxlength);
-        let adir = Array.new(maxlength);
-        let i = 0;
-        while (i < initialength) {
-            let ax[i] = initialength - 1 - i; // x-coordinate
-            let ay[i] = 0; // y-coordinate
-            let adir[i] = 4; // initial direction = 4 (down)
-            let i = i + 1;
-        }
-        
-        // Create the snake and the rat
-        let snake = Snake.new(ax, ay, adir, initialength, maxlength);
-        let rat = Rat.new(seed, xboardsize, yboardsize); // place the rat at (15, 15)
-
-        // Draw
-        do draw_board();
-        do show_snake();
-        do show_rat();
-        return this;
-    }
-
-    method int getState() {
-        return state;
-    }   
-
-    method int getDelay(int alevel) {
-        // Returns the delay for the game
-        if (alevel = 1) {
-            return 100; // easy
-        }
-        if (alevel = 2) {
-            return 80; // medium
-        }
-        if (alevel = 3) {
-            return 60; // hard
-        }
-        if (alevel = 4) {
-            return 40; // very hard
-        }
-        if (alevel = 5) {
-            return 20; // extreme
-        }
-        return null; // invalid level
-    }
-    /** Print initial game instructions. */
-    function void printInstructions() {
-        do Screen.clearScreen();
-        do Output.moveCursor(9, 20);
-        do Output.printString("===  SNAKE  GAME  ===");
-        do Output.moveCursor(12, 21);
-        do Output.printString("press space to start");
-        do Output.moveCursor(13, 23);
-        do Output.printString("press q to quit");
-        do Output.moveCursor(22, 42);
-        do Output.printString(" by Abel Diaz-Gonzalez ");
-        return;
-    }
-
-    method void configure_board() {
-        var int xoffset, yoffset; // offsets for the game board
-        // Configures the game board limits
-        let xoffset = Helper.mod(fieldWidth, tileSize); // offset for the x-coordinate
-        let yoffset = Helper.mod(fieldHeight, tileSize); // offset for the y-coordinate
-        let leftframe = xoffset/2;
-        let rightframe = xoffset-leftframe;
-        let topframe = yoffset/2;
-        let bottomframe = yoffset-topframe;
-        let xboardsize = fieldWidth / tileSize; // number of tiles in the x direction
-        let yboardsize = fieldHeight / tileSize; // number of tiles in the y direction
-        return;
-    }
+   // Mutable variables
+   field Board board; // the game board
+   field Snake snake; // the snake of this game
+   field Rat rat; // the rat item of this game
+   field int state; // the state of the game (0 = running, 1 = win, 2 = game over)
 
 
-    method void draw_board() {
-        //* Draws the game board */
-        do Screen.clearScreen();
-        do Screen.setColor(true);
-        do Screen.drawLine(0, fieldHeight, fieldWidth-1, fieldHeight); 
-        
-        //* Print the snake length */
-        do Output.moveCursor(22,0);
-        do Output.printString(" Length:");
-        do Output.printInt(snake.getLength());
-        
-        //* Print the level */
-        do Output.moveCursor(22,28);
-        do Output.printString(" Level:");
-        do Output.printInt(level);
+   /** Constructs a new snake game. */
+   constructor SnakeGame new(int ainitialength,int amaxlength,int aseed) {
+      let seed = aseed;
+      let initialength = ainitialength; // initial length of the snake
+      let maxlength = amaxlength; // maximum length of the snake
+      do setLevel(1); // set the initial level
+      do reset(); // reset the game state
+      return this;
+   }
 
-        //* Print the goal */
-        do Output.moveCursor(22, 56); 
-        do Output.printString("Goal:");
-        do Output.printInt(maxlength);
-        do draw_border(); // draw the game border
-        return;
-    }
+   method void setLevel(int alevel) {
+      // Sets the level of the game
+      let level = alevel;
+      let delay = getDelay(level); // update the delay for the game
+      return;
+   }
 
-    method void draw_border() {
-        // Draws the game border
-        do Screen.setColor(true);
-        if (topframe>0){do Screen.drawRectangle(0, 0, fieldWidth-1, topframe-1);} // draw the top border
-        if (bottomframe>0){do Screen.drawRectangle(0, fieldHeight-bottomframe, fieldWidth-1, fieldHeight-1);}// draw the bottom border
-        if (leftframe>0){do Screen.drawRectangle(0, 0, leftframe-1, fieldHeight-1);} // draw the left border
-        if (rightframe>0){do Screen.drawRectangle(fieldWidth-rightframe, 0, fieldWidth-1, fieldHeight-1);} // draw the right border
-        return;
-    }
+   method void reset() {
+      // Resets the game state keeping the last seed
+      let state = 0; // game is running
+      
+      // Create the board snake and rat   
+      let board = Board.new(512, 239, 19);
+      let snake = Snake.new_default(initialength, maxlength);
+      let rat = Rat.new(seed, board.width(), board.height()); // place the rat at (15, 15)
+      return;
+   }
 
-    /** Disposes this game. */
-    method void dispose() {
-        do snake.dispose();
-        do rat.dispose();
-        do Memory.deAlloc(this);
-        return;
-    }
+   method void show(){
+      do board.draw(level, snake);
+      do board.show_snake(snake);
+      do board.show_rat(rat);
+      return;
+   }
 
-    method void move_snake() {
-        // Moves the snake according to its direction
-        var int dir,x,y,hx,hy; // head coordinates
-        let dir = snake.getHeadDir();
-        let x = snake.getHeadX();
-        let y = snake.getHeadY();
-        if (dir = 1) { let hx = x; let hy = y - 1; } // up
-        if (dir = 2) { let hx = x; let hy = y + 1; } // down
-        if (dir = 3) { let hx = x - 1; let hy = y; } // left
-        if (dir = 4) { let hx = x + 1; let hy = y; } // right
-        // check if the new head position is within bounds
-        if ((hx < 0) | (hx = xboardsize) | (hy < 0) | (hy = yboardsize) | snake.selfCollision()) {
-            let state = 2;
-            return; // out of bounds, do not move
-        }
-        else {
-            do hide_snake();
-            do snake.move(hx, hy);
-            do search_rat(); // check if the snake has eaten the rat
-            do show_snake();
-            do Sys.wait(delay);
-            do show_rat(); // redraw the rat
-        }
-        return;
-    }
 
-    method void search_rat() {
-        if ((snake.getHeadX() = rat.getX()) & (snake.getHeadY() = rat.getY())) {
-            do snake.eat(); // eat the rat
-            do hide_rat(); // hide the rat
-            do rat.recover();
-            do Output.moveCursor(22,8);
-            do Output.printInt(snake.getLength());
-        }
-        return;
-    }
-
-    /** Converts a tile x-coordinate to a pixel x-coordinate */
-    method int xx(int x)
-    {
-        return tileSize*x + leftframe;
-    }
-
-    //** Converts a tile y-coordinate to a pixel y-coordinate */
-    method int yy(int y)
-    {
-        return tileSize*y + topframe;
-    }
-
-    /** Hides the snake. */
-    method void hide_snake() {
-        var int i;
-        var Array x, y; // head coordinates
-        let x = snake.getX();
-        let y = snake.getY();
-        let i = 0;
-        do Screen.setColor(false);     
-        while (i < snake.getLength()) {
-            do Screen.drawRectangle(xx(x[i]), yy(y[i]), xx(x[i]+1)-1, yy(y[i]+1)-1);
-            let i = i + 1; // next point
-        }
-        return;
-    }
-
-    /** Draws all segments of the snake on the screen */
-    method void show_snake_crash() {
-        var int i;
-        var int hx, hy; // head coordinates
-        var int mid; // middle of the segment
-        // Draws the snake head
-        let hx = snake.getHeadX();
-        let hy = snake.getHeadY();
-        do Screen.setColor(false); // set color to black
-        do Screen.drawLine(xx(hx), yy(hy), xx(hx)+tileSize-1, yy(hy)+tileSize-1); // draw the head
-        do Screen.drawLine(xx(hx)+tileSize-1, yy(hy), xx(hx), yy(hy)+tileSize-1); // draw the head
-        return;
-    }
-
-    /** Draws the snake. */
-    method void show_snake() {
-        var int i;
-        var Array x, y, dir; // snake segments
-        var int hx, hy; // head coordinates
-        var int tx, ty; // tail coordinates
-        var int mid,length,quar; // middle of the segment
-        // Draws the snake positions
-        do Screen.setColor(true); // set color to black
-        
-        // Each segment is a point (x, y)
-        // So total array length = length * 2
-        let x = snake.getX();
-        let y = snake.getY();
-        let dir = snake.getDir();
-        let length = snake.getLength();
-        let mid = tileSize / 2;
-        let quar = tileSize / 4;
-        let i = 0;
-        while (i < length) {
-            do Screen.setColor(true); 
-            do Screen.drawRectangle(xx(x[i]), yy(y[i]), xx(x[i]+1)-1, yy(y[i]+1)-1);
-            if ((i>0)|(i<length-1)) {
-                // Draw the segment
-                do Screen.setColor(false);
-                if (dir[i]>2) {
-                    do Screen.drawLine(xx(x[i])+mid-quar, yy(y[i])+mid, xx(x[i])+mid+quar, yy(y[i])+mid);
-                }else {
-                    do Screen.drawLine(xx(x[i])+mid, yy(y[i])+mid-quar, xx(x[i])+mid, yy(y[i])+mid+quar);
-                }
+   method void runAllLevels() {
+      var int key;
+      let key = 0;
+      while ((key = 0)&(level < 6)) { // wait for space key to start
+         do printInstructions();
+         while (~((key = 32) | (key = 113))){
+            let key = Keyboard.keyPressed();
+            if (seed > 511) {
+               let seed = 0; // ensure seed is within bounds
+            }else {
+               let seed = seed + 1; // use the provided seed
             }
-            let i = i + 1; // next point
-        }     
-
-        // Draws the snake head
-        let hx = xx(x[0]);
-        let hy = yy(y[0]);
-        do Screen.setColor(false); // set color to black
-        do Screen.drawPixel(hx, hy);
-        do Screen.drawPixel(hx, hy+tileSize-1);
-        do Screen.drawPixel(hx+tileSize-1, hy);
-        do Screen.drawPixel(hx+tileSize-1, hy+tileSize-1);
-        if (dir[0]>2) {
-            // direction is left or right
-            do Screen.drawCircle(hx+mid, hy+mid-quar, quar/2);
-            do Screen.drawCircle(hx+mid, hy+mid+quar, quar/2);
-        }
-        else{
-            // direction is up or down
-            do Screen.drawCircle(hx+mid+quar, hy+mid,quar/2);
-            do Screen.drawCircle(hx+mid-quar, hy+mid,quar/2);
-        }
-
-        // Draws the snake tail
-        let i = length - 1;
-        let tx = xx(x[i]);
-        let ty = yy(y[i]);
-        // do Output.printInt(i);
-        if (dir[i]=1){
-            // direction is up
-            do Screen.drawPixel(tx, ty+tileSize-1);
-            do Screen.drawPixel(tx+tileSize-1, ty+tileSize-1);
+         }
+         if (key = 32) { // space key
+            do board.clearAll();
+            do run();
+            if (state = 1) { // if the game is over and the level is less than 5
+               do setLevel(level + 1); // increase the level
             }
-        if (dir[i]=2){
-                // direction is down
-                do Screen.drawPixel(tx, ty);
-                do Screen.drawPixel(tx+1, ty);
-                do Screen.drawPixel(tx, ty+1);
-                do Screen.drawPixel(tx+tileSize-1, ty);
-                do Screen.drawPixel(tx+tileSize-2, ty);
-                do Screen.drawPixel(tx+tileSize-1, ty+1);
-            }
-        if (dir[i]=3){
-                // direction is left
-                do Screen.drawPixel(tx+tileSize-1, ty);
-                do Screen.drawPixel(tx+tileSize-2, ty);
-                do Screen.drawPixel(tx+tileSize-1, ty+1);
-                do Screen.drawPixel(tx+tileSize-1, ty+tileSize-1);
-                do Screen.drawPixel(tx+tileSize-1, ty+tileSize-2);
-                do Screen.drawPixel(tx+tileSize-2, ty+tileSize-1);
-            }       
-        if (dir[i]=4){
-                // direction is right
-                do Screen.drawPixel(tx, ty);
-                do Screen.drawPixel(tx+1, ty);
-                do Screen.drawPixel(tx, ty+1);
-                do Screen.drawPixel(tx, ty+tileSize-1);
-                do Screen.drawPixel(tx, ty+tileSize-2);
-                do Screen.drawPixel(tx+1, ty+tileSize-1);
-        }    
-        return;
-    }
-    
-    /** Draws the rat on the screen. */
-    method void draw_rat() {
-        var int x, y; // rat coordinates
-        let x = rat.getX();
-        let y = rat.getY();
-        do Screen.drawCircle(xx(x)+(tileSize/2),yy(y)+(tileSize/2),(tileSize/2)-1);
-        return;
-    } 
+            let key = 0; // reset key
+            
+         }
+         if (key = 113) { // q key
+               return; // exit the game
+         }
+         do reset();
+      }
+      return;
+   }
 
-    /** Shows the rat on the screen. */
-    method void show_rat() {
-        do Screen.setColor(true);
-        do draw_rat();
-        return;
-    }
+   /** Runs the game: handles the user's inputs and moves the snake accordingly */
+   method void run() {
+      var char key;  // the key currently pressed by the user
+      do show(); // show the initial state of the game
+      while (state = 0) {
+         // waits for a key to be pressed
+         while ((key = 0) & (state = 0)){
+               let key = Keyboard.keyPressed();
+               do move_snake(); // move the snake
+         }
 
-    /** Hides the rat from the screen. */
-    method void hide_rat() {
-        do Screen.setColor(false);
-        do draw_rat();
-        return;
-    }
+         if (key = 113) { let state = 3;}     // q key
+         if (key = 131) { do snake.setDir(board.dirUP()); }     // up arrow
+         if (key = 133) { do snake.setDir(board.dirDOWN()); }   // down arrow
+         if (key = 130) { do snake.setDir(board.dirLEFT()); }   // left arrow
+         if (key = 132) { do snake.setDir(board.dirRIGHT()); }  // right arrow
 
-    /** Runs the game: handles the user's inputs and moves the snake accordingly */
-    method void run() {
-        var char key;  // the key currently pressed by the user
-        let state = 0;
-        while (state = 0) {
-            // waits for a key to be pressed
-            while ((key = 0) & (state = 0)){
-                let key = Keyboard.keyPressed();
-                do move_snake(); // move the snake
-            }
-            if (key = 113)  {let state = 3;}     // q key
-            if (key = 131) { do snake.setDir(1); }   // up arrow
-            if (key = 133) { do snake.setDir(2); }   // down arrow
-            if (key = 130) { do snake.setDir(3); }   // left arrow
-            if (key = 132) { do snake.setDir(4); }   // right arrow
+         // waits for the key to be released
+         while ((~(key = 0)) & (state = 0)) {
+               let key = Keyboard.keyPressed();
+               do move_snake(); // move the snake
+         }
+         if (snake.getLength() = snake.getMaxLength()) {let state = 1;}
+            // redraw the rat
+      } 
+      if (state = 2) {do print_lose();}
+      if (state = 1) {do print_win();}
+      do Sys.wait(2000); // wait for 2 second before exiting
+      return;
+   }
 
-            // waits for the key to be released
-            while ((~(key = 0)) & (state = 0)) {
-                let key = Keyboard.keyPressed();
-                do move_snake(); // move the snake
-            }
-            if (snake.getLength() = maxlength) {
-                let state = 1; // win state
-            }
-             // redraw the rat
-        } 
-        if (state = 2) {
-            do show_snake_crash();
-            do Output.moveCursor(10,27);
-	        do Output.printString("Game Over");
-	    }
-        if (state = 1) {
-            do Output.moveCursor(10,27);
-	        do Output.printString("You Win!");
-        }
-        do Sys.wait(2000); // wait for 2 second before exiting
-        return;
-    }
+   method void print_lose() {
+      // Prints the lose message
+      do board.show_snake_crash(snake);
+      do Output.moveCursor(10,27);
+      do Output.printString("Game Over");
+      return;
+   }
+
+   method void print_win() {
+      // Prints the win message
+      do Output.moveCursor(10,27);
+      do Output.printString("You Win!");
+      return;
+   }
+
+   method int getState() {
+      return state;
+   }   
+
+   method int getDelay(int alevel) {
+      // Returns the delay for the game
+      if (alevel = 1) {return 100;} // easy
+      if (alevel = 2) {return 80;} // medium
+      if (alevel = 3) {return 60;} // hard
+      if (alevel = 4) {return 40;} // very hard
+      if (alevel = 5) {return 20;} // extreme
+      return null; // invalid level
+   }
+
+   /** Print initial game instructions. */
+   method void printInstructions() {
+      do Screen.clearScreen();
+      do Output.moveCursor(9, 20);
+      do Output.printString("===  SNAKE  GAME  ===");
+      do Output.moveCursor(12, 21);
+      do Output.printString("press space to start");
+      do Output.moveCursor(13, 23);
+      do Output.printString("press q to quit");
+      do Output.moveCursor(22, 42);
+      do Output.printString(" by Abel Diaz-Gonzalez ");
+      return;
+   }
+
+   method void move_snake() {
+      // Moves the snake according to its direction
+      var int dir,x,y,hx,hy; // head coordinates
+      let dir = snake.getHeadDir();
+      let x = snake.getHeadX();
+      let y = snake.getHeadY();
+      if (dir = board.dirUP())    { let hx = x;     let hy = y - 1; } // up
+      if (dir = board.dirDOWN())  { let hx = x;     let hy = y + 1; } // down
+      if (dir = board.dirLEFT())  { let hx = x - 1; let hy = y;     } // left
+      if (dir = board.dirRIGHT()) { let hx = x + 1; let hy = y;     } // right
+      // check if the new head position is within bounds
+      if ((hx < 0) | (hx = board.width()) | (hy < 0) | (hy = board.height()) | snake.selfCollision()) {
+         let state = 2;
+         return; // out of bounds, do not move
+      }
+      do board.hide_snake(snake);
+      do snake.move(hx, hy);
+      do board.search_rat(snake, rat); // check if the snake has eaten the rat
+      do board.show_snake(snake); // redraw the snake
+      do Sys.wait(delay);
+      return;
+   }
+   method void dispose() {
+      do snake.dispose();
+      do rat.dispose();
+      do board.dispose();
+      do Memory.deAlloc(this);
+      return;
+   }
 }
