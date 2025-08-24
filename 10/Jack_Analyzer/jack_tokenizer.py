@@ -8,7 +8,8 @@ class JackTokenizer:
             text = f.read()
         text = re.sub(r'/\*.*?\*/', '', text, flags=re.DOTALL) #clean block comments
         text = re.sub(r'//.*?\n', '', text, flags=re.DOTALL) #clean line comments
-        pattern = r'([' + re.escape(''.join(Symbol.values())) + r'])|\s+'
+        string_pattern = r'"[^"\n]*"'
+        pattern = r'([' + re.escape(''.join(Symbol.values())) + r'])|(' + string_pattern + r')|\s+'
         self.raw_tokens = [p for p in re.split(pattern, text) if p]
         self.n_tokens = len(self.raw_tokens)
         self.next_i = 0
