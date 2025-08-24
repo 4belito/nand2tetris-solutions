@@ -4,12 +4,10 @@ parser.py
 This module provides the `Parser` class for parsing VM commands and the `CMDType` class for command types.
 """
 
-from dataclasses import dataclass
-import os
+from enum import Enum
 
-@dataclass
-class CMDType:
-    """Enum-like class to represent different command types."""
+class CMDType(Enum):
+    """Enum class to represent different command types."""
     C_ARITHMETIC = "C_ARITHMETIC"
     C_PUSH = "C_PUSH"
     C_POP = "C_POP"
