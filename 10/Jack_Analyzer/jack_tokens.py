@@ -1,15 +1,15 @@
-
 from enum import Enum
 import re
 
 
+# Enum for all enumerated token types
 class EnumTokens(Enum):
     @classmethod
-    def valid(cls, value):
+    def valid(cls, value: str) -> bool:
         return value in set(item.value for item in cls)
 
     @classmethod
-    def values(cls):
+    def values(cls) -> list[str]:
         return [item.value for item in cls]
 
 class TokenType(Enum):
@@ -44,7 +44,7 @@ class Keyword(EnumTokens):
     RETURN = "return"
 
     @property
-    def type(self) -> str:
+    def ttype(self) -> str:
         return TokenType.KEYWORD.value
 
 class Symbol(EnumTokens):
@@ -69,25 +69,25 @@ class Symbol(EnumTokens):
     NOT = "~"
 
     @property
-    def type(self) -> str:
+    def ttype(self) -> str:
         return TokenType.SYMBOL.value
 
 class IntegerConstant(int):
     MAX_VALUE = 32767
 
-    def __new__(cls, value):
+    def __new__(cls, value: str) -> int:
         return int.__new__(cls, value)
     
     @property
-    def value(self):
-        return int(self)
+    def value(self) -> int:
+        return self
 
     @property
-    def type(self):
+    def ttype(self) -> str:
         return TokenType.INT_CONST.value
 
     @staticmethod
-    def valid(value):
+    def valid(value: str) -> bool:
         return  value.isdigit() and 0 <= int(value) <= IntegerConstant.MAX_VALUE
 
 
@@ -96,26 +96,26 @@ class StringConstant(str):
         return str.__new__(cls, value)
 
     @property
-    def value(self):
+    def value(self) -> str:
         return self[1:-1]
 
     @property
-    def type(self) -> str:
+    def ttype(self) -> str:
         return TokenType.STRING_CONST.value
 
     @classmethod
-    def valid(cls, value):
+    def valid(cls, value: str) -> bool:
         start, inner_value, end = value[0], value[1:-1], value[-1]
         return start=='"' and end=='"' and '\n' not in inner_value
 
 
 
 class Identifier(str):
-    def __new__(cls, value):
+    def __new__(cls, value: str):
         return str.__new__(cls, value)
 
     @property
-    def type(self) -> str:
+    def ttype(self) -> str:
         return TokenType.IDENTIFIER.value
 
     @property
@@ -123,15 +123,25 @@ class Identifier(str):
         return str(self)
 
     @classmethod
-    def valid(cls, value):
+    def valid(cls, value: str) -> bool:
         # Jack identifier: non-empty, only letters/digits/underscore, not starting with digit
         return bool(re.match(r'^[A-Za-z_][A-Za-z0-9_]*$', value))
 
 
 class Token:
-    def __new__(cls, value: str):
+    def __init__(self, value: str):
         for token_cls in (Keyword, Symbol, IntegerConstant, StringConstant, Identifier):
             if token_cls.valid(value):
-                return token_cls(value)
-        raise ValueError(f"Unknown token type for value {value}")
+                self._token = token_cls(value)
+                break
+        else:
+            raise ValueError(f"Unknown token type for value {value}")
+
+    @property
+    def ttype(self) -> str:
+        return self._token.ttype
+
+    @property
+    def value(self) -> str|int:
+        return self._token.value
         

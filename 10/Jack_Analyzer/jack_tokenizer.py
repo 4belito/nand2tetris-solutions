@@ -32,8 +32,8 @@ class JackTokenizer:
 
     def token_type(self) -> TokenType:
         ''' Return the type of the current token, as a constant. '''
-        if self.current_token is not None:
-            return self.current_token.type()
+        if isinstance(self.current_token, Token):
+            return self.current_token.ttype
         raise ValueError("No current token")
 
     def keyword(self) -> str:
