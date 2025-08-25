@@ -1,8 +1,8 @@
+from contextlib import contextmanager
 
-import math
-from jack_tokenizer import TokenType
 from jack_tokenizer import JackTokenizer
-from jack_tokens import Keyword,Symbol,Token
+from jack_tokens import Keyword, Symbol, TokenType, Token
+
 
 class CompilationEngine:
     '''Builds the XML representation of the Jack program.
@@ -16,230 +16,201 @@ class CompilationEngine:
         self.ident = 0
 
 
-    def compile_class(self):
+    def compile_class(self) -> None:
         '''
         Compile a complete class
         grammar: 'class' className '{' classVarDec* subroutineDec* '}'
         '''
         with open(self.output_file, 'w') as self.f:
             self.token = self.tokenizer.advance()  # 'class'
-            self._open_tag('class')
-            self._compile_enumtoken(Keyword.CLASS)
-            self._compile_identifier()
-            self._compile_enumtoken(Symbol.LBRACE)
-            if self.token in (Keyword.STATIC, Keyword.FIELD):
-                while self.token in (Keyword.STATIC, Keyword.FIELD):
-                    self.compile_class_var_dec()
-            if self.token.is_subroutine():
-                while self.token.is_subroutine():
-                    self.compile_subroutine_dec()
-            if self.token == Symbol.RBRACE:
-                self._write_token()
-            self._close_tag('class')
+            with self.tag('class'):
+                self._compile_enumtoken(Keyword.CLASS)
+                self._compile_identifier()
+                self._compile_enumtoken(Symbol.LBRACE)
+                if self.token in (Keyword.STATIC, Keyword.FIELD):
+                    while self.token in (Keyword.STATIC, Keyword.FIELD):
+                        self.compile_class_var_dec()
+                if self.token.is_subroutine():
+                    while self.token.is_subroutine():
+                        self.compile_subroutine_dec()
+                if self.token == Symbol.RBRACE:
+                    self._write_token()
             if self.tokenizer.has_more_tokens():
                 raise ValueError("Extra tokens after class declaration")
                 
             
 
-    def compile_class_var_dec(self):
+    def compile_class_var_dec(self) -> None:
         '''
         Compile a static variable declaration, or a field declaration.
         grammar: (static | field) type varName (',' varName)* ';'
         '''
-        self._open_tag('classVarDec')
-        self._write_token()  # 'static' | 'field'
-        self.token = self.tokenizer.advance()  # type
-        self._compile_type()
-        self._compile_identifier()
-        while self.token == Symbol.COMMA:
-            self._write_token()
-            self.token = self.tokenizer.advance()
+        with self.tag('classVarDec'):
+            self._write_and_advance()  # 'static' | 'field'
+            self._compile_type()
             self._compile_identifier()
-        self._compile_enumtoken(Symbol.SEMICOLON)
-        self._close_tag('classVarDec')
+            while self.token == Symbol.COMMA:
+                self._write_and_advance()
+                self._compile_identifier()
+            self._compile_enumtoken(Symbol.SEMICOLON)
 
-    def compile_subroutine_dec(self):
+    def compile_subroutine_dec(self) -> None:
         '''
         Compile a complete method, function, or constructor
         grammar: ('constructor' | 'function' | 'method') ('void' | type) subroutineName '('parameterList')' subroutineBody
         '''
-        self._open_tag('subroutineDec')
-        self._write_token()  # 'constructor' | 'function' | 'method'
-        self.token = self.tokenizer.advance()  # 'void' | type
-        self._compile_return_type()
-        self._compile_enumtoken(Symbol.LPAREN)
-        self.compile_parameter_list()
-        self._compile_enumtoken(Symbol.RPAREN)
-        self.compile_subroutine_body()
-        self._close_tag('subroutineDec')
+        with self.tag('subroutineDec'):
+            self._write_and_advance()  # 'constructor' | 'function' | 'method'
+            self._compile_return_type()
+            self._compile_enumtoken(Symbol.LPAREN)
+            self.compile_parameter_list()
+            self._compile_enumtoken(Symbol.RPAREN)
+            self.compile_subroutine_body()
 
-    def _compile_return_type(self):
-        if self.token == Keyword.VOID or self.token.ttype == TokenType.IDENTIFIER:
-            self._write_token()
-            self.token = self.tokenizer.advance()  # subroutineName
-            self._compile_identifier()
-        else:
-            raise ValueError("Expected 'void' or 'type' after subroutine keyword")
-
-    def compile_parameter_list(self):
+    def compile_parameter_list(self) -> None:
         '''
         Compile a (possibly empty) parameter list.
         Does not handle the enclosing parentheses ().
         grammar: ((type varName) (',' type varName)*)?
         '''
-        self._open_tag('parameterList')
-        if self.token.is_type():  # type
-            self._write_token()
-            self.token = self.tokenizer.advance()
-            self._compile_identifier()
-            while self.token == Symbol.COMMA:  # (',' type varName)*)?
-                self._write_token()
-                self.token = self.tokenizer.advance()
-                self._compile_type()
+        with self.tag('parameterList'):
+            if self.token.is_type():  # type
+                self._write_and_advance()
                 self._compile_identifier()
-        self._close_tag('parameterList')
+                while self.token == Symbol.COMMA:  # (',' type varName)*)?
+                    self._write_and_advance()
+                    self._compile_type()
+                    self._compile_identifier()
 
-    def compile_subroutine_body(self):
+    def compile_subroutine_body(self) -> None:
         '''
         Compile a subroutine's body
         grammar: '{' varDec* statements '}'
         '''
-        self._open_tag('subroutineBody')
-        self._compile_enumtoken(Symbol.LBRACE)
-        while self.token == Keyword.VAR:
-            self.compile_var_dec()
-        self.compile_statements()
-        self._compile_enumtoken(Symbol.RBRACE)
-        self._close_tag('subroutineBody')
+        with self.tag('subroutineBody'):
+            self._compile_enumtoken(Symbol.LBRACE)
+            while self.token == Keyword.VAR:
+                self.compile_var_dec()
+            self.compile_statements()
+            self._compile_enumtoken(Symbol.RBRACE)
 
-    def compile_var_dec(self):
+    def compile_var_dec(self) -> None:
         '''
         Compile a variable declaration
         grammar: 'var' type varName (',' varName)* ';'
         '''
-        self._open_tag('varDec')
-        self._write_token()  # 'var'
-        self.token = self.tokenizer.advance()
-        if self.token.is_type():  # type
-            self._write_token()
-            self.token = self.tokenizer.advance()
-            self._compile_identifier()  # varName
-            while self.token == Symbol.COMMA:  # (',' varName)*?
-                self._write_token()
-                self.token = self.tokenizer.advance()
+        with self.tag('varDec'):
+            self._write_and_advance()  # 'var'
+            if self.token.is_type():  # type
+                self._write_and_advance()
                 self._compile_identifier()  # varName
-            self._compile_enumtoken(Symbol.SEMICOLON)
-        self._close_tag('varDec')
+                while self.token == Symbol.COMMA:  # (',' varName)*?
+                    self._write_and_advance()
+                    self._compile_identifier()  # varName
+                self._compile_enumtoken(Symbol.SEMICOLON)
 
-    def compile_statements(self):
+    def compile_statements(self) -> None:
         '''
         Compile a sequence of statements.
         Does not handle the enclosing braces {}.
         grammar: statement*
         '''
-        self._open_tag('statements')
-        while self.token.is_statement():
-            match self.token:
-                case Keyword.LET:
-                    self.compile_let()
-                case Keyword.IF:
-                    self.compile_if()
-                case Keyword.WHILE:
-                    self.compile_while()
-                case Keyword.DO:
-                    self.compile_do()
-                case Keyword.RETURN:
-                    self.compile_return()
-        self._close_tag('statements')
+        with self.tag('statements'):
+            while self.token.is_statement():
+                match self.token:
+                    case Keyword.LET:
+                        self.compile_let()
+                    case Keyword.IF:
+                        self.compile_if()
+                    case Keyword.WHILE:
+                        self.compile_while()
+                    case Keyword.DO:
+                        self.compile_do()
+                    case Keyword.RETURN:
+                        self.compile_return()
 
-    def compile_let(self):
+    def compile_let(self) -> None:
         '''
         Compile a let statement.
         grammar: 'let' varName('[' expression ']')? '=' expression ';'
         '''
-        self._open_tag('letStatement')
-        self._compile_enumtoken(Keyword.LET)
-        self._compile_identifier()
-        if self.token == Symbol.LBRACK:
-            self._compile_enumtoken(Symbol.LBRACK)
+        with self.tag('letStatement'):
+            self._compile_enumtoken(Keyword.LET)
+            self._compile_identifier()
+            if self.token == Symbol.LBRACK:
+                self._compile_enumtoken(Symbol.LBRACK)
+                self.compile_expression()
+                self._compile_enumtoken(Symbol.RBRACK)
+            self._compile_enumtoken(Symbol.EQ)
             self.compile_expression()
-            self._compile_enumtoken(Symbol.RBRACK)
-        self._compile_enumtoken(Symbol.EQ)
-        self.compile_expression()
-        self._compile_enumtoken(Symbol.SEMICOLON)
-        self._close_tag('letStatement')
+            self._compile_enumtoken(Symbol.SEMICOLON)
 
-    def compile_if(self):
+    def compile_if(self) -> None:
         '''
         Compile an if statement, possibly with a trailing else clause.
         grammar: 'if' '(' expression ')' '{' statements '}' ('else' '{' statements '}')?
         '''
-        self._open_tag('ifStatement')
-        self._compile_enumtoken(Keyword.IF)
-        self._compile_enumtoken(Symbol.LPAREN)
-        self.compile_expression()
-        self._compile_enumtoken(Symbol.RPAREN)
-        self._compile_enumtoken(Symbol.LBRACE)
-        self.compile_statements()
-        self._compile_enumtoken(Symbol.RBRACE)
-        if self.token == Keyword.ELSE:
-            self._compile_enumtoken(Keyword.ELSE)
+        with self.tag('ifStatement'):
+            self._compile_enumtoken(Keyword.IF)
+            self._compile_enumtoken(Symbol.LPAREN)
+            self.compile_expression()
+            self._compile_enumtoken(Symbol.RPAREN)
             self._compile_enumtoken(Symbol.LBRACE)
             self.compile_statements()
             self._compile_enumtoken(Symbol.RBRACE)
-        self._close_tag('ifStatement')
+            if self.token == Keyword.ELSE:
+                self._compile_enumtoken(Keyword.ELSE)
+                self._compile_enumtoken(Symbol.LBRACE)
+                self.compile_statements()
+                self._compile_enumtoken(Symbol.RBRACE)
 
-    def compile_while(self):
+    def compile_while(self) -> None:
         '''
         Compile a while statement.
         grammar: 'while' '(' expression ')' '{' statements '}'
         '''
-        self._open_tag('whileStatement')
-        self._compile_enumtoken(Keyword.WHILE)
-        self._compile_enumtoken(Symbol.LPAREN)
-        self.compile_expression()
-        self._compile_enumtoken(Symbol.RPAREN)
-        self._compile_enumtoken(Symbol.LBRACE)
-        self.compile_statements()
-        self._compile_enumtoken(Symbol.RBRACE)
-        self._close_tag('whileStatement')
+        with self.tag('whileStatement'):
+            self._compile_enumtoken(Keyword.WHILE)
+            self._compile_enumtoken(Symbol.LPAREN)
+            self.compile_expression()
+            self._compile_enumtoken(Symbol.RPAREN)
+            self._compile_enumtoken(Symbol.LBRACE)
+            self.compile_statements()
+            self._compile_enumtoken(Symbol.RBRACE)
 
-    def compile_do(self):
+    def compile_do(self) -> None:
         '''
         Compile a do statement.
         grammar: 'do' subroutineCall  ';'
         '''
-        self._open_tag('doStatement')
-        self._compile_enumtoken(Keyword.DO)
-        self._compile_subroutine_call()
-        self._compile_enumtoken(Symbol.SEMICOLON)
-        self._close_tag('doStatement')
+        with self.tag('doStatement'):
+            self._compile_enumtoken(Keyword.DO)
+            self._compile_subroutine_call()
+            self._compile_enumtoken(Symbol.SEMICOLON)
 
-    def compile_return(self):
+    def compile_return(self) -> None:
         '''
         Compile a return statement.
         grammar: 'return' expression? ';'
         '''
-        self._open_tag('returnStatement')
-        self._compile_enumtoken(Keyword.RETURN)
-        if self.token != Symbol.SEMICOLON:
-            self.compile_expression()
-        self._compile_enumtoken(Symbol.SEMICOLON)
-        self._close_tag('returnStatement')
+        with self.tag('returnStatement'):
+            self._compile_enumtoken(Keyword.RETURN)
+            if self.token != Symbol.SEMICOLON:
+                self.compile_expression()
+            self._compile_enumtoken(Symbol.SEMICOLON)
 
-    def compile_expression(self):
+    def compile_expression(self) -> None:
         '''
         Compile an expression.
         grammar: term (op term)*
         '''
-        self._open_tag('expression')
-        self.compile_term()
-        while self.token.is_op():
-            self._compile_enumtoken(self.token)
+        with self.tag('expression'):
             self.compile_term()
-        self._close_tag('expression')
+            while self.token.is_op():
+                self._compile_enumtoken(self.token)
+                self.compile_term()
 
-    def compile_term(self):
+    def compile_term(self) -> None:
         '''
         Compile a term. 
         If the current token is an identifier, the routine must distinguish 
@@ -249,44 +220,48 @@ class CompilationEngine:
         and should be advanced over.
         grammar: integerConstant | stringConstant | keywordConstant | varName | varName '[' expression ']' | subroutineCall | '(' expression ')' | unaryOp term
         '''
-        self._open_tag('term')
-        if self.token.is_constant():
-            self._write_token()
-            self.token = self.tokenizer.advance()
-        elif self.token.ttype == TokenType.IDENTIFIER:
-            next_token = self.tokenizer.next_token()
-            if next_token == Symbol.LBRACK:
-                self._compile_identifier()
-                self._compile_enumtoken(Symbol.LBRACK)
+        with self.tag('term'):
+            if self.token.is_constant():
+                self._write_and_advance()
+            elif self.token.ttype == TokenType.IDENTIFIER:
+                next_token = self.tokenizer.peek()
+                if next_token == Symbol.LBRACK:
+                    self._compile_identifier()
+                    self._compile_enumtoken(Symbol.LBRACK)
+                    self.compile_expression()
+                    self._compile_enumtoken(Symbol.RBRACK)
+                elif next_token in (Symbol.LPAREN, Symbol.DOT):
+                    self._compile_subroutine_call()
+                else:
+                    self._compile_identifier()
+            elif self.token == Symbol.LPAREN:
+                self._compile_enumtoken(Symbol.LPAREN)
                 self.compile_expression()
-                self._compile_enumtoken(Symbol.RBRACK)
-            elif next_token in (Symbol.LPAREN, Symbol.DOT):
-                self._compile_subroutine_call()
-            else:
-                self._compile_identifier()
-        elif self.token == Symbol.LPAREN:
-            self._compile_enumtoken(Symbol.LPAREN)
-            self.compile_expression()
-            self._compile_enumtoken(Symbol.RPAREN)
-        elif self.token.is_unary_op():
-            self._compile_enumtoken(self.token)
-            self.compile_term()
-        self._close_tag('term')
+                self._compile_enumtoken(Symbol.RPAREN)
+            elif self.token.is_unary_op():
+                self._compile_enumtoken(self.token)
+                self.compile_term()
 
-    def compile_expression_list(self):
+    def compile_expression_list(self) -> None:
         '''
         Compile a (possibly empty) comma-separated list of expressions.
         grammar: (expression (',' expression)*)?
         '''
-        self._open_tag('expressionList')
-        if self.token != Symbol.RPAREN:
-            self.compile_expression()
-            while self.token == Symbol.COMMA:
-                self._compile_enumtoken(Symbol.COMMA)
+        with self.tag('expressionList'):
+            if self.token != Symbol.RPAREN:
                 self.compile_expression()
-        self._close_tag('expressionList')
+                while self.token == Symbol.COMMA:
+                    self._compile_enumtoken(Symbol.COMMA)
+                    self.compile_expression()
 
-    def _compile_subroutine_call(self):
+    def _compile_return_type(self) -> None:
+        if self.token == Keyword.VOID or self.token.ttype == TokenType.IDENTIFIER:
+            self._write_and_advance()
+            self._compile_identifier()
+        else:
+            raise ValueError("Expected 'void' or 'type' after subroutine keyword")
+
+    def _compile_subroutine_call(self) -> None:
         '''
         Compile a subroutine call.
         grammar: subroutineName '(' expressionList ')'| (className | varName) '.' subroutineName '(' expressionList  ')'
@@ -303,51 +278,57 @@ class CompilationEngine:
             self.compile_expression_list()
             self._compile_enumtoken(Symbol.RPAREN)
 
-    def _open_tag(self, tag_name: str):
+    def _open_tag(self, tag_name: str) -> None:
         self._write(f'<{tag_name}>\n')
         self.ident += 2
 
-    def _close_tag(self, tag_name: str):
+    def _close_tag(self, tag_name: str) -> None:
         self.ident -= 2
         self._write(f'</{tag_name}>\n')
 
-    def _write(self,text:str):
+    @contextmanager
+    def tag(self, tag_name: str):
+        self._open_tag(tag_name)
+        yield
+        self._close_tag(tag_name)
+
+    def _write(self, text: str) -> None:
         self.f.write(f'{" " * self.ident}{text}')
 
-    def _write_token(self):
+    def _write_token(self) -> None:
         self._write(self.token.xml())
 
-    def _compile_enumtoken(self, token: Keyword|Symbol):
+    def _write_and_advance(self) -> None:
+        self._write_token()
+        self.token = self.tokenizer.advance()
+
+    def _compile_enumtoken(self, token: Keyword | Symbol) -> None:
         '''
         Compile a keyword or symbol
         grammar: keyword | symbol
         '''
         if self.token == token:
-            self._write_token()
-            self.token = self.tokenizer.advance()
+            self._write_and_advance()
         else:
             raise ValueError(f"Expected {token.ttype}: '{token}'")
 
-    def _compile_identifier(self):
+    def _compile_identifier(self) -> None:
         '''
         Compile an identifier
         grammar: varName
         '''
         if self.token.ttype == TokenType.IDENTIFIER:
-            self._write_token()
-            self.token = self.tokenizer.advance()
+            self._write_and_advance()
         else:
             raise ValueError(f"Expected an identifier")
 
-
-    def _compile_type(self):
+    def _compile_type(self) -> None:
         '''
         Compile a type
         grammar: 'int' | 'char' | 'boolean' | className
         '''
         if self.token.is_type():
-            self._write_token()
-            self.token = self.tokenizer.advance()
+            self._write_and_advance()
         else:
             raise ValueError("Expected type to be 'int', 'char', 'boolean', or className")
 
