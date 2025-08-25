@@ -1,16 +1,12 @@
 
 import re
-from jack_tokens import Token,Symbol,TokenType,Keyword
+from jack_tokens import Token,Symbol,TokenType
 
 class JackTokenizer:
     def __init__(self, input_file):
         with open(input_file, "r") as f:
             text = f.read()
-        text = re.sub(r'/\*.*?\*/', '', text, flags=re.DOTALL) #clean block comments
-        text = re.sub(r'//.*?\n', '', text, flags=re.DOTALL) #clean line comments
-        string_pattern = r'"[^"\n]*"'
-        pattern = r'([' + re.escape(''.join(Symbol.values())) + r'])|(' + string_pattern + r')|\s+'
-        self.raw_tokens = [p for p in re.split(pattern, text) if p]
+        self.raw_tokens = JackTokenizer.tokenize_raw(text)
         self.n_tokens = len(self.raw_tokens)
         self.next_i = 0
         self.current_token: Token|None = None
@@ -25,61 +21,24 @@ class JackTokenizer:
         This method should be called only if has_more_tokens() is true.
         Initially there is not current token.
         '''
-        raw_token = self.raw_tokens[self.next_i]
-        self.current_token = Token(raw_token)
+        self.current_token = self.next_token()
         self.next_i += 1
-        
+        return self.current_token
+    
+    def next_token(self):
+        raw_token = self.raw_tokens[self.next_i]
+        return Token(raw_token)
 
-    def token_type(self) -> TokenType:
-        ''' Return the type of the current token, as a constant. '''
-        if isinstance(self.current_token, Token):
-            return self.current_token.ttype
-        raise ValueError("No current token")
 
-    def keyword(self) -> str:
-        ''' 
-        Returns the keyword which is the current token as a constant.
-        This method should be called only if token_type() is KEYWORD.
+    @staticmethod
+    def tokenize_raw(text: str):
         '''
-        if self.token_type() == TokenType.KEYWORD:
-            return self.current_token.value
-        raise ValueError("Current token is not a keyword")
-
-    def symbol(self) -> str:
+        Performs raw tokenization of Jack source code and returns a list of tokens.
+        Removes comments and splits by symbols, string constants, and whitespace.
         '''
-        Returns the character which is the current token.
-        Should be called only if token_type() is SYMBOL.
-        '''
-        if self.token_type() == TokenType.SYMBOL:
-            return self.current_token.value
-        raise ValueError("Current token is not a symbol")
-
-    def identifier(self) -> str:
-        '''
-        Returns the identifier which is the current token.
-        Should be called only if token_type() is IDENTIFIER.
-        '''
-        if self.token_type() == TokenType.IDENTIFIER:
-            return self.current_token.value
-        else:
-            raise ValueError("Current token is not an identifier")
-
-    def int_val(self) -> int:
-        '''
-        Returns the integer value of the current token.
-        Should be called only if token_type() is INT_CONST.
-        '''
-        if self.token_type() == TokenType.INT_CONST:
-            return self.current_token.value
-        else:
-            raise ValueError("Current token is not an integer constant")
-        
-    def string_val(self) -> str:
-        '''
-        Returns the string value of the current token, without the two enclosing double quotes.
-        Should be called only if token_type() is STRING_CONST.
-        '''
-        if self.token_type() == TokenType.STRING_CONST:
-            return self.current_token.value
-        else:
-            raise ValueError("Current token is not a string constant")
+        text = re.sub(r'/\*.*?\*/', '', text, flags=re.DOTALL) #clean block comments
+        text = re.sub(r'//.*?\n', '', text, flags=re.DOTALL) #clean line comments
+        string_pattern = r'"[^"\n]*"'
+        pattern = r'([' + re.escape(''.join(Symbol.values())) + r'])|(' + string_pattern + r')|\s+'
+        raw_tokens = [p for p in re.split(pattern, text) if p]
+        return raw_tokens

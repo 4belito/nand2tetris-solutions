@@ -310,14 +310,14 @@
                   </expression>
                   <symbol> ) </symbol>
                 </term>
-                <symbol> &lt; </symbol>
+                <symbol> < </symbol>
                 <term>
                   <integerConstant> 254 </integerConstant>
                 </term>
               </expression>
               <symbol> ) </symbol>
             </term>
-            <symbol> &amp; </symbol>
+            <symbol> & </symbol>
             <term>
               <symbol> ( </symbol>
               <expression>
@@ -334,7 +334,7 @@
                   </expression>
                   <symbol> ) </symbol>
                 </term>
-                <symbol> &lt; </symbol>
+                <symbol> < </symbol>
                 <term>
                   <integerConstant> 510 </integerConstant>
                 </term>
@@ -407,7 +407,7 @@
             <term>
               <identifier> size </identifier>
             </term>
-            <symbol> &gt; </symbol>
+            <symbol> > </symbol>
             <term>
               <integerConstant> 2 </integerConstant>
             </term>
@@ -477,7 +477,7 @@
             <term>
               <identifier> y </identifier>
             </term>
-            <symbol> &gt; </symbol>
+            <symbol> > </symbol>
             <term>
               <integerConstant> 1 </integerConstant>
             </term>
@@ -669,7 +669,7 @@
               </expression>
               <symbol> ) </symbol>
             </term>
-            <symbol> &lt; </symbol>
+            <symbol> < </symbol>
             <term>
               <integerConstant> 254 </integerConstant>
             </term>
@@ -851,7 +851,7 @@
             <term>
               <identifier> x </identifier>
             </term>
-            <symbol> &gt; </symbol>
+            <symbol> > </symbol>
             <term>
               <integerConstant> 1 </integerConstant>
             </term>
@@ -1043,7 +1043,7 @@
               </expression>
               <symbol> ) </symbol>
             </term>
-            <symbol> &lt; </symbol>
+            <symbol> < </symbol>
             <term>
               <integerConstant> 510 </integerConstant>
             </term>
