@@ -1,35 +1,35 @@
 <class>
   <keyword> class </keyword>
-  <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> Square </identifier>
+  <identifier> Square </identifier>
   <symbol> { </symbol>
   <classVarDec>
     <keyword> field </keyword>
     <keyword> int </keyword>
-    <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> x </identifier>
+    <identifier> x </identifier>
     <symbol> , </symbol>
-    <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> y </identifier>
+    <identifier> y </identifier>
     <symbol> ; </symbol>
   </classVarDec>
   <classVarDec>
     <keyword> field </keyword>
     <keyword> int </keyword>
-    <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> size </identifier>
+    <identifier> size </identifier>
     <symbol> ; </symbol>
   </classVarDec>
   <subroutineDec>
     <keyword> constructor </keyword>
-    <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> Square </identifier>
-    <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> new </identifier>
+    <identifier> Square </identifier>
+    <identifier> new </identifier>
     <symbol> ( </symbol>
     <parameterList>
       <keyword> int </keyword>
-      <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> Ax </identifier>
+      <identifier> Ax </identifier>
       <symbol> , </symbol>
       <keyword> int </keyword>
-      <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> Ay </identifier>
+      <identifier> Ay </identifier>
       <symbol> , </symbol>
       <keyword> int </keyword>
-      <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> Asize </identifier>
+      <identifier> Asize </identifier>
     </parameterList>
     <symbol> ) </symbol>
     <subroutineBody>
@@ -37,40 +37,40 @@
       <statements>
         <letStatement>
           <keyword> let </keyword>
-          <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> x </identifier>
+          <identifier> x </identifier>
           <symbol> = </symbol>
           <expression>
             <term>
-              <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> Ax </identifier>
+              <identifier> Ax </identifier>
             </term>
           </expression>
           <symbol> ; </symbol>
         </letStatement>
         <letStatement>
           <keyword> let </keyword>
-          <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> y </identifier>
+          <identifier> y </identifier>
           <symbol> = </symbol>
           <expression>
             <term>
-              <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> Ay </identifier>
+              <identifier> Ay </identifier>
             </term>
           </expression>
           <symbol> ; </symbol>
         </letStatement>
         <letStatement>
           <keyword> let </keyword>
-          <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> size </identifier>
+          <identifier> size </identifier>
           <symbol> = </symbol>
           <expression>
             <term>
-              <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> Asize </identifier>
+              <identifier> Asize </identifier>
             </term>
           </expression>
           <symbol> ; </symbol>
         </letStatement>
         <doStatement>
           <keyword> do </keyword>
-          <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> draw </identifier>
+          <identifier> draw </identifier>
           <symbol> ( </symbol>
           <expressionList>
           </expressionList>
@@ -81,7 +81,7 @@
           <keyword> return </keyword>
           <expression>
             <term>
-              <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> x </identifier>
+              <keyword> this </keyword>
             </term>
           </expression>
           <symbol> ; </symbol>
@@ -93,7 +93,7 @@
   <subroutineDec>
     <keyword> method </keyword>
     <keyword> void </keyword>
-    <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> dispose </identifier>
+    <identifier> dispose </identifier>
     <symbol> ( </symbol>
     <parameterList>
     </parameterList>
@@ -103,9 +103,9 @@
       <statements>
         <doStatement>
           <keyword> do </keyword>
-          <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> Memory </identifier>
+          <identifier> Memory </identifier>
           <symbol> . </symbol>
-          <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> deAlloc </identifier>
+          <identifier> deAlloc </identifier>
           <symbol> ( </symbol>
           <expressionList>
             <expression>
@@ -128,7 +128,7 @@
   <subroutineDec>
     <keyword> method </keyword>
     <keyword> void </keyword>
-    <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> draw </identifier>
+    <identifier> draw </identifier>
     <symbol> ( </symbol>
     <parameterList>
     </parameterList>
@@ -138,14 +138,14 @@
       <statements>
         <doStatement>
           <keyword> do </keyword>
-          <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> Screen </identifier>
+          <identifier> Screen </identifier>
           <symbol> . </symbol>
-          <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> setColor </identifier>
+          <identifier> setColor </identifier>
           <symbol> ( </symbol>
           <expressionList>
             <expression>
               <term>
-                <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> x </identifier>
+                <keyword> true </keyword>
               </term>
             </expression>
           </expressionList>
@@ -154,101 +154,40 @@
         </doStatement>
         <doStatement>
           <keyword> do </keyword>
-          <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> Screen </identifier>
+          <identifier> Screen </identifier>
           <symbol> . </symbol>
-          <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> drawRectangle </identifier>
+          <identifier> drawRectangle </identifier>
           <symbol> ( </symbol>
           <expressionList>
             <expression>
               <term>
-                <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> x </identifier>
+                <identifier> x </identifier>
               </term>
             </expression>
             <symbol> , </symbol>
             <expression>
               <term>
-                <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> y </identifier>
+                <identifier> y </identifier>
               </term>
             </expression>
             <symbol> , </symbol>
             <expression>
               <term>
-                <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> x </identifier>
+                <identifier> x </identifier>
+              </term>
+              <symbol> + </symbol>
+              <term>
+                <identifier> size </identifier>
               </term>
             </expression>
             <symbol> , </symbol>
             <expression>
               <term>
-                <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> y </identifier>
+                <identifier> y </identifier>
               </term>
-            </expression>
-          </expressionList>
-          <symbol> ) </symbol>
-          <symbol> ; </symbol>
-        </doStatement>
-        <returnStatement>
-          <keyword> return </keyword>
-          <symbol> ; </symbol>
-        </returnStatement>
-      </statements>
-      <symbol> } </symbol>
-    </subroutineBody>
-  </subroutineDec>
-  <subroutineDec>
-    <keyword> method </keyword>
-    <keyword> void </keyword>
-    <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> erase </identifier>
-    <symbol> ( </symbol>
-    <parameterList>
-    </parameterList>
-    <symbol> ) </symbol>
-    <subroutineBody>
-      <symbol> { </symbol>
-      <statements>
-        <doStatement>
-          <keyword> do </keyword>
-          <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> Screen </identifier>
-          <symbol> . </symbol>
-          <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> setColor </identifier>
-          <symbol> ( </symbol>
-          <expressionList>
-            <expression>
+              <symbol> + </symbol>
               <term>
-                <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> x </identifier>
-              </term>
-            </expression>
-          </expressionList>
-          <symbol> ) </symbol>
-          <symbol> ; </symbol>
-        </doStatement>
-        <doStatement>
-          <keyword> do </keyword>
-          <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> Screen </identifier>
-          <symbol> . </symbol>
-          <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> drawRectangle </identifier>
-          <symbol> ( </symbol>
-          <expressionList>
-            <expression>
-              <term>
-                <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> x </identifier>
-              </term>
-            </expression>
-            <symbol> , </symbol>
-            <expression>
-              <term>
-                <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> y </identifier>
-              </term>
-            </expression>
-            <symbol> , </symbol>
-            <expression>
-              <term>
-                <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> x </identifier>
-              </term>
-            </expression>
-            <symbol> , </symbol>
-            <expression>
-              <term>
-                <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> y </identifier>
+                <identifier> size </identifier>
               </term>
             </expression>
           </expressionList>
@@ -266,7 +205,84 @@
   <subroutineDec>
     <keyword> method </keyword>
     <keyword> void </keyword>
-    <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> incSize </identifier>
+    <identifier> erase </identifier>
+    <symbol> ( </symbol>
+    <parameterList>
+    </parameterList>
+    <symbol> ) </symbol>
+    <subroutineBody>
+      <symbol> { </symbol>
+      <statements>
+        <doStatement>
+          <keyword> do </keyword>
+          <identifier> Screen </identifier>
+          <symbol> . </symbol>
+          <identifier> setColor </identifier>
+          <symbol> ( </symbol>
+          <expressionList>
+            <expression>
+              <term>
+                <keyword> false </keyword>
+              </term>
+            </expression>
+          </expressionList>
+          <symbol> ) </symbol>
+          <symbol> ; </symbol>
+        </doStatement>
+        <doStatement>
+          <keyword> do </keyword>
+          <identifier> Screen </identifier>
+          <symbol> . </symbol>
+          <identifier> drawRectangle </identifier>
+          <symbol> ( </symbol>
+          <expressionList>
+            <expression>
+              <term>
+                <identifier> x </identifier>
+              </term>
+            </expression>
+            <symbol> , </symbol>
+            <expression>
+              <term>
+                <identifier> y </identifier>
+              </term>
+            </expression>
+            <symbol> , </symbol>
+            <expression>
+              <term>
+                <identifier> x </identifier>
+              </term>
+              <symbol> + </symbol>
+              <term>
+                <identifier> size </identifier>
+              </term>
+            </expression>
+            <symbol> , </symbol>
+            <expression>
+              <term>
+                <identifier> y </identifier>
+              </term>
+              <symbol> + </symbol>
+              <term>
+                <identifier> size </identifier>
+              </term>
+            </expression>
+          </expressionList>
+          <symbol> ) </symbol>
+          <symbol> ; </symbol>
+        </doStatement>
+        <returnStatement>
+          <keyword> return </keyword>
+          <symbol> ; </symbol>
+        </returnStatement>
+      </statements>
+      <symbol> } </symbol>
+    </subroutineBody>
+  </subroutineDec>
+  <subroutineDec>
+    <keyword> method </keyword>
+    <keyword> void </keyword>
+    <identifier> incSize </identifier>
     <symbol> ( </symbol>
     <parameterList>
     </parameterList>
@@ -279,7 +295,51 @@
           <symbol> ( </symbol>
           <expression>
             <term>
-              <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> x </identifier>
+              <symbol> ( </symbol>
+              <expression>
+                <term>
+                  <symbol> ( </symbol>
+                  <expression>
+                    <term>
+                      <identifier> y </identifier>
+                    </term>
+                    <symbol> + </symbol>
+                    <term>
+                      <identifier> size </identifier>
+                    </term>
+                  </expression>
+                  <symbol> ) </symbol>
+                </term>
+                <symbol> &lt; </symbol>
+                <term>
+                  <integerConstant> 254 </integerConstant>
+                </term>
+              </expression>
+              <symbol> ) </symbol>
+            </term>
+            <symbol> &amp; </symbol>
+            <term>
+              <symbol> ( </symbol>
+              <expression>
+                <term>
+                  <symbol> ( </symbol>
+                  <expression>
+                    <term>
+                      <identifier> x </identifier>
+                    </term>
+                    <symbol> + </symbol>
+                    <term>
+                      <identifier> size </identifier>
+                    </term>
+                  </expression>
+                  <symbol> ) </symbol>
+                </term>
+                <symbol> &lt; </symbol>
+                <term>
+                  <integerConstant> 510 </integerConstant>
+                </term>
+              </expression>
+              <symbol> ) </symbol>
             </term>
           </expression>
           <symbol> ) </symbol>
@@ -287,7 +347,7 @@
           <statements>
             <doStatement>
               <keyword> do </keyword>
-              <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> erase </identifier>
+              <identifier> erase </identifier>
               <symbol> ( </symbol>
               <expressionList>
               </expressionList>
@@ -296,18 +356,22 @@
             </doStatement>
             <letStatement>
               <keyword> let </keyword>
-              <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> size </identifier>
+              <identifier> size </identifier>
               <symbol> = </symbol>
               <expression>
                 <term>
-                  <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> size </identifier>
+                  <identifier> size </identifier>
+                </term>
+                <symbol> + </symbol>
+                <term>
+                  <integerConstant> 2 </integerConstant>
                 </term>
               </expression>
               <symbol> ; </symbol>
             </letStatement>
             <doStatement>
               <keyword> do </keyword>
-              <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> draw </identifier>
+              <identifier> draw </identifier>
               <symbol> ( </symbol>
               <expressionList>
               </expressionList>
@@ -328,7 +392,7 @@
   <subroutineDec>
     <keyword> method </keyword>
     <keyword> void </keyword>
-    <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> decSize </identifier>
+    <identifier> decSize </identifier>
     <symbol> ( </symbol>
     <parameterList>
     </parameterList>
@@ -341,7 +405,11 @@
           <symbol> ( </symbol>
           <expression>
             <term>
-              <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> size </identifier>
+              <identifier> size </identifier>
+            </term>
+            <symbol> &gt; </symbol>
+            <term>
+              <integerConstant> 2 </integerConstant>
             </term>
           </expression>
           <symbol> ) </symbol>
@@ -349,7 +417,7 @@
           <statements>
             <doStatement>
               <keyword> do </keyword>
-              <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> erase </identifier>
+              <identifier> erase </identifier>
               <symbol> ( </symbol>
               <expressionList>
               </expressionList>
@@ -358,18 +426,22 @@
             </doStatement>
             <letStatement>
               <keyword> let </keyword>
-              <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> size </identifier>
+              <identifier> size </identifier>
               <symbol> = </symbol>
               <expression>
                 <term>
-                  <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> size </identifier>
+                  <identifier> size </identifier>
+                </term>
+                <symbol> - </symbol>
+                <term>
+                  <integerConstant> 2 </integerConstant>
                 </term>
               </expression>
               <symbol> ; </symbol>
             </letStatement>
             <doStatement>
               <keyword> do </keyword>
-              <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> draw </identifier>
+              <identifier> draw </identifier>
               <symbol> ( </symbol>
               <expressionList>
               </expressionList>
@@ -390,7 +462,7 @@
   <subroutineDec>
     <keyword> method </keyword>
     <keyword> void </keyword>
-    <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> moveUp </identifier>
+    <identifier> moveUp </identifier>
     <symbol> ( </symbol>
     <parameterList>
     </parameterList>
@@ -403,7 +475,11 @@
           <symbol> ( </symbol>
           <expression>
             <term>
-              <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> y </identifier>
+              <identifier> y </identifier>
+            </term>
+            <symbol> &gt; </symbol>
+            <term>
+              <integerConstant> 1 </integerConstant>
             </term>
           </expression>
           <symbol> ) </symbol>
@@ -411,14 +487,14 @@
           <statements>
             <doStatement>
               <keyword> do </keyword>
-              <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> Screen </identifier>
+              <identifier> Screen </identifier>
               <symbol> . </symbol>
-              <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> setColor </identifier>
+              <identifier> setColor </identifier>
               <symbol> ( </symbol>
               <expressionList>
                 <expression>
                   <term>
-                    <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> x </identifier>
+                    <keyword> false </keyword>
                   </term>
                 </expression>
               </expressionList>
@@ -427,32 +503,54 @@
             </doStatement>
             <doStatement>
               <keyword> do </keyword>
-              <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> Screen </identifier>
+              <identifier> Screen </identifier>
               <symbol> . </symbol>
-              <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> drawRectangle </identifier>
+              <identifier> drawRectangle </identifier>
               <symbol> ( </symbol>
               <expressionList>
                 <expression>
                   <term>
-                    <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> x </identifier>
+                    <identifier> x </identifier>
                   </term>
                 </expression>
                 <symbol> , </symbol>
                 <expression>
                   <term>
-                    <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> y </identifier>
+                    <symbol> ( </symbol>
+                    <expression>
+                      <term>
+                        <identifier> y </identifier>
+                      </term>
+                      <symbol> + </symbol>
+                      <term>
+                        <identifier> size </identifier>
+                      </term>
+                    </expression>
+                    <symbol> ) </symbol>
+                  </term>
+                  <symbol> - </symbol>
+                  <term>
+                    <integerConstant> 1 </integerConstant>
                   </term>
                 </expression>
                 <symbol> , </symbol>
                 <expression>
                   <term>
-                    <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> x </identifier>
+                    <identifier> x </identifier>
+                  </term>
+                  <symbol> + </symbol>
+                  <term>
+                    <identifier> size </identifier>
                   </term>
                 </expression>
                 <symbol> , </symbol>
                 <expression>
                   <term>
-                    <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> y </identifier>
+                    <identifier> y </identifier>
+                  </term>
+                  <symbol> + </symbol>
+                  <term>
+                    <identifier> size </identifier>
                   </term>
                 </expression>
               </expressionList>
@@ -461,25 +559,29 @@
             </doStatement>
             <letStatement>
               <keyword> let </keyword>
-              <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> y </identifier>
+              <identifier> y </identifier>
               <symbol> = </symbol>
               <expression>
                 <term>
-                  <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> y </identifier>
+                  <identifier> y </identifier>
+                </term>
+                <symbol> - </symbol>
+                <term>
+                  <integerConstant> 2 </integerConstant>
                 </term>
               </expression>
               <symbol> ; </symbol>
             </letStatement>
             <doStatement>
               <keyword> do </keyword>
-              <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> Screen </identifier>
+              <identifier> Screen </identifier>
               <symbol> . </symbol>
-              <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> setColor </identifier>
+              <identifier> setColor </identifier>
               <symbol> ( </symbol>
               <expressionList>
                 <expression>
                   <term>
-                    <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> x </identifier>
+                    <keyword> true </keyword>
                   </term>
                 </expression>
               </expressionList>
@@ -488,32 +590,40 @@
             </doStatement>
             <doStatement>
               <keyword> do </keyword>
-              <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> Screen </identifier>
+              <identifier> Screen </identifier>
               <symbol> . </symbol>
-              <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> drawRectangle </identifier>
+              <identifier> drawRectangle </identifier>
               <symbol> ( </symbol>
               <expressionList>
                 <expression>
                   <term>
-                    <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> x </identifier>
+                    <identifier> x </identifier>
                   </term>
                 </expression>
                 <symbol> , </symbol>
                 <expression>
                   <term>
-                    <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> y </identifier>
+                    <identifier> y </identifier>
                   </term>
                 </expression>
                 <symbol> , </symbol>
                 <expression>
                   <term>
-                    <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> x </identifier>
+                    <identifier> x </identifier>
+                  </term>
+                  <symbol> + </symbol>
+                  <term>
+                    <identifier> size </identifier>
                   </term>
                 </expression>
                 <symbol> , </symbol>
                 <expression>
                   <term>
-                    <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> y </identifier>
+                    <identifier> y </identifier>
+                  </term>
+                  <symbol> + </symbol>
+                  <term>
+                    <integerConstant> 1 </integerConstant>
                   </term>
                 </expression>
               </expressionList>
@@ -534,7 +644,7 @@
   <subroutineDec>
     <keyword> method </keyword>
     <keyword> void </keyword>
-    <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> moveDown </identifier>
+    <identifier> moveDown </identifier>
     <symbol> ( </symbol>
     <parameterList>
     </parameterList>
@@ -547,7 +657,21 @@
           <symbol> ( </symbol>
           <expression>
             <term>
-              <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> y </identifier>
+              <symbol> ( </symbol>
+              <expression>
+                <term>
+                  <identifier> y </identifier>
+                </term>
+                <symbol> + </symbol>
+                <term>
+                  <identifier> size </identifier>
+                </term>
+              </expression>
+              <symbol> ) </symbol>
+            </term>
+            <symbol> &lt; </symbol>
+            <term>
+              <integerConstant> 254 </integerConstant>
             </term>
           </expression>
           <symbol> ) </symbol>
@@ -555,14 +679,14 @@
           <statements>
             <doStatement>
               <keyword> do </keyword>
-              <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> Screen </identifier>
+              <identifier> Screen </identifier>
               <symbol> . </symbol>
-              <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> setColor </identifier>
+              <identifier> setColor </identifier>
               <symbol> ( </symbol>
               <expressionList>
                 <expression>
                   <term>
-                    <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> x </identifier>
+                    <keyword> false </keyword>
                   </term>
                 </expression>
               </expressionList>
@@ -571,32 +695,40 @@
             </doStatement>
             <doStatement>
               <keyword> do </keyword>
-              <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> Screen </identifier>
+              <identifier> Screen </identifier>
               <symbol> . </symbol>
-              <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> drawRectangle </identifier>
+              <identifier> drawRectangle </identifier>
               <symbol> ( </symbol>
               <expressionList>
                 <expression>
                   <term>
-                    <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> x </identifier>
+                    <identifier> x </identifier>
                   </term>
                 </expression>
                 <symbol> , </symbol>
                 <expression>
                   <term>
-                    <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> y </identifier>
+                    <identifier> y </identifier>
                   </term>
                 </expression>
                 <symbol> , </symbol>
                 <expression>
                   <term>
-                    <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> x </identifier>
+                    <identifier> x </identifier>
+                  </term>
+                  <symbol> + </symbol>
+                  <term>
+                    <identifier> size </identifier>
                   </term>
                 </expression>
                 <symbol> , </symbol>
                 <expression>
                   <term>
-                    <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> y </identifier>
+                    <identifier> y </identifier>
+                  </term>
+                  <symbol> + </symbol>
+                  <term>
+                    <integerConstant> 1 </integerConstant>
                   </term>
                 </expression>
               </expressionList>
@@ -605,25 +737,29 @@
             </doStatement>
             <letStatement>
               <keyword> let </keyword>
-              <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> y </identifier>
+              <identifier> y </identifier>
               <symbol> = </symbol>
               <expression>
                 <term>
-                  <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> y </identifier>
+                  <identifier> y </identifier>
+                </term>
+                <symbol> + </symbol>
+                <term>
+                  <integerConstant> 2 </integerConstant>
                 </term>
               </expression>
               <symbol> ; </symbol>
             </letStatement>
             <doStatement>
               <keyword> do </keyword>
-              <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> Screen </identifier>
+              <identifier> Screen </identifier>
               <symbol> . </symbol>
-              <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> setColor </identifier>
+              <identifier> setColor </identifier>
               <symbol> ( </symbol>
               <expressionList>
                 <expression>
                   <term>
-                    <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> x </identifier>
+                    <keyword> true </keyword>
                   </term>
                 </expression>
               </expressionList>
@@ -632,32 +768,54 @@
             </doStatement>
             <doStatement>
               <keyword> do </keyword>
-              <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> Screen </identifier>
+              <identifier> Screen </identifier>
               <symbol> . </symbol>
-              <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> drawRectangle </identifier>
+              <identifier> drawRectangle </identifier>
               <symbol> ( </symbol>
               <expressionList>
                 <expression>
                   <term>
-                    <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> x </identifier>
+                    <identifier> x </identifier>
                   </term>
                 </expression>
                 <symbol> , </symbol>
                 <expression>
                   <term>
-                    <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> y </identifier>
+                    <symbol> ( </symbol>
+                    <expression>
+                      <term>
+                        <identifier> y </identifier>
+                      </term>
+                      <symbol> + </symbol>
+                      <term>
+                        <identifier> size </identifier>
+                      </term>
+                    </expression>
+                    <symbol> ) </symbol>
+                  </term>
+                  <symbol> - </symbol>
+                  <term>
+                    <integerConstant> 1 </integerConstant>
                   </term>
                 </expression>
                 <symbol> , </symbol>
                 <expression>
                   <term>
-                    <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> x </identifier>
+                    <identifier> x </identifier>
+                  </term>
+                  <symbol> + </symbol>
+                  <term>
+                    <identifier> size </identifier>
                   </term>
                 </expression>
                 <symbol> , </symbol>
                 <expression>
                   <term>
-                    <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> y </identifier>
+                    <identifier> y </identifier>
+                  </term>
+                  <symbol> + </symbol>
+                  <term>
+                    <identifier> size </identifier>
                   </term>
                 </expression>
               </expressionList>
@@ -678,7 +836,7 @@
   <subroutineDec>
     <keyword> method </keyword>
     <keyword> void </keyword>
-    <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> moveLeft </identifier>
+    <identifier> moveLeft </identifier>
     <symbol> ( </symbol>
     <parameterList>
     </parameterList>
@@ -691,7 +849,11 @@
           <symbol> ( </symbol>
           <expression>
             <term>
-              <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> x </identifier>
+              <identifier> x </identifier>
+            </term>
+            <symbol> &gt; </symbol>
+            <term>
+              <integerConstant> 1 </integerConstant>
             </term>
           </expression>
           <symbol> ) </symbol>
@@ -699,14 +861,14 @@
           <statements>
             <doStatement>
               <keyword> do </keyword>
-              <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> Screen </identifier>
+              <identifier> Screen </identifier>
               <symbol> . </symbol>
-              <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> setColor </identifier>
+              <identifier> setColor </identifier>
               <symbol> ( </symbol>
               <expressionList>
                 <expression>
                   <term>
-                    <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> x </identifier>
+                    <keyword> false </keyword>
                   </term>
                 </expression>
               </expressionList>
@@ -715,32 +877,54 @@
             </doStatement>
             <doStatement>
               <keyword> do </keyword>
-              <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> Screen </identifier>
+              <identifier> Screen </identifier>
               <symbol> . </symbol>
-              <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> drawRectangle </identifier>
+              <identifier> drawRectangle </identifier>
               <symbol> ( </symbol>
               <expressionList>
                 <expression>
                   <term>
-                    <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> x </identifier>
+                    <symbol> ( </symbol>
+                    <expression>
+                      <term>
+                        <identifier> x </identifier>
+                      </term>
+                      <symbol> + </symbol>
+                      <term>
+                        <identifier> size </identifier>
+                      </term>
+                    </expression>
+                    <symbol> ) </symbol>
+                  </term>
+                  <symbol> - </symbol>
+                  <term>
+                    <integerConstant> 1 </integerConstant>
                   </term>
                 </expression>
                 <symbol> , </symbol>
                 <expression>
                   <term>
-                    <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> y </identifier>
+                    <identifier> y </identifier>
                   </term>
                 </expression>
                 <symbol> , </symbol>
                 <expression>
                   <term>
-                    <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> x </identifier>
+                    <identifier> x </identifier>
+                  </term>
+                  <symbol> + </symbol>
+                  <term>
+                    <identifier> size </identifier>
                   </term>
                 </expression>
                 <symbol> , </symbol>
                 <expression>
                   <term>
-                    <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> y </identifier>
+                    <identifier> y </identifier>
+                  </term>
+                  <symbol> + </symbol>
+                  <term>
+                    <identifier> size </identifier>
                   </term>
                 </expression>
               </expressionList>
@@ -749,25 +933,29 @@
             </doStatement>
             <letStatement>
               <keyword> let </keyword>
-              <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> x </identifier>
+              <identifier> x </identifier>
               <symbol> = </symbol>
               <expression>
                 <term>
-                  <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> x </identifier>
+                  <identifier> x </identifier>
+                </term>
+                <symbol> - </symbol>
+                <term>
+                  <integerConstant> 2 </integerConstant>
                 </term>
               </expression>
               <symbol> ; </symbol>
             </letStatement>
             <doStatement>
               <keyword> do </keyword>
-              <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> Screen </identifier>
+              <identifier> Screen </identifier>
               <symbol> . </symbol>
-              <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> setColor </identifier>
+              <identifier> setColor </identifier>
               <symbol> ( </symbol>
               <expressionList>
                 <expression>
                   <term>
-                    <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> x </identifier>
+                    <keyword> true </keyword>
                   </term>
                 </expression>
               </expressionList>
@@ -776,32 +964,40 @@
             </doStatement>
             <doStatement>
               <keyword> do </keyword>
-              <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> Screen </identifier>
+              <identifier> Screen </identifier>
               <symbol> . </symbol>
-              <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> drawRectangle </identifier>
+              <identifier> drawRectangle </identifier>
               <symbol> ( </symbol>
               <expressionList>
                 <expression>
                   <term>
-                    <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> x </identifier>
+                    <identifier> x </identifier>
                   </term>
                 </expression>
                 <symbol> , </symbol>
                 <expression>
                   <term>
-                    <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> y </identifier>
+                    <identifier> y </identifier>
                   </term>
                 </expression>
                 <symbol> , </symbol>
                 <expression>
                   <term>
-                    <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> x </identifier>
+                    <identifier> x </identifier>
+                  </term>
+                  <symbol> + </symbol>
+                  <term>
+                    <integerConstant> 1 </integerConstant>
                   </term>
                 </expression>
                 <symbol> , </symbol>
                 <expression>
                   <term>
-                    <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> y </identifier>
+                    <identifier> y </identifier>
+                  </term>
+                  <symbol> + </symbol>
+                  <term>
+                    <identifier> size </identifier>
                   </term>
                 </expression>
               </expressionList>
@@ -822,7 +1018,7 @@
   <subroutineDec>
     <keyword> method </keyword>
     <keyword> void </keyword>
-    <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> moveRight </identifier>
+    <identifier> moveRight </identifier>
     <symbol> ( </symbol>
     <parameterList>
     </parameterList>
@@ -835,7 +1031,21 @@
           <symbol> ( </symbol>
           <expression>
             <term>
-              <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> x </identifier>
+              <symbol> ( </symbol>
+              <expression>
+                <term>
+                  <identifier> x </identifier>
+                </term>
+                <symbol> + </symbol>
+                <term>
+                  <identifier> size </identifier>
+                </term>
+              </expression>
+              <symbol> ) </symbol>
+            </term>
+            <symbol> &lt; </symbol>
+            <term>
+              <integerConstant> 510 </integerConstant>
             </term>
           </expression>
           <symbol> ) </symbol>
@@ -843,14 +1053,14 @@
           <statements>
             <doStatement>
               <keyword> do </keyword>
-              <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> Screen </identifier>
+              <identifier> Screen </identifier>
               <symbol> . </symbol>
-              <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> setColor </identifier>
+              <identifier> setColor </identifier>
               <symbol> ( </symbol>
               <expressionList>
                 <expression>
                   <term>
-                    <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> x </identifier>
+                    <keyword> false </keyword>
                   </term>
                 </expression>
               </expressionList>
@@ -859,32 +1069,40 @@
             </doStatement>
             <doStatement>
               <keyword> do </keyword>
-              <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> Screen </identifier>
+              <identifier> Screen </identifier>
               <symbol> . </symbol>
-              <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> drawRectangle </identifier>
+              <identifier> drawRectangle </identifier>
               <symbol> ( </symbol>
               <expressionList>
                 <expression>
                   <term>
-                    <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> x </identifier>
+                    <identifier> x </identifier>
                   </term>
                 </expression>
                 <symbol> , </symbol>
                 <expression>
                   <term>
-                    <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> y </identifier>
+                    <identifier> y </identifier>
                   </term>
                 </expression>
                 <symbol> , </symbol>
                 <expression>
                   <term>
-                    <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> x </identifier>
+                    <identifier> x </identifier>
+                  </term>
+                  <symbol> + </symbol>
+                  <term>
+                    <integerConstant> 1 </integerConstant>
                   </term>
                 </expression>
                 <symbol> , </symbol>
                 <expression>
                   <term>
-                    <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> y </identifier>
+                    <identifier> y </identifier>
+                  </term>
+                  <symbol> + </symbol>
+                  <term>
+                    <identifier> size </identifier>
                   </term>
                 </expression>
               </expressionList>
@@ -893,25 +1111,29 @@
             </doStatement>
             <letStatement>
               <keyword> let </keyword>
-              <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> x </identifier>
+              <identifier> x </identifier>
               <symbol> = </symbol>
               <expression>
                 <term>
-                  <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> x </identifier>
+                  <identifier> x </identifier>
+                </term>
+                <symbol> + </symbol>
+                <term>
+                  <integerConstant> 2 </integerConstant>
                 </term>
               </expression>
               <symbol> ; </symbol>
             </letStatement>
             <doStatement>
               <keyword> do </keyword>
-              <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> Screen </identifier>
+              <identifier> Screen </identifier>
               <symbol> . </symbol>
-              <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> setColor </identifier>
+              <identifier> setColor </identifier>
               <symbol> ( </symbol>
               <expressionList>
                 <expression>
                   <term>
-                    <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> x </identifier>
+                    <keyword> true </keyword>
                   </term>
                 </expression>
               </expressionList>
@@ -920,32 +1142,54 @@
             </doStatement>
             <doStatement>
               <keyword> do </keyword>
-              <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> Screen </identifier>
+              <identifier> Screen </identifier>
               <symbol> . </symbol>
-              <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> drawRectangle </identifier>
+              <identifier> drawRectangle </identifier>
               <symbol> ( </symbol>
               <expressionList>
                 <expression>
                   <term>
-                    <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> x </identifier>
+                    <symbol> ( </symbol>
+                    <expression>
+                      <term>
+                        <identifier> x </identifier>
+                      </term>
+                      <symbol> + </symbol>
+                      <term>
+                        <identifier> size </identifier>
+                      </term>
+                    </expression>
+                    <symbol> ) </symbol>
+                  </term>
+                  <symbol> - </symbol>
+                  <term>
+                    <integerConstant> 1 </integerConstant>
                   </term>
                 </expression>
                 <symbol> , </symbol>
                 <expression>
                   <term>
-                    <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> y </identifier>
+                    <identifier> y </identifier>
                   </term>
                 </expression>
                 <symbol> , </symbol>
                 <expression>
                   <term>
-                    <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> x </identifier>
+                    <identifier> x </identifier>
+                  </term>
+                  <symbol> + </symbol>
+                  <term>
+                    <identifier> size </identifier>
                   </term>
                 </expression>
                 <symbol> , </symbol>
                 <expression>
                   <term>
-                    <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> y </identifier>
+                    <identifier> y </identifier>
+                  </term>
+                  <symbol> + </symbol>
+                  <term>
+                    <identifier> size </identifier>
                   </term>
                 </expression>
               </expressionList>

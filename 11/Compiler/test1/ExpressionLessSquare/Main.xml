@@ -1,17 +1,17 @@
 <class>
   <keyword> class </keyword>
-  <identifier> Main </identifier>
+  <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> Main </identifier>
   <symbol> { </symbol>
   <classVarDec>
     <keyword> static </keyword>
     <keyword> boolean </keyword>
-    <identifier> test </identifier>
+    <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> test </identifier>
     <symbol> ; </symbol>
   </classVarDec>
   <subroutineDec>
     <keyword> function </keyword>
     <keyword> void </keyword>
-    <identifier> main </identifier>
+    <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> main </identifier>
     <symbol> ( </symbol>
     <parameterList>
     </parameterList>
@@ -20,27 +20,27 @@
       <symbol> { </symbol>
       <varDec>
         <keyword> var </keyword>
-        <identifier> SquareGame </identifier>
-        <identifier> game </identifier>
+        <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> SquareGame </identifier>
+        <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> game </identifier>
         <symbol> ; </symbol>
       </varDec>
       <statements>
         <letStatement>
           <keyword> let </keyword>
-          <identifier> game </identifier>
+          <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> game </identifier>
           <symbol> = </symbol>
           <expression>
             <term>
-              <identifier> game </identifier>
+              <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> game </identifier>
             </term>
           </expression>
           <symbol> ; </symbol>
         </letStatement>
         <doStatement>
           <keyword> do </keyword>
-          <identifier> game </identifier>
+          <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> game </identifier>
           <symbol> . </symbol>
-          <identifier> run </identifier>
+          <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> run </identifier>
           <symbol> ( </symbol>
           <expressionList>
           </expressionList>
@@ -49,9 +49,9 @@
         </doStatement>
         <doStatement>
           <keyword> do </keyword>
-          <identifier> game </identifier>
+          <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> game </identifier>
           <symbol> . </symbol>
-          <identifier> dispose </identifier>
+          <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> dispose </identifier>
           <symbol> ( </symbol>
           <expressionList>
           </expressionList>
@@ -69,7 +69,7 @@
   <subroutineDec>
     <keyword> function </keyword>
     <keyword> void </keyword>
-    <identifier> more </identifier>
+    <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> more </identifier>
     <symbol> ( </symbol>
     <parameterList>
     </parameterList>
@@ -79,7 +79,7 @@
       <varDec>
         <keyword> var </keyword>
         <keyword> boolean </keyword>
-        <identifier> b </identifier>
+        <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> b </identifier>
         <symbol> ; </symbol>
       </varDec>
       <statements>
@@ -88,7 +88,7 @@
           <symbol> ( </symbol>
           <expression>
             <term>
-              <identifier> b </identifier>
+              <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> b </identifier>
             </term>
           </expression>
           <symbol> ) </symbol>

@@ -9,8 +9,12 @@ serving as the core of the Jack compiler's syntax analysis phase.
 from contextlib import contextmanager
 
 from jack_tokenizer import JackTokenizer
-from jack_tokens import Keyword, Symbol, TokenType,Token
+from tokens.token import Keyword, Symbol, TokenType,Token
+#from tokens.identifier import IdentifierContext as IdContext
+#from tokens.identifier import IdentifierType as IdType
+from symbol_table import SymbolTable
 from typing import TextIO
+#from tokens.identifier import VariableCategory as VarCat
 
 class CompilationEngine:
     '''Builds the XML representation of the Jack program.
@@ -20,6 +24,7 @@ class CompilationEngine:
         self.tokenizer = tokenizer
         self.output_file = output_file
         self.ident = 0
+        self.table: SymbolTable
         self.token: Token
         self.f: TextIO
 
@@ -33,15 +38,14 @@ class CompilationEngine:
         with open(self.output_file, 'w') as self.f:
             self.token = self.tokenizer.advance()
             with self.tag('class'):
+                self.table = SymbolTable()
                 self._compile_enumtoken(Keyword.CLASS)
-                self._compile_identifier()
+                self._compile_identifier() #IdContext(type=IdType.CLASS, is_def=True)
                 self._compile_enumtoken(Symbol.LBRACE)
-                if self.token.is_in([Keyword.STATIC, Keyword.FIELD]):
-                    while self.token.is_in([Keyword.STATIC, Keyword.FIELD]):
-                        self.compile_class_var_dec()
-                if self.token.is_subroutine():
-                    while self.token.is_subroutine():
-                        self.compile_subroutine_dec()
+                while self.token.is_in([Keyword.STATIC, Keyword.FIELD]):
+                    self.compile_class_var_dec()
+                while self.token.is_subroutine():
+                    self.compile_subroutine_dec()
                 if self.token == Symbol.RBRACE:
                     self._write_token()
             if self.tokenizer.has_more_tokens():
@@ -54,14 +58,23 @@ class CompilationEngine:
         Compile a static variable declaration, or a field declaration.
         grammar: (static | field) type varName (',' varName)* ';'
         '''
+        
         with self.tag('classVarDec'):
+            #var_cat = VarCat.from_keyword(self.token)
             self._write_and_advance()  # 'static' | 'field'
+            #var_type = self.token.value
             self._compile_type()
-            self._compile_identifier()
+            #var_name = self.token.value
+            #self.table.define(var_name, var_type, var_cat)
+            #symbol = self.table.get_symbol(var_name)
+            #id_context = IdContext(type=IdType.VARIABLE, is_def=True, category=symbol.kind, index=symbol.index)
+            self._compile_identifier()#id_context
             while self.token == Symbol.COMMA:
                 self._write_and_advance()
                 self._compile_identifier()
             self._compile_enumtoken(Symbol.SEMICOLON)
+
+
 
     def compile_subroutine_dec(self) -> None:
         '''
@@ -323,12 +336,13 @@ class CompilationEngine:
         else:
             raise ValueError(f"Expected {token.ttype}: '{token}'")
 
-    def _compile_identifier(self) -> None:
+    def _compile_identifier(self, ) -> None: #context: IdContext
         '''
         Compile an identifier
         grammar: varName
         '''
         if self.token.ttype == TokenType.IDENTIFIER:
+            #self.token.set_context(context)
             self._write_and_advance()
         else:
             raise ValueError(f"Expected an identifier")

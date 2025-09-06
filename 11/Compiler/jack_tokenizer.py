@@ -7,7 +7,8 @@ individual tokens for further parsing and analysis.
 
 import re
 from collections import deque
-from jack_tokens import Token, Symbol
+from tokens.token import Token
+from tokens.enums import Symbol
 
 class JackTokenizer:
     """Tokenizes Jack source code and provides access to tokens."""
