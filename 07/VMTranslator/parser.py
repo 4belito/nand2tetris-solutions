@@ -1,12 +1,11 @@
-from dataclasses import dataclass
-import os
+from enum import Enum
 
-@dataclass
-class CMDType:
-    """Enum-like class to represent different command types."""
+class CMDType(Enum):
+    """Enum class to represent different command types."""
     C_ARITHMETIC = "C_ARITHMETIC"
     C_PUSH = "C_PUSH"
     C_POP = "C_POP"
+
 
 class Parser:
     """
@@ -15,16 +14,16 @@ class Parser:
 
     def __init__(self, filepath: str):
         self.instruction_index = 0
+        self.instructions: list[str] = []
         with open(filepath, "r") as f:
-            self.instructions = []
             for line in f:
                 cleaned_line = line.split("//")[0].strip()
                 if cleaned_line:
                     self.instructions.append(cleaned_line)
         self.n_instructions = len(self.instructions)
-        self.instruction = None
-        self.tokens = None
-        self.keyword = None
+        self.instruction: str = ""
+        self.tokens: list[str] = []
+        self.keyword: str = ""
 
     def has_more_commands(self) -> bool:
         '''Checks if there are more commands to parse.'''
@@ -42,8 +41,6 @@ class Parser:
 
     def command_type(self) -> CMDType:
         '''Determines the type of the current command.'''
-        if not self.instruction:
-            return None
 
         match (len(self.tokens), self.keyword):
             case (1, self.keyword) if self.keyword in {"add", "sub", "neg", "eq", "gt", "lt", "and", "or", "not"}:
@@ -55,14 +52,14 @@ class Parser:
             case _:
                 raise ValueError(f"Unknown command type: {self.instruction}")
 
-    def arg1(self) -> str | None:
+    def arg1(self) -> str:
         '''Returns the first argument of the current command.'''
         if len(self.tokens) > 1:
             return self.tokens[1]
-        return None 
+        raise ValueError("No first argument found.")
 
-    def arg2(self) -> int | None:
+    def arg2(self) -> int:
         '''Returns the second argument of the current command.'''
         if len(self.tokens) > 2:
             return int(self.tokens[2])
-        return None
+        raise ValueError("No second argument found.")

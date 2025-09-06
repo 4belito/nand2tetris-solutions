@@ -1,7 +1,7 @@
 '''VMTranslator.py
 This script translates VM commands into Hack assembly code.
 It uses the Parser class to read VM commands and the CodeWriter class to write the corresponding assembly code.
-It takes a VM file as input and generates an assembly file with the same name but with'''
+It takes a VM file as input and generates an assembly file with the same name but with a .asm extension.'''
 
 
 import argparse
@@ -13,13 +13,13 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("filepath", help="vm file to read")
     args = parser.parse_args()
-    filepath = args.filepath
+    filepath: str = args.filepath
     if filepath.endswith(".vm"):
         output_filepath = filepath.replace(".vm", ".asm")
         filepath = os.path.dirname(filepath)
     else:
         output_filepath = filepath + "/Sys.asm"
-    writer = CodeWriter(output_filepath)  
+    writer = CodeWriter(output_filepath)
     for f in os.listdir(filepath):
         if f.endswith(".vm"):
             vm_parser = Parser(os.path.join(filepath, f))

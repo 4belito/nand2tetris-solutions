@@ -9,19 +9,20 @@ serving as the core of the Jack compiler's syntax analysis phase.
 from contextlib import contextmanager
 
 from jack_tokenizer import JackTokenizer
-from jack_tokens import Keyword, Symbol, TokenType, Token
-
+from jack_tokens import Keyword, Symbol, TokenType,Token
+from typing import TextIO
 
 class CompilationEngine:
     '''Builds the XML representation of the Jack program.
     It has a compile method for 15 of the 21 non-terminal rules of the Jack grammar
     '''
     def __init__(self, tokenizer: JackTokenizer, output_file: str):
-        self.tokenizer= tokenizer
+        self.tokenizer = tokenizer
         self.output_file = output_file
-        self.token = None
-        self.f = None
         self.ident = 0
+        self.token: Token
+        self.f: TextIO
+
 
 
     def compile_class(self) -> None:
@@ -30,13 +31,13 @@ class CompilationEngine:
         grammar: 'class' className '{' classVarDec* subroutineDec* '}'
         '''
         with open(self.output_file, 'w') as self.f:
-            self.token = self.tokenizer.advance()  # 'class'
+            self.token = self.tokenizer.advance()
             with self.tag('class'):
                 self._compile_enumtoken(Keyword.CLASS)
                 self._compile_identifier()
                 self._compile_enumtoken(Symbol.LBRACE)
-                if self.token in (Keyword.STATIC, Keyword.FIELD):
-                    while self.token in (Keyword.STATIC, Keyword.FIELD):
+                if self.token.is_in([Keyword.STATIC, Keyword.FIELD]):
+                    while self.token.is_in([Keyword.STATIC, Keyword.FIELD]):
                         self.compile_class_var_dec()
                 if self.token.is_subroutine():
                     while self.token.is_subroutine():
@@ -82,7 +83,7 @@ class CompilationEngine:
         grammar: ((type varName) (',' type varName)*)?
         '''
         with self.tag('parameterList'):
-            if self.token.is_type():  # type
+            if self.token.is_type(): 
                 self._write_and_advance()
                 self._compile_identifier()
                 while self.token == Symbol.COMMA:  # (',' type varName)*)?
@@ -124,7 +125,7 @@ class CompilationEngine:
         grammar: statement*
         '''
         with self.tag('statements'):
-            while self.token.is_statement():
+            while True:
                 match self.token:
                     case Keyword.LET:
                         self.compile_let()
@@ -136,6 +137,8 @@ class CompilationEngine:
                         self.compile_do()
                     case Keyword.RETURN:
                         self.compile_return()
+                    case _:
+                        break
 
     def compile_let(self) -> None:
         '''
@@ -215,7 +218,7 @@ class CompilationEngine:
         with self.tag('expression'):
             self.compile_term()
             while self.token.is_op():
-                self._compile_enumtoken(self.token)
+                self._write_and_advance()
                 self.compile_term()
 
     def compile_term(self) -> None:
@@ -238,7 +241,7 @@ class CompilationEngine:
                     self._compile_enumtoken(Symbol.LBRACK)
                     self.compile_expression()
                     self._compile_enumtoken(Symbol.RBRACK)
-                elif next_token in (Symbol.LPAREN, Symbol.DOT):
+                elif next_token.is_in([Symbol.LPAREN, Symbol.DOT]):
                     self._compile_subroutine_call()
                 else:
                     self._compile_identifier()
@@ -247,7 +250,7 @@ class CompilationEngine:
                 self.compile_expression()
                 self._compile_enumtoken(Symbol.RPAREN)
             elif self.token.is_unary_op():
-                self._compile_enumtoken(self.token)
+                self._write_and_advance()
                 self.compile_term()
 
     def compile_expression_list(self) -> None:

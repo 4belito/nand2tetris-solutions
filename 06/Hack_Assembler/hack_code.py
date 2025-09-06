@@ -63,7 +63,7 @@ class Code:
         return format(int(address), "016b")
 
     @classmethod
-    def translate_C(clc, clean_line: str) -> str:
+    def translate_C(cls, clean_line: str) -> str:
         """
         Translate a C-instruction into its 16-bit binary representation.
         Splits the instruction into dest, comp, and jump fields and encodes them.
@@ -77,13 +77,16 @@ class Code:
         else:
             comp, jump = rest, ""
 
-        comp_bits = clc.COMPUTATION.get(comp)
-        dest_bits = clc.DESTINATION.get(dest)
-        jump_bits = clc.JUMP.get(jump)
+        comp_bits = cls.COMPUTATION.get(comp)
+        dest_bits = cls.DESTINATION.get(dest)
+        jump_bits = cls.JUMP.get(jump)
 
         if comp_bits is None:
             raise ValueError(f"Invalid comp field: '{comp}'")
-
+        if dest_bits is None:
+            raise ValueError(f"Invalid dest field: '{dest}'")
+        if jump_bits is None:
+            raise ValueError(f"Invalid jump field: '{jump}'")
         return "111" + comp_bits + dest_bits + jump_bits
     
 

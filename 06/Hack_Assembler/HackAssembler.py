@@ -18,8 +18,8 @@ def main():
     parser.add_argument("filepath", help="assembly file to read")
     args = parser.parse_args()
     file_name = os.path.splitext(args.filepath.strip())[0]
-    
-    cleaned_lines = []
+
+    cleaned_lines: list[str] = []
     line_number = 0
 
     # First pass: build symbol table and collect cleaned lines

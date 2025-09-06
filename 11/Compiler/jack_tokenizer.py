@@ -27,7 +27,7 @@ class JackTokenizer:
         """Return True if there are more tokens to process."""
         return len(self.raw_tokens) > 0
 
-    def advance(self) -> Token | None:
+    def advance(self) -> Token:
         '''
         Get the next token from the input, and makes it the current token.
         This method should be called only if has_more_tokens() is true.
@@ -37,16 +37,14 @@ class JackTokenizer:
             raw_token = self.raw_tokens.popleft()
             self.current_token = Token(raw_token)
             return self.current_token
-        else:
-            self.current_token = None
-            return None
+        raise RuntimeError("No more tokens available to advance.")
 
-    def peek(self) -> Token | None:
+    def peek(self) -> Token:
         """Return the next token object without removing it."""
         if self.has_more_tokens():
             raw_token = self.raw_tokens[0]
             return Token(raw_token)
-        return None
+        raise RuntimeError("No more tokens available to peek.")
 
     @staticmethod
     def tokenize_raw(text: str) -> list[str]:

@@ -6,10 +6,10 @@ import os
 
 class JackAnalyzer:
     def __init__(self, input_path:str):
+        self.input_files: list[str] = []
         if input_path.endswith('.jack'):
-            self.input_files = [input_path]
+            self.input_files.append(input_path)
         else:
-            self.input_files = []
             for file in os.listdir(input_path):
                 if file.endswith('.jack'):
                     self.input_files.append(os.path.join(input_path, file))

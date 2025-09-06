@@ -73,7 +73,7 @@ class CodeWriter:
         self.file.write("\n" + assembly_code + "\n")
 
 
-    def write_push_pop(self, cmd: str, segment: str, index: int) -> None:
+    def write_push_pop(self, cmd: CMDType, segment: str, index: int) -> None:
         """
         Translates the given push or pop VM command into Hack assembly and writes to file.
         """
