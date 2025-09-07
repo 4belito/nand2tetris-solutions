@@ -4,45 +4,34 @@ from enum import Enum
 from dataclasses import dataclass
 from tokens.type import TokenType
 import re
-from tokens.enums import Keyword
 
-class IdentifierType(Enum):
-    """Enum for Jack identifier types."""
+class IdentifierCategory(Enum):
+    """Enum for Jack identifier categories."""
     CLASS = "class"
     SUBROUTINE = "subroutine"
-    VARIABLE = "variable"
+    VAR_SCOPE = "var_scope"
 
-    def __repr__(self) -> str:
-        """Return string representation of the identifier type."""
+    def __str__(self) -> str:
+        """Return string representation of the identifier category."""
         return self.value
-    
-class VariableCategory(Enum):
-    """Enum for Jack variable categories."""
+
+class VariableScope(Enum):
+    """Enum for Jack variable scopes."""
     VAR = "var"
     ARGUMENT = "argument"
     STATIC = "static"
     FIELD = "field"
 
-    @staticmethod
-    def from_keyword(kw: Keyword) -> VariableCategory:
-        """Map a Keyword to a VariableCategory."""
-        match kw:
-            case Keyword.VAR:
-                return VariableCategory.VAR
-            case Keyword.STATIC:
-                return VariableCategory.STATIC
-            case Keyword.FIELD:
-                return VariableCategory.FIELD
-            case _:
-                raise ValueError(f"Cannot convert {kw} to VariableCategory.")
-
-
+    def __str__(self) -> str:
+        """Return string representation of the identifier category."""
+        return self.value
+    
 @dataclass
 class IdentifierContext:
     """Class for Jack identifier context."""
-    type: IdentifierType
-    is_def: bool
-    category: VariableCategory | None = None
+    category: IdentifierCategory
+    is_def: bool 
+    scope: VariableScope | None = None
     index: int | None = None
 
     def __repr__(self):
@@ -59,7 +48,7 @@ class Identifier(str):
     def __new__(cls, name: str) -> Identifier:
         """Create Identifier from string value."""
         obj = str.__new__(cls, name)
-        obj.context = IdentifierContext(type=IdentifierType.VARIABLE, is_def=False)
+        #obj.context = IdentifierContext(type=IdentifierType.VARIABLE, is_def=False)
         return obj
 
     @property

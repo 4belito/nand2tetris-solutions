@@ -1,17 +1,17 @@
 <class>
   <keyword> class </keyword>
-  <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> Main </identifier>
+  <identifier category='class' is_def='True' scope='None' index='None'> Main </identifier>
   <symbol> { </symbol>
   <classVarDec>
     <keyword> static </keyword>
     <keyword> boolean </keyword>
-    <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> test </identifier>
+    <identifier category='var_scope' is_def='True' scope='static' index='0'> test </identifier>
     <symbol> ; </symbol>
   </classVarDec>
   <subroutineDec>
     <keyword> function </keyword>
     <keyword> void </keyword>
-    <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> main </identifier>
+    <identifier category='subroutine' is_def='True' scope='None' index='None'> main </identifier>
     <symbol> ( </symbol>
     <parameterList>
     </parameterList>
@@ -20,27 +20,27 @@
       <symbol> { </symbol>
       <varDec>
         <keyword> var </keyword>
-        <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> SquareGame </identifier>
-        <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> game </identifier>
+        <identifier category='class' is_def='False' scope='None' index='None'> SquareGame </identifier>
+        <identifier category='var_scope' is_def='True' scope='var' index='0'> game </identifier>
         <symbol> ; </symbol>
       </varDec>
       <statements>
         <letStatement>
           <keyword> let </keyword>
-          <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> game </identifier>
+          <identifier category='var_scope' is_def='False' scope='var' index='0'> game </identifier>
           <symbol> = </symbol>
           <expression>
             <term>
-              <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> game </identifier>
+              <identifier category='var_scope' is_def='False' scope='var' index='0'> game </identifier>
             </term>
           </expression>
           <symbol> ; </symbol>
         </letStatement>
         <doStatement>
           <keyword> do </keyword>
-          <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> game </identifier>
+          <identifier category='var_scope' is_def='False' scope='var' index='0'> game </identifier>
           <symbol> . </symbol>
-          <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> run </identifier>
+          <identifier category='subroutine' is_def='False' scope='None' index='None'> run </identifier>
           <symbol> ( </symbol>
           <expressionList>
           </expressionList>
@@ -49,9 +49,9 @@
         </doStatement>
         <doStatement>
           <keyword> do </keyword>
-          <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> game </identifier>
+          <identifier category='var_scope' is_def='False' scope='var' index='0'> game </identifier>
           <symbol> . </symbol>
-          <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> dispose </identifier>
+          <identifier category='subroutine' is_def='False' scope='None' index='None'> dispose </identifier>
           <symbol> ( </symbol>
           <expressionList>
           </expressionList>
@@ -69,7 +69,7 @@
   <subroutineDec>
     <keyword> function </keyword>
     <keyword> void </keyword>
-    <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> more </identifier>
+    <identifier category='subroutine' is_def='True' scope='None' index='None'> more </identifier>
     <symbol> ( </symbol>
     <parameterList>
     </parameterList>
@@ -79,7 +79,7 @@
       <varDec>
         <keyword> var </keyword>
         <keyword> boolean </keyword>
-        <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> b </identifier>
+        <identifier category='var_scope' is_def='True' scope='var' index='0'> b </identifier>
         <symbol> ; </symbol>
       </varDec>
       <statements>
@@ -88,7 +88,7 @@
           <symbol> ( </symbol>
           <expression>
             <term>
-              <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> b </identifier>
+              <identifier category='var_scope' is_def='False' scope='var' index='0'> b </identifier>
             </term>
           </expression>
           <symbol> ) </symbol>

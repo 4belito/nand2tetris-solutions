@@ -7,3 +7,4 @@ class TokenType(Enum):
     IDENTIFIER = "identifier"
     INT_CONST = "integerConstant"
     STRING_CONST = "stringConstant"
+

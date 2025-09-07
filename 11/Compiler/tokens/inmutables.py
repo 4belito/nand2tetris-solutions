@@ -13,9 +13,9 @@ class IntegerConstant(int):
         return int.__new__(cls, value)
 
     @property
-    def value(self) -> int:
+    def value(self) -> str:
         """Return integer value."""
-        return self
+        return str(self)
 
     @staticmethod
     def valid(value: str) -> bool:

@@ -1,11 +1,11 @@
 <class>
   <keyword> class </keyword>
-  <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> Main </identifier>
+  <identifier category='class' is_def='True' scope='None' index='None'> Main </identifier>
   <symbol> { </symbol>
   <subroutineDec>
     <keyword> function </keyword>
     <keyword> void </keyword>
-    <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> main </identifier>
+    <identifier category='subroutine' is_def='True' scope='None' index='None'> main </identifier>
     <symbol> ( </symbol>
     <parameterList>
     </parameterList>
@@ -14,34 +14,34 @@
       <symbol> { </symbol>
       <varDec>
         <keyword> var </keyword>
-        <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> Array </identifier>
-        <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> a </identifier>
+        <identifier category='class' is_def='False' scope='None' index='None'> Array </identifier>
+        <identifier category='var_scope' is_def='True' scope='var' index='0'> a </identifier>
         <symbol> ; </symbol>
       </varDec>
       <varDec>
         <keyword> var </keyword>
         <keyword> int </keyword>
-        <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> length </identifier>
+        <identifier category='var_scope' is_def='True' scope='var' index='1'> length </identifier>
         <symbol> ; </symbol>
       </varDec>
       <varDec>
         <keyword> var </keyword>
         <keyword> int </keyword>
-        <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> i </identifier>
+        <identifier category='var_scope' is_def='True' scope='var' index='2'> i </identifier>
         <symbol> , </symbol>
-        <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> sum </identifier>
+        <identifier category='var_scope' is_def='True' scope='var' index='3'> sum </identifier>
         <symbol> ; </symbol>
       </varDec>
       <statements>
         <letStatement>
           <keyword> let </keyword>
-          <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> length </identifier>
+          <identifier category='var_scope' is_def='False' scope='var' index='1'> length </identifier>
           <symbol> = </symbol>
           <expression>
             <term>
-              <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> Keyboard </identifier>
+              <identifier category='class' is_def='False' scope='None' index='None'> Keyboard </identifier>
               <symbol> . </symbol>
-              <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> readInt </identifier>
+              <identifier category='subroutine' is_def='False' scope='None' index='None'> readInt </identifier>
               <symbol> ( </symbol>
               <expressionList>
                 <expression>
@@ -57,18 +57,18 @@
         </letStatement>
         <letStatement>
           <keyword> let </keyword>
-          <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> a </identifier>
+          <identifier category='var_scope' is_def='False' scope='var' index='0'> a </identifier>
           <symbol> = </symbol>
           <expression>
             <term>
-              <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> Array </identifier>
+              <identifier category='class' is_def='False' scope='None' index='None'> Array </identifier>
               <symbol> . </symbol>
-              <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> new </identifier>
+              <identifier category='subroutine' is_def='False' scope='None' index='None'> new </identifier>
               <symbol> ( </symbol>
               <expressionList>
                 <expression>
                   <term>
-                    <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> length </identifier>
+                    <identifier category='var_scope' is_def='False' scope='var' index='1'> length </identifier>
                   </term>
                 </expression>
               </expressionList>
@@ -79,7 +79,7 @@
         </letStatement>
         <letStatement>
           <keyword> let </keyword>
-          <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> i </identifier>
+          <identifier category='var_scope' is_def='False' scope='var' index='2'> i </identifier>
           <symbol> = </symbol>
           <expression>
             <term>
@@ -93,11 +93,11 @@
           <symbol> ( </symbol>
           <expression>
             <term>
-              <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> i </identifier>
+              <identifier category='var_scope' is_def='False' scope='var' index='2'> i </identifier>
             </term>
-            <symbol> &lt; </symbol>
+            <symbol> < </symbol>
             <term>
-              <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> length </identifier>
+              <identifier category='var_scope' is_def='False' scope='var' index='1'> length </identifier>
             </term>
           </expression>
           <symbol> ) </symbol>
@@ -105,20 +105,20 @@
           <statements>
             <letStatement>
               <keyword> let </keyword>
-              <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> a </identifier>
+              <identifier category='var_scope' is_def='False' scope='var' index='0'> a </identifier>
               <symbol> [ </symbol>
               <expression>
                 <term>
-                  <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> i </identifier>
+                  <identifier category='var_scope' is_def='False' scope='var' index='2'> i </identifier>
                 </term>
               </expression>
               <symbol> ] </symbol>
               <symbol> = </symbol>
               <expression>
                 <term>
-                  <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> Keyboard </identifier>
+                  <identifier category='class' is_def='False' scope='None' index='None'> Keyboard </identifier>
                   <symbol> . </symbol>
-                  <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> readInt </identifier>
+                  <identifier category='subroutine' is_def='False' scope='None' index='None'> readInt </identifier>
                   <symbol> ( </symbol>
                   <expressionList>
                     <expression>
@@ -134,11 +134,11 @@
             </letStatement>
             <letStatement>
               <keyword> let </keyword>
-              <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> i </identifier>
+              <identifier category='var_scope' is_def='False' scope='var' index='2'> i </identifier>
               <symbol> = </symbol>
               <expression>
                 <term>
-                  <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> i </identifier>
+                  <identifier category='var_scope' is_def='False' scope='var' index='2'> i </identifier>
                 </term>
                 <symbol> + </symbol>
                 <term>
@@ -152,7 +152,7 @@
         </whileStatement>
         <letStatement>
           <keyword> let </keyword>
-          <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> i </identifier>
+          <identifier category='var_scope' is_def='False' scope='var' index='2'> i </identifier>
           <symbol> = </symbol>
           <expression>
             <term>
@@ -163,7 +163,7 @@
         </letStatement>
         <letStatement>
           <keyword> let </keyword>
-          <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> sum </identifier>
+          <identifier category='var_scope' is_def='False' scope='var' index='3'> sum </identifier>
           <symbol> = </symbol>
           <expression>
             <term>
@@ -177,11 +177,11 @@
           <symbol> ( </symbol>
           <expression>
             <term>
-              <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> i </identifier>
+              <identifier category='var_scope' is_def='False' scope='var' index='2'> i </identifier>
             </term>
-            <symbol> &lt; </symbol>
+            <symbol> < </symbol>
             <term>
-              <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> length </identifier>
+              <identifier category='var_scope' is_def='False' scope='var' index='1'> length </identifier>
             </term>
           </expression>
           <symbol> ) </symbol>
@@ -189,19 +189,19 @@
           <statements>
             <letStatement>
               <keyword> let </keyword>
-              <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> sum </identifier>
+              <identifier category='var_scope' is_def='False' scope='var' index='3'> sum </identifier>
               <symbol> = </symbol>
               <expression>
                 <term>
-                  <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> sum </identifier>
+                  <identifier category='var_scope' is_def='False' scope='var' index='3'> sum </identifier>
                 </term>
                 <symbol> + </symbol>
                 <term>
-                  <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> a </identifier>
+                  <identifier category='var_scope' is_def='False' scope='var' index='0'> a </identifier>
                   <symbol> [ </symbol>
                   <expression>
                     <term>
-                      <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> i </identifier>
+                      <identifier category='var_scope' is_def='False' scope='var' index='2'> i </identifier>
                     </term>
                   </expression>
                   <symbol> ] </symbol>
@@ -211,11 +211,11 @@
             </letStatement>
             <letStatement>
               <keyword> let </keyword>
-              <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> i </identifier>
+              <identifier category='var_scope' is_def='False' scope='var' index='2'> i </identifier>
               <symbol> = </symbol>
               <expression>
                 <term>
-                  <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> i </identifier>
+                  <identifier category='var_scope' is_def='False' scope='var' index='2'> i </identifier>
                 </term>
                 <symbol> + </symbol>
                 <term>
@@ -229,9 +229,9 @@
         </whileStatement>
         <doStatement>
           <keyword> do </keyword>
-          <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> Output </identifier>
+          <identifier category='class' is_def='False' scope='None' index='None'> Output </identifier>
           <symbol> . </symbol>
-          <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> printString </identifier>
+          <identifier category='subroutine' is_def='False' scope='None' index='None'> printString </identifier>
           <symbol> ( </symbol>
           <expressionList>
             <expression>
@@ -245,18 +245,18 @@
         </doStatement>
         <doStatement>
           <keyword> do </keyword>
-          <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> Output </identifier>
+          <identifier category='class' is_def='False' scope='None' index='None'> Output </identifier>
           <symbol> . </symbol>
-          <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> printInt </identifier>
+          <identifier category='subroutine' is_def='False' scope='None' index='None'> printInt </identifier>
           <symbol> ( </symbol>
           <expressionList>
             <expression>
               <term>
-                <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> sum </identifier>
+                <identifier category='var_scope' is_def='False' scope='var' index='3'> sum </identifier>
               </term>
               <symbol> / </symbol>
               <term>
-                <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> length </identifier>
+                <identifier category='var_scope' is_def='False' scope='var' index='1'> length </identifier>
               </term>
             </expression>
           </expressionList>
@@ -265,9 +265,9 @@
         </doStatement>
         <doStatement>
           <keyword> do </keyword>
-          <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> Output </identifier>
+          <identifier category='class' is_def='False' scope='None' index='None'> Output </identifier>
           <symbol> . </symbol>
-          <identifier type='IdentifierType.VARIABLE' is_def='False' category='None' index='None'> println </identifier>
+          <identifier category='subroutine' is_def='False' scope='None' index='None'> println </identifier>
           <symbol> ( </symbol>
           <expressionList>
           </expressionList>
