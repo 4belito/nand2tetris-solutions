@@ -9,6 +9,13 @@ from enum import Enum
 import re
 from collections.abc import Container
 
+class TokenType(Enum):
+    """Enum for Jack token types."""
+    KEYWORD = "keyword"
+    SYMBOL = "symbol"
+    IDENTIFIER = "identifier"
+    INT_CONST = "integerConstant"
+    STRING_CONST = "stringConstant"
 
 class EnumTokens(Enum):
     """Base enum class for Jack token types with utility methods."""
@@ -25,16 +32,6 @@ class EnumTokens(Enum):
     def __str__(self) -> str:
         """Return string representation of the enum member."""
         return self.value
-
-
-class TokenType(Enum):
-    """Enum for Jack token types."""
-    KEYWORD = "keyword"
-    SYMBOL = "symbol"
-    IDENTIFIER = "identifier"
-    INT_CONST = "integerConstant"
-    STRING_CONST = "stringConstant"
-
 
 class Keyword(EnumTokens):
     """Enum for Jack language keywords."""

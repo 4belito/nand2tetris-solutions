@@ -52,6 +52,10 @@ class Keyword(EnumTokens):
         """Return TokenType.KEYWORD."""
         return TokenType.KEYWORD
 
+PRIMITIVE_TYPE={Keyword.INT, Keyword.CHAR, Keyword.BOOLEAN}
+SUBROUTINES={Keyword.CONSTRUCTOR, Keyword.FUNCTION, Keyword.METHOD}
+KEYWORD_CONSTANTS={Keyword.TRUE, Keyword.FALSE, Keyword.NULL, Keyword.THIS}
+
 class Symbol(EnumTokens):
     """Enum for Jack language symbols."""
     LBRACE = '{'
@@ -90,3 +94,6 @@ class Symbol(EnumTokens):
                 return "&amp;"
             case _:
                 return self.value
+
+UNARY_OPS={Symbol.MINUS, Symbol.NOT}
+BINARY_OPS={Symbol.PLUS, Symbol.MINUS, Symbol.MULT, Symbol.DIV, Symbol.AND, Symbol.OR, Symbol.LT, Symbol.GT, Symbol.EQ}

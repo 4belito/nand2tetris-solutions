@@ -92,10 +92,10 @@ class CompilationEngine:
         with self.tag('subroutineBody'):
             with self._braces():
                 while self.token == Keyword.VAR:
-                    self.compile_var_dec()
+                    self.compile_var_declaration()
                 self.compile_statements()
 
-    def compile_var_dec(self) -> None:
+    def compile_var_declaration(self) -> None:
         '''
         Compile a variable declaration
         grammar: 'var' type varName (',' varName)* ';'
@@ -249,12 +249,6 @@ class CompilationEngine:
                     self._compile()
                     self.compile_expression()
 
-    def _compile_return_type(self):
-        if self.token == Keyword.VOID:
-            self._compile()
-        else:
-            self._compile_type()
-
     def _compile_subroutine_call(self) -> None:
         '''
         Compile a subroutine call.
@@ -317,23 +311,13 @@ class CompilationEngine:
         else:
             expected = ', '.join(str(t) for t in tokens)
             raise ValueError(f"Expected one of: {expected}, got: '{self.token}'")
-
-    def _compile_type(self) -> None:
-        '''
-        Compile a type
-        grammar: 'int' | 'char' | 'boolean' | className
-        '''
-        if self.token.is_type():
-            self._compile()
-        else:
-            raise ValueError("Expected type to be 'int', 'char', 'boolean', or className")
         
     def _compile_variable_def(self) -> None:
         '''
         Compile a variable definition
         grammar: type varName
         '''
-        self._compile_type()
+        self._compile(*PRIMITIVE_TYPE, TokenType.IDENTIFIER)
         self._compile(TokenType.IDENTIFIER)
 
 
