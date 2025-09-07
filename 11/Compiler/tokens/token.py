@@ -61,7 +61,7 @@ class Token:
 
     def is_primitive_type(self) -> bool:
         """Return True if token is a primitive type."""
-        return self.ttype == TokenType.KEYWORD and self.is_in([Keyword.INT, Keyword.CHAR, Keyword.BOOLEAN])
+        return self.is_in([Keyword.INT, Keyword.CHAR, Keyword.BOOLEAN])
 
     def is_type(self) -> bool:
         """Return True if token is a type keyword or identifier."""
@@ -73,7 +73,7 @@ class Token:
 
     def is_keyword_constant(self) -> bool:
         """Return True if token is a keyword constant."""
-        return self.ttype == TokenType.KEYWORD and self.is_in([Keyword.TRUE, Keyword.FALSE, Keyword.NULL, Keyword.THIS])
+        return self.is_in([Keyword.TRUE, Keyword.FALSE, Keyword.NULL, Keyword.THIS])
 
     def is_constant(self) -> bool:
         """Return True if token is any kind of constant."""
@@ -81,11 +81,11 @@ class Token:
 
     def is_unary_op(self) -> bool:
         """Return True if token is a unary operator."""
-        return self.ttype == TokenType.SYMBOL and self.is_in([Symbol.MINUS, Symbol.NOT])
+        return self.is_in([Symbol.MINUS, Symbol.NOT])
 
     def is_op(self) -> bool:
         """Return True if token is a binary operator."""
-        return self.ttype == TokenType.SYMBOL and self.is_in([Symbol.PLUS, Symbol.MINUS, Symbol.MULT, Symbol.DIV, Symbol.AND, Symbol.OR, Symbol.LT, Symbol.GT, Symbol.EQ])
+        return self.is_in([Symbol.PLUS, Symbol.MINUS, Symbol.MULT, Symbol.DIV, Symbol.AND, Symbol.OR, Symbol.LT, Symbol.GT, Symbol.EQ])
 
     def get_variable_scope(self) -> VariableScope:
         """Map a Keyword to a VariableScope."""

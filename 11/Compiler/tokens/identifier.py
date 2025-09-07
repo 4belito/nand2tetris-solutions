@@ -48,7 +48,6 @@ class Identifier(str):
     def __new__(cls, name: str) -> Identifier:
         """Create Identifier from string value."""
         obj = str.__new__(cls, name)
-        #obj.context = IdentifierContext(type=IdentifierType.VARIABLE, is_def=False)
         return obj
 
     @property

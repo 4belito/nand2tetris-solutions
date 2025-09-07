@@ -7,6 +7,8 @@ access to token values and types for use in Jack language parsing and analysis.
 from __future__ import annotations
 from enum import Enum
 import re
+from collections.abc import Container
+
 
 class EnumTokens(Enum):
     """Base enum class for Jack token types with utility methods."""
@@ -63,6 +65,11 @@ class Keyword(EnumTokens):
         """Return TokenType.KEYWORD."""
         return TokenType.KEYWORD
 
+PRIMITIVE_TYPE={Keyword.INT, Keyword.CHAR, Keyword.BOOLEAN}
+SUBROUTINES={Keyword.CONSTRUCTOR, Keyword.FUNCTION, Keyword.METHOD}
+KEYWORD_CONSTANTS={Keyword.TRUE, Keyword.FALSE, Keyword.NULL, Keyword.THIS}
+
+
 class Symbol(EnumTokens):
     """Enum for Jack language symbols."""
     LBRACE = '{'
@@ -101,24 +108,23 @@ class Symbol(EnumTokens):
                 return "&amp;"
             case _:
                 return self.value
+            
+UNARY_OPS={Symbol.MINUS, Symbol.NOT}
+BINARY_OPS={Symbol.PLUS, Symbol.MINUS, Symbol.MULT, Symbol.DIV, Symbol.AND, Symbol.OR, Symbol.LT, Symbol.GT, Symbol.EQ}
 
 class IntegerConstant(int):
     """Class for Jack integer constants."""
     MAX_VALUE = 32767
+    ttype = TokenType.INT_CONST
 
     def __new__(cls, value: str) -> IntegerConstant:
         """Create IntegerConstant from string value."""
         return int.__new__(cls, value)
 
     @property
-    def value(self) -> int:
+    def value(self) -> str:
         """Return integer value."""
-        return self
-
-    @property
-    def ttype(self) -> TokenType:
-        """Return TokenType.INT_CONST."""
-        return TokenType.INT_CONST
+        return str(self)
 
     @staticmethod
     def valid(value: str) -> bool:
@@ -128,6 +134,8 @@ class IntegerConstant(int):
 
 class StringConstant(str):
     """Class for Jack string constants."""
+    ttype = TokenType.STRING_CONST
+
     def __new__(cls, value: str) -> StringConstant:
         """Create StringConstant from string value."""
         return str.__new__(cls, value)
@@ -136,11 +144,6 @@ class StringConstant(str):
     def value(self) -> str:
         """Return string value without quotes."""
         return self
-
-    @property
-    def ttype(self) -> TokenType:
-        """Return TokenType.STRING_CONST."""
-        return TokenType.STRING_CONST
 
     def __str__(self) -> str:
         """Return string representation of the string constant."""
@@ -157,14 +160,11 @@ class StringConstant(str):
 
 class Identifier(str):
     """Class for Jack identifiers."""
+    ttype = TokenType.IDENTIFIER
+
     def __new__(cls, value: str) -> 'Identifier':
         """Create Identifier from string value."""
         return str.__new__(cls, value)
-
-    @property
-    def ttype(self) -> TokenType:
-        """Return TokenType.IDENTIFIER."""
-        return TokenType.IDENTIFIER
 
     @property
     def value(self) -> str:
@@ -180,7 +180,6 @@ class Identifier(str):
 class Token:
     """Wrapper for Jack tokens, providing unified access to type and value."""
     def __init__(self, value: str):
-        self._token: Keyword | Symbol | IntegerConstant | StringConstant | Identifier
         for token_cls in (Keyword, Symbol, IntegerConstant, StringConstant, Identifier):
             if token_cls.valid(value):
                 self._token = token_cls(value)
@@ -195,7 +194,7 @@ class Token:
         return self._token.ttype
 
     @property
-    def value(self) -> str|int:
+    def value(self) -> str:
         """Return token value."""
         return self._token.value
     
@@ -207,7 +206,7 @@ class Token:
         """Return hash of underlying token for sets/dicts."""
         return hash(self._token)
 
-    def is_in(self, items: list[Keyword|Symbol|IntegerConstant|StringConstant|Identifier])->bool:
+    def is_in(self, items: Container[Keyword|Symbol|IntegerConstant|StringConstant|Identifier])->bool:
         # Allow: if Keyword.STATIC in token
         return self._token in items
 
@@ -217,28 +216,10 @@ class Token:
 
     def is_type(self) -> bool:
         """Return True if token is a type keyword or identifier."""
-        return self.ttype == TokenType.KEYWORD and self.is_in([Keyword.INT, Keyword.CHAR, Keyword.BOOLEAN]) or self.ttype == TokenType.IDENTIFIER
-
-    # def is_statement(self) -> bool:
-    #     """Return True if token is a statement keyword."""
-    #     return self.ttype == TokenType.KEYWORD and self.is_in([Keyword.LET, Keyword.IF, Keyword.WHILE, Keyword.DO, Keyword.RETURN])
-
-    def is_subroutine(self) -> bool:
-        """Return True if token is a subroutine keyword."""
-        return self.is_in([Keyword.CONSTRUCTOR, Keyword.FUNCTION, Keyword.METHOD])
-
-    def is_keyword_constant(self) -> bool:
-        """Return True if token is a keyword constant."""
-        return self.ttype == TokenType.KEYWORD and self.is_in([Keyword.TRUE, Keyword.FALSE, Keyword.NULL, Keyword.THIS])
+        return self.is_in(PRIMITIVE_TYPE) or self.ttype == TokenType.IDENTIFIER
 
     def is_constant(self) -> bool:
         """Return True if token is any kind of constant."""
-        return self.ttype in (TokenType.INT_CONST, TokenType.STRING_CONST) or self.is_keyword_constant()
+        return self.ttype in (TokenType.INT_CONST, TokenType.STRING_CONST) or self.is_in(KEYWORD_CONSTANTS)
 
-    def is_unary_op(self) -> bool:
-        """Return True if token is a unary operator."""
-        return self.ttype == TokenType.SYMBOL and self.is_in([Symbol.MINUS, Symbol.NOT])
 
-    def is_op(self) -> bool:
-        """Return True if token is a binary operator."""
-        return self.ttype == TokenType.SYMBOL and self.is_in([Symbol.PLUS, Symbol.MINUS, Symbol.MULT, Symbol.DIV, Symbol.AND, Symbol.OR, Symbol.LT, Symbol.GT, Symbol.EQ])

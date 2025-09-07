@@ -64,9 +64,6 @@ class CompilationEngine:
                 self._compile()
                 self._compile_variable_def(var_scope, var_type)
             self._compile_enumtoken(Symbol.SEMICOLON)
-            
-
-
 
     def compile_subroutine_declaration(self) -> None:
         '''

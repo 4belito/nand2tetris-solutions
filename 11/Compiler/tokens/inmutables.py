@@ -37,7 +37,6 @@ class StringConstant(str):
         """Return string value without quotes."""
         return self
 
-
     def __str__(self) -> str:
         """Return string representation of the string constant."""
         return self.value[1:-1]

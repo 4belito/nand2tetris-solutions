@@ -22,7 +22,6 @@ class JackTokenizer:
             raise RuntimeError(f"Failed to open {input_file}: {e}")
         # Use deque for efficient left pops
         self.raw_tokens: deque[str] = deque(JackTokenizer.tokenize_raw(text))
-        self.current_token: Token | None = None
 
     def has_more_tokens(self) -> bool:
         """Return True if there are more tokens to process."""
@@ -36,8 +35,7 @@ class JackTokenizer:
         '''
         if self.has_more_tokens():
             raw_token = self.raw_tokens.popleft()
-            self.current_token = Token(raw_token)
-            return self.current_token
+            return Token(raw_token)
         raise RuntimeError("No more tokens available to advance.")
 
     def peek(self) -> Token:
