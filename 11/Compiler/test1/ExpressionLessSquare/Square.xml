@@ -1,35 +1,35 @@
 <class>
   <keyword> class </keyword>
-  <identifier category='class' is_def='True' scope='None' index='None'> Square </identifier>
+  <identifier category='class' is_def='True'> Square </identifier>
   <symbol> { </symbol>
   <classVarDec>
     <keyword> field </keyword>
     <keyword> int </keyword>
-    <identifier category='var_scope' is_def='True' scope='field' index='0'> x </identifier>
+    <identifier category='variable' is_def='True' scope='field' index='0'> x </identifier>
     <symbol> , </symbol>
-    <identifier category='var_scope' is_def='True' scope='field' index='1'> y </identifier>
+    <identifier category='variable' is_def='True' scope='field' index='1'> y </identifier>
     <symbol> ; </symbol>
   </classVarDec>
   <classVarDec>
     <keyword> field </keyword>
     <keyword> int </keyword>
-    <identifier category='var_scope' is_def='True' scope='field' index='2'> size </identifier>
+    <identifier category='variable' is_def='True' scope='field' index='2'> size </identifier>
     <symbol> ; </symbol>
   </classVarDec>
   <subroutineDec>
     <keyword> constructor </keyword>
-    <identifier category='class' is_def='False' scope='None' index='None'> Square </identifier>
-    <identifier category='subroutine' is_def='True' scope='None' index='None'> new </identifier>
+    <identifier category='class' is_def='False'> Square </identifier>
+    <identifier category='subroutine' is_def='True'> new </identifier>
     <symbol> ( </symbol>
     <parameterList>
       <keyword> int </keyword>
-      <identifier category='var_scope' is_def='True' scope='argument' index='0'> Ax </identifier>
+      <identifier category='variable' is_def='True' scope='argument' index='0'> Ax </identifier>
       <symbol> , </symbol>
       <keyword> int </keyword>
-      <identifier category='var_scope' is_def='True' scope='argument' index='1'> Ay </identifier>
+      <identifier category='variable' is_def='True' scope='argument' index='1'> Ay </identifier>
       <symbol> , </symbol>
       <keyword> int </keyword>
-      <identifier category='var_scope' is_def='True' scope='argument' index='2'> Asize </identifier>
+      <identifier category='variable' is_def='True' scope='argument' index='2'> Asize </identifier>
     </parameterList>
     <symbol> ) </symbol>
     <subroutineBody>
@@ -37,40 +37,40 @@
       <statements>
         <letStatement>
           <keyword> let </keyword>
-          <identifier category='var_scope' is_def='False' scope='field' index='0'> x </identifier>
+          <identifier category='variable' is_def='False' scope='field' index='0'> x </identifier>
           <symbol> = </symbol>
           <expression>
             <term>
-              <identifier category='var_scope' is_def='False' scope='argument' index='0'> Ax </identifier>
+              <identifier category='variable' is_def='False' scope='argument' index='0'> Ax </identifier>
             </term>
           </expression>
           <symbol> ; </symbol>
         </letStatement>
         <letStatement>
           <keyword> let </keyword>
-          <identifier category='var_scope' is_def='False' scope='field' index='1'> y </identifier>
+          <identifier category='variable' is_def='False' scope='field' index='1'> y </identifier>
           <symbol> = </symbol>
           <expression>
             <term>
-              <identifier category='var_scope' is_def='False' scope='argument' index='1'> Ay </identifier>
+              <identifier category='variable' is_def='False' scope='argument' index='1'> Ay </identifier>
             </term>
           </expression>
           <symbol> ; </symbol>
         </letStatement>
         <letStatement>
           <keyword> let </keyword>
-          <identifier category='var_scope' is_def='False' scope='field' index='2'> size </identifier>
+          <identifier category='variable' is_def='False' scope='field' index='2'> size </identifier>
           <symbol> = </symbol>
           <expression>
             <term>
-              <identifier category='var_scope' is_def='False' scope='argument' index='2'> Asize </identifier>
+              <identifier category='variable' is_def='False' scope='argument' index='2'> Asize </identifier>
             </term>
           </expression>
           <symbol> ; </symbol>
         </letStatement>
         <doStatement>
           <keyword> do </keyword>
-          <identifier category='subroutine' is_def='False' scope='None' index='None'> draw </identifier>
+          <identifier category='subroutine' is_def='False'> draw </identifier>
           <symbol> ( </symbol>
           <expressionList>
           </expressionList>
@@ -81,7 +81,7 @@
           <keyword> return </keyword>
           <expression>
             <term>
-              <identifier category='var_scope' is_def='False' scope='field' index='0'> x </identifier>
+              <identifier category='variable' is_def='False' scope='field' index='0'> x </identifier>
             </term>
           </expression>
           <symbol> ; </symbol>
@@ -93,7 +93,7 @@
   <subroutineDec>
     <keyword> method </keyword>
     <keyword> void </keyword>
-    <identifier category='subroutine' is_def='True' scope='None' index='None'> dispose </identifier>
+    <identifier category='subroutine' is_def='True'> dispose </identifier>
     <symbol> ( </symbol>
     <parameterList>
     </parameterList>
@@ -103,9 +103,9 @@
       <statements>
         <doStatement>
           <keyword> do </keyword>
-          <identifier category='class' is_def='False' scope='None' index='None'> Memory </identifier>
+          <identifier category='class' is_def='False'> Memory </identifier>
           <symbol> . </symbol>
-          <identifier category='subroutine' is_def='False' scope='None' index='None'> deAlloc </identifier>
+          <identifier category='subroutine' is_def='False'> deAlloc </identifier>
           <symbol> ( </symbol>
           <expressionList>
             <expression>
@@ -128,7 +128,7 @@
   <subroutineDec>
     <keyword> method </keyword>
     <keyword> void </keyword>
-    <identifier category='subroutine' is_def='True' scope='None' index='None'> draw </identifier>
+    <identifier category='subroutine' is_def='True'> draw </identifier>
     <symbol> ( </symbol>
     <parameterList>
     </parameterList>
@@ -138,14 +138,14 @@
       <statements>
         <doStatement>
           <keyword> do </keyword>
-          <identifier category='class' is_def='False' scope='None' index='None'> Screen </identifier>
+          <identifier category='class' is_def='False'> Screen </identifier>
           <symbol> . </symbol>
-          <identifier category='subroutine' is_def='False' scope='None' index='None'> setColor </identifier>
+          <identifier category='subroutine' is_def='False'> setColor </identifier>
           <symbol> ( </symbol>
           <expressionList>
             <expression>
               <term>
-                <identifier category='var_scope' is_def='False' scope='field' index='0'> x </identifier>
+                <identifier category='variable' is_def='False' scope='field' index='0'> x </identifier>
               </term>
             </expression>
           </expressionList>
@@ -154,101 +154,32 @@
         </doStatement>
         <doStatement>
           <keyword> do </keyword>
-          <identifier category='class' is_def='False' scope='None' index='None'> Screen </identifier>
+          <identifier category='class' is_def='False'> Screen </identifier>
           <symbol> . </symbol>
-          <identifier category='subroutine' is_def='False' scope='None' index='None'> drawRectangle </identifier>
+          <identifier category='subroutine' is_def='False'> drawRectangle </identifier>
           <symbol> ( </symbol>
           <expressionList>
             <expression>
               <term>
-                <identifier category='var_scope' is_def='False' scope='field' index='0'> x </identifier>
+                <identifier category='variable' is_def='False' scope='field' index='0'> x </identifier>
               </term>
             </expression>
             <symbol> , </symbol>
             <expression>
               <term>
-                <identifier category='var_scope' is_def='False' scope='field' index='1'> y </identifier>
+                <identifier category='variable' is_def='False' scope='field' index='1'> y </identifier>
               </term>
             </expression>
             <symbol> , </symbol>
             <expression>
               <term>
-                <identifier category='var_scope' is_def='False' scope='field' index='0'> x </identifier>
+                <identifier category='variable' is_def='False' scope='field' index='0'> x </identifier>
               </term>
             </expression>
             <symbol> , </symbol>
             <expression>
               <term>
-                <identifier category='var_scope' is_def='False' scope='field' index='1'> y </identifier>
-              </term>
-            </expression>
-          </expressionList>
-          <symbol> ) </symbol>
-          <symbol> ; </symbol>
-        </doStatement>
-        <returnStatement>
-          <keyword> return </keyword>
-          <symbol> ; </symbol>
-        </returnStatement>
-      </statements>
-      <symbol> } </symbol>
-    </subroutineBody>
-  </subroutineDec>
-  <subroutineDec>
-    <keyword> method </keyword>
-    <keyword> void </keyword>
-    <identifier category='subroutine' is_def='True' scope='None' index='None'> erase </identifier>
-    <symbol> ( </symbol>
-    <parameterList>
-    </parameterList>
-    <symbol> ) </symbol>
-    <subroutineBody>
-      <symbol> { </symbol>
-      <statements>
-        <doStatement>
-          <keyword> do </keyword>
-          <identifier category='class' is_def='False' scope='None' index='None'> Screen </identifier>
-          <symbol> . </symbol>
-          <identifier category='subroutine' is_def='False' scope='None' index='None'> setColor </identifier>
-          <symbol> ( </symbol>
-          <expressionList>
-            <expression>
-              <term>
-                <identifier category='var_scope' is_def='False' scope='field' index='0'> x </identifier>
-              </term>
-            </expression>
-          </expressionList>
-          <symbol> ) </symbol>
-          <symbol> ; </symbol>
-        </doStatement>
-        <doStatement>
-          <keyword> do </keyword>
-          <identifier category='class' is_def='False' scope='None' index='None'> Screen </identifier>
-          <symbol> . </symbol>
-          <identifier category='subroutine' is_def='False' scope='None' index='None'> drawRectangle </identifier>
-          <symbol> ( </symbol>
-          <expressionList>
-            <expression>
-              <term>
-                <identifier category='var_scope' is_def='False' scope='field' index='0'> x </identifier>
-              </term>
-            </expression>
-            <symbol> , </symbol>
-            <expression>
-              <term>
-                <identifier category='var_scope' is_def='False' scope='field' index='1'> y </identifier>
-              </term>
-            </expression>
-            <symbol> , </symbol>
-            <expression>
-              <term>
-                <identifier category='var_scope' is_def='False' scope='field' index='0'> x </identifier>
-              </term>
-            </expression>
-            <symbol> , </symbol>
-            <expression>
-              <term>
-                <identifier category='var_scope' is_def='False' scope='field' index='1'> y </identifier>
+                <identifier category='variable' is_def='False' scope='field' index='1'> y </identifier>
               </term>
             </expression>
           </expressionList>
@@ -266,7 +197,76 @@
   <subroutineDec>
     <keyword> method </keyword>
     <keyword> void </keyword>
-    <identifier category='subroutine' is_def='True' scope='None' index='None'> incSize </identifier>
+    <identifier category='subroutine' is_def='True'> erase </identifier>
+    <symbol> ( </symbol>
+    <parameterList>
+    </parameterList>
+    <symbol> ) </symbol>
+    <subroutineBody>
+      <symbol> { </symbol>
+      <statements>
+        <doStatement>
+          <keyword> do </keyword>
+          <identifier category='class' is_def='False'> Screen </identifier>
+          <symbol> . </symbol>
+          <identifier category='subroutine' is_def='False'> setColor </identifier>
+          <symbol> ( </symbol>
+          <expressionList>
+            <expression>
+              <term>
+                <identifier category='variable' is_def='False' scope='field' index='0'> x </identifier>
+              </term>
+            </expression>
+          </expressionList>
+          <symbol> ) </symbol>
+          <symbol> ; </symbol>
+        </doStatement>
+        <doStatement>
+          <keyword> do </keyword>
+          <identifier category='class' is_def='False'> Screen </identifier>
+          <symbol> . </symbol>
+          <identifier category='subroutine' is_def='False'> drawRectangle </identifier>
+          <symbol> ( </symbol>
+          <expressionList>
+            <expression>
+              <term>
+                <identifier category='variable' is_def='False' scope='field' index='0'> x </identifier>
+              </term>
+            </expression>
+            <symbol> , </symbol>
+            <expression>
+              <term>
+                <identifier category='variable' is_def='False' scope='field' index='1'> y </identifier>
+              </term>
+            </expression>
+            <symbol> , </symbol>
+            <expression>
+              <term>
+                <identifier category='variable' is_def='False' scope='field' index='0'> x </identifier>
+              </term>
+            </expression>
+            <symbol> , </symbol>
+            <expression>
+              <term>
+                <identifier category='variable' is_def='False' scope='field' index='1'> y </identifier>
+              </term>
+            </expression>
+          </expressionList>
+          <symbol> ) </symbol>
+          <symbol> ; </symbol>
+        </doStatement>
+        <returnStatement>
+          <keyword> return </keyword>
+          <symbol> ; </symbol>
+        </returnStatement>
+      </statements>
+      <symbol> } </symbol>
+    </subroutineBody>
+  </subroutineDec>
+  <subroutineDec>
+    <keyword> method </keyword>
+    <keyword> void </keyword>
+    <identifier category='subroutine' is_def='True'> incSize </identifier>
     <symbol> ( </symbol>
     <parameterList>
     </parameterList>
@@ -279,7 +279,7 @@
           <symbol> ( </symbol>
           <expression>
             <term>
-              <identifier category='var_scope' is_def='False' scope='field' index='0'> x </identifier>
+              <identifier category='variable' is_def='False' scope='field' index='0'> x </identifier>
             </term>
           </expression>
           <symbol> ) </symbol>
@@ -287,7 +287,7 @@
           <statements>
             <doStatement>
               <keyword> do </keyword>
-              <identifier category='subroutine' is_def='False' scope='None' index='None'> erase </identifier>
+              <identifier category='subroutine' is_def='False'> erase </identifier>
               <symbol> ( </symbol>
               <expressionList>
               </expressionList>
@@ -296,18 +296,18 @@
             </doStatement>
             <letStatement>
               <keyword> let </keyword>
-              <identifier category='var_scope' is_def='False' scope='field' index='2'> size </identifier>
+              <identifier category='variable' is_def='False' scope='field' index='2'> size </identifier>
               <symbol> = </symbol>
               <expression>
                 <term>
-                  <identifier category='var_scope' is_def='False' scope='field' index='2'> size </identifier>
+                  <identifier category='variable' is_def='False' scope='field' index='2'> size </identifier>
                 </term>
               </expression>
               <symbol> ; </symbol>
             </letStatement>
             <doStatement>
               <keyword> do </keyword>
-              <identifier category='subroutine' is_def='False' scope='None' index='None'> draw </identifier>
+              <identifier category='subroutine' is_def='False'> draw </identifier>
               <symbol> ( </symbol>
               <expressionList>
               </expressionList>
@@ -328,7 +328,7 @@
   <subroutineDec>
     <keyword> method </keyword>
     <keyword> void </keyword>
-    <identifier category='subroutine' is_def='True' scope='None' index='None'> decSize </identifier>
+    <identifier category='subroutine' is_def='True'> decSize </identifier>
     <symbol> ( </symbol>
     <parameterList>
     </parameterList>
@@ -341,7 +341,7 @@
           <symbol> ( </symbol>
           <expression>
             <term>
-              <identifier category='var_scope' is_def='False' scope='field' index='2'> size </identifier>
+              <identifier category='variable' is_def='False' scope='field' index='2'> size </identifier>
             </term>
           </expression>
           <symbol> ) </symbol>
@@ -349,7 +349,7 @@
           <statements>
             <doStatement>
               <keyword> do </keyword>
-              <identifier category='subroutine' is_def='False' scope='None' index='None'> erase </identifier>
+              <identifier category='subroutine' is_def='False'> erase </identifier>
               <symbol> ( </symbol>
               <expressionList>
               </expressionList>
@@ -358,18 +358,18 @@
             </doStatement>
             <letStatement>
               <keyword> let </keyword>
-              <identifier category='var_scope' is_def='False' scope='field' index='2'> size </identifier>
+              <identifier category='variable' is_def='False' scope='field' index='2'> size </identifier>
               <symbol> = </symbol>
               <expression>
                 <term>
-                  <identifier category='var_scope' is_def='False' scope='field' index='2'> size </identifier>
+                  <identifier category='variable' is_def='False' scope='field' index='2'> size </identifier>
                 </term>
               </expression>
               <symbol> ; </symbol>
             </letStatement>
             <doStatement>
               <keyword> do </keyword>
-              <identifier category='subroutine' is_def='False' scope='None' index='None'> draw </identifier>
+              <identifier category='subroutine' is_def='False'> draw </identifier>
               <symbol> ( </symbol>
               <expressionList>
               </expressionList>
@@ -390,7 +390,7 @@
   <subroutineDec>
     <keyword> method </keyword>
     <keyword> void </keyword>
-    <identifier category='subroutine' is_def='True' scope='None' index='None'> moveUp </identifier>
+    <identifier category='subroutine' is_def='True'> moveUp </identifier>
     <symbol> ( </symbol>
     <parameterList>
     </parameterList>
@@ -403,7 +403,7 @@
           <symbol> ( </symbol>
           <expression>
             <term>
-              <identifier category='var_scope' is_def='False' scope='field' index='1'> y </identifier>
+              <identifier category='variable' is_def='False' scope='field' index='1'> y </identifier>
             </term>
           </expression>
           <symbol> ) </symbol>
@@ -411,14 +411,14 @@
           <statements>
             <doStatement>
               <keyword> do </keyword>
-              <identifier category='class' is_def='False' scope='None' index='None'> Screen </identifier>
+              <identifier category='class' is_def='False'> Screen </identifier>
               <symbol> . </symbol>
-              <identifier category='subroutine' is_def='False' scope='None' index='None'> setColor </identifier>
+              <identifier category='subroutine' is_def='False'> setColor </identifier>
               <symbol> ( </symbol>
               <expressionList>
                 <expression>
                   <term>
-                    <identifier category='var_scope' is_def='False' scope='field' index='0'> x </identifier>
+                    <identifier category='variable' is_def='False' scope='field' index='0'> x </identifier>
                   </term>
                 </expression>
               </expressionList>
@@ -427,32 +427,32 @@
             </doStatement>
             <doStatement>
               <keyword> do </keyword>
-              <identifier category='class' is_def='False' scope='None' index='None'> Screen </identifier>
+              <identifier category='class' is_def='False'> Screen </identifier>
               <symbol> . </symbol>
-              <identifier category='subroutine' is_def='False' scope='None' index='None'> drawRectangle </identifier>
+              <identifier category='subroutine' is_def='False'> drawRectangle </identifier>
               <symbol> ( </symbol>
               <expressionList>
                 <expression>
                   <term>
-                    <identifier category='var_scope' is_def='False' scope='field' index='0'> x </identifier>
+                    <identifier category='variable' is_def='False' scope='field' index='0'> x </identifier>
                   </term>
                 </expression>
                 <symbol> , </symbol>
                 <expression>
                   <term>
-                    <identifier category='var_scope' is_def='False' scope='field' index='1'> y </identifier>
+                    <identifier category='variable' is_def='False' scope='field' index='1'> y </identifier>
                   </term>
                 </expression>
                 <symbol> , </symbol>
                 <expression>
                   <term>
-                    <identifier category='var_scope' is_def='False' scope='field' index='0'> x </identifier>
+                    <identifier category='variable' is_def='False' scope='field' index='0'> x </identifier>
                   </term>
                 </expression>
                 <symbol> , </symbol>
                 <expression>
                   <term>
-                    <identifier category='var_scope' is_def='False' scope='field' index='1'> y </identifier>
+                    <identifier category='variable' is_def='False' scope='field' index='1'> y </identifier>
                   </term>
                 </expression>
               </expressionList>
@@ -461,25 +461,25 @@
             </doStatement>
             <letStatement>
               <keyword> let </keyword>
-              <identifier category='var_scope' is_def='False' scope='field' index='1'> y </identifier>
+              <identifier category='variable' is_def='False' scope='field' index='1'> y </identifier>
               <symbol> = </symbol>
               <expression>
                 <term>
-                  <identifier category='var_scope' is_def='False' scope='field' index='1'> y </identifier>
+                  <identifier category='variable' is_def='False' scope='field' index='1'> y </identifier>
                 </term>
               </expression>
               <symbol> ; </symbol>
             </letStatement>
             <doStatement>
               <keyword> do </keyword>
-              <identifier category='class' is_def='False' scope='None' index='None'> Screen </identifier>
+              <identifier category='class' is_def='False'> Screen </identifier>
               <symbol> . </symbol>
-              <identifier category='subroutine' is_def='False' scope='None' index='None'> setColor </identifier>
+              <identifier category='subroutine' is_def='False'> setColor </identifier>
               <symbol> ( </symbol>
               <expressionList>
                 <expression>
                   <term>
-                    <identifier category='var_scope' is_def='False' scope='field' index='0'> x </identifier>
+                    <identifier category='variable' is_def='False' scope='field' index='0'> x </identifier>
                   </term>
                 </expression>
               </expressionList>
@@ -488,32 +488,32 @@
             </doStatement>
             <doStatement>
               <keyword> do </keyword>
-              <identifier category='class' is_def='False' scope='None' index='None'> Screen </identifier>
+              <identifier category='class' is_def='False'> Screen </identifier>
               <symbol> . </symbol>
-              <identifier category='subroutine' is_def='False' scope='None' index='None'> drawRectangle </identifier>
+              <identifier category='subroutine' is_def='False'> drawRectangle </identifier>
               <symbol> ( </symbol>
               <expressionList>
                 <expression>
                   <term>
-                    <identifier category='var_scope' is_def='False' scope='field' index='0'> x </identifier>
+                    <identifier category='variable' is_def='False' scope='field' index='0'> x </identifier>
                   </term>
                 </expression>
                 <symbol> , </symbol>
                 <expression>
                   <term>
-                    <identifier category='var_scope' is_def='False' scope='field' index='1'> y </identifier>
+                    <identifier category='variable' is_def='False' scope='field' index='1'> y </identifier>
                   </term>
                 </expression>
                 <symbol> , </symbol>
                 <expression>
                   <term>
-                    <identifier category='var_scope' is_def='False' scope='field' index='0'> x </identifier>
+                    <identifier category='variable' is_def='False' scope='field' index='0'> x </identifier>
                   </term>
                 </expression>
                 <symbol> , </symbol>
                 <expression>
                   <term>
-                    <identifier category='var_scope' is_def='False' scope='field' index='1'> y </identifier>
+                    <identifier category='variable' is_def='False' scope='field' index='1'> y </identifier>
                   </term>
                 </expression>
               </expressionList>
@@ -534,7 +534,7 @@
   <subroutineDec>
     <keyword> method </keyword>
     <keyword> void </keyword>
-    <identifier category='subroutine' is_def='True' scope='None' index='None'> moveDown </identifier>
+    <identifier category='subroutine' is_def='True'> moveDown </identifier>
     <symbol> ( </symbol>
     <parameterList>
     </parameterList>
@@ -547,7 +547,7 @@
           <symbol> ( </symbol>
           <expression>
             <term>
-              <identifier category='var_scope' is_def='False' scope='field' index='1'> y </identifier>
+              <identifier category='variable' is_def='False' scope='field' index='1'> y </identifier>
             </term>
           </expression>
           <symbol> ) </symbol>
@@ -555,14 +555,14 @@
           <statements>
             <doStatement>
               <keyword> do </keyword>
-              <identifier category='class' is_def='False' scope='None' index='None'> Screen </identifier>
+              <identifier category='class' is_def='False'> Screen </identifier>
               <symbol> . </symbol>
-              <identifier category='subroutine' is_def='False' scope='None' index='None'> setColor </identifier>
+              <identifier category='subroutine' is_def='False'> setColor </identifier>
               <symbol> ( </symbol>
               <expressionList>
                 <expression>
                   <term>
-                    <identifier category='var_scope' is_def='False' scope='field' index='0'> x </identifier>
+                    <identifier category='variable' is_def='False' scope='field' index='0'> x </identifier>
                   </term>
                 </expression>
               </expressionList>
@@ -571,32 +571,32 @@
             </doStatement>
             <doStatement>
               <keyword> do </keyword>
-              <identifier category='class' is_def='False' scope='None' index='None'> Screen </identifier>
+              <identifier category='class' is_def='False'> Screen </identifier>
               <symbol> . </symbol>
-              <identifier category='subroutine' is_def='False' scope='None' index='None'> drawRectangle </identifier>
+              <identifier category='subroutine' is_def='False'> drawRectangle </identifier>
               <symbol> ( </symbol>
               <expressionList>
                 <expression>
                   <term>
-                    <identifier category='var_scope' is_def='False' scope='field' index='0'> x </identifier>
+                    <identifier category='variable' is_def='False' scope='field' index='0'> x </identifier>
                   </term>
                 </expression>
                 <symbol> , </symbol>
                 <expression>
                   <term>
-                    <identifier category='var_scope' is_def='False' scope='field' index='1'> y </identifier>
+                    <identifier category='variable' is_def='False' scope='field' index='1'> y </identifier>
                   </term>
                 </expression>
                 <symbol> , </symbol>
                 <expression>
                   <term>
-                    <identifier category='var_scope' is_def='False' scope='field' index='0'> x </identifier>
+                    <identifier category='variable' is_def='False' scope='field' index='0'> x </identifier>
                   </term>
                 </expression>
                 <symbol> , </symbol>
                 <expression>
                   <term>
-                    <identifier category='var_scope' is_def='False' scope='field' index='1'> y </identifier>
+                    <identifier category='variable' is_def='False' scope='field' index='1'> y </identifier>
                   </term>
                 </expression>
               </expressionList>
@@ -605,25 +605,25 @@
             </doStatement>
             <letStatement>
               <keyword> let </keyword>
-              <identifier category='var_scope' is_def='False' scope='field' index='1'> y </identifier>
+              <identifier category='variable' is_def='False' scope='field' index='1'> y </identifier>
               <symbol> = </symbol>
               <expression>
                 <term>
-                  <identifier category='var_scope' is_def='False' scope='field' index='1'> y </identifier>
+                  <identifier category='variable' is_def='False' scope='field' index='1'> y </identifier>
                 </term>
               </expression>
               <symbol> ; </symbol>
             </letStatement>
             <doStatement>
               <keyword> do </keyword>
-              <identifier category='class' is_def='False' scope='None' index='None'> Screen </identifier>
+              <identifier category='class' is_def='False'> Screen </identifier>
               <symbol> . </symbol>
-              <identifier category='subroutine' is_def='False' scope='None' index='None'> setColor </identifier>
+              <identifier category='subroutine' is_def='False'> setColor </identifier>
               <symbol> ( </symbol>
               <expressionList>
                 <expression>
                   <term>
-                    <identifier category='var_scope' is_def='False' scope='field' index='0'> x </identifier>
+                    <identifier category='variable' is_def='False' scope='field' index='0'> x </identifier>
                   </term>
                 </expression>
               </expressionList>
@@ -632,32 +632,32 @@
             </doStatement>
             <doStatement>
               <keyword> do </keyword>
-              <identifier category='class' is_def='False' scope='None' index='None'> Screen </identifier>
+              <identifier category='class' is_def='False'> Screen </identifier>
               <symbol> . </symbol>
-              <identifier category='subroutine' is_def='False' scope='None' index='None'> drawRectangle </identifier>
+              <identifier category='subroutine' is_def='False'> drawRectangle </identifier>
               <symbol> ( </symbol>
               <expressionList>
                 <expression>
                   <term>
-                    <identifier category='var_scope' is_def='False' scope='field' index='0'> x </identifier>
+                    <identifier category='variable' is_def='False' scope='field' index='0'> x </identifier>
                   </term>
                 </expression>
                 <symbol> , </symbol>
                 <expression>
                   <term>
-                    <identifier category='var_scope' is_def='False' scope='field' index='1'> y </identifier>
+                    <identifier category='variable' is_def='False' scope='field' index='1'> y </identifier>
                   </term>
                 </expression>
                 <symbol> , </symbol>
                 <expression>
                   <term>
-                    <identifier category='var_scope' is_def='False' scope='field' index='0'> x </identifier>
+                    <identifier category='variable' is_def='False' scope='field' index='0'> x </identifier>
                   </term>
                 </expression>
                 <symbol> , </symbol>
                 <expression>
                   <term>
-                    <identifier category='var_scope' is_def='False' scope='field' index='1'> y </identifier>
+                    <identifier category='variable' is_def='False' scope='field' index='1'> y </identifier>
                   </term>
                 </expression>
               </expressionList>
@@ -678,7 +678,7 @@
   <subroutineDec>
     <keyword> method </keyword>
     <keyword> void </keyword>
-    <identifier category='subroutine' is_def='True' scope='None' index='None'> moveLeft </identifier>
+    <identifier category='subroutine' is_def='True'> moveLeft </identifier>
     <symbol> ( </symbol>
     <parameterList>
     </parameterList>
@@ -691,7 +691,7 @@
           <symbol> ( </symbol>
           <expression>
             <term>
-              <identifier category='var_scope' is_def='False' scope='field' index='0'> x </identifier>
+              <identifier category='variable' is_def='False' scope='field' index='0'> x </identifier>
             </term>
           </expression>
           <symbol> ) </symbol>
@@ -699,14 +699,14 @@
           <statements>
             <doStatement>
               <keyword> do </keyword>
-              <identifier category='class' is_def='False' scope='None' index='None'> Screen </identifier>
+              <identifier category='class' is_def='False'> Screen </identifier>
               <symbol> . </symbol>
-              <identifier category='subroutine' is_def='False' scope='None' index='None'> setColor </identifier>
+              <identifier category='subroutine' is_def='False'> setColor </identifier>
               <symbol> ( </symbol>
               <expressionList>
                 <expression>
                   <term>
-                    <identifier category='var_scope' is_def='False' scope='field' index='0'> x </identifier>
+                    <identifier category='variable' is_def='False' scope='field' index='0'> x </identifier>
                   </term>
                 </expression>
               </expressionList>
@@ -715,32 +715,32 @@
             </doStatement>
             <doStatement>
               <keyword> do </keyword>
-              <identifier category='class' is_def='False' scope='None' index='None'> Screen </identifier>
+              <identifier category='class' is_def='False'> Screen </identifier>
               <symbol> . </symbol>
-              <identifier category='subroutine' is_def='False' scope='None' index='None'> drawRectangle </identifier>
+              <identifier category='subroutine' is_def='False'> drawRectangle </identifier>
               <symbol> ( </symbol>
               <expressionList>
                 <expression>
                   <term>
-                    <identifier category='var_scope' is_def='False' scope='field' index='0'> x </identifier>
+                    <identifier category='variable' is_def='False' scope='field' index='0'> x </identifier>
                   </term>
                 </expression>
                 <symbol> , </symbol>
                 <expression>
                   <term>
-                    <identifier category='var_scope' is_def='False' scope='field' index='1'> y </identifier>
+                    <identifier category='variable' is_def='False' scope='field' index='1'> y </identifier>
                   </term>
                 </expression>
                 <symbol> , </symbol>
                 <expression>
                   <term>
-                    <identifier category='var_scope' is_def='False' scope='field' index='0'> x </identifier>
+                    <identifier category='variable' is_def='False' scope='field' index='0'> x </identifier>
                   </term>
                 </expression>
                 <symbol> , </symbol>
                 <expression>
                   <term>
-                    <identifier category='var_scope' is_def='False' scope='field' index='1'> y </identifier>
+                    <identifier category='variable' is_def='False' scope='field' index='1'> y </identifier>
                   </term>
                 </expression>
               </expressionList>
@@ -749,25 +749,25 @@
             </doStatement>
             <letStatement>
               <keyword> let </keyword>
-              <identifier category='var_scope' is_def='False' scope='field' index='0'> x </identifier>
+              <identifier category='variable' is_def='False' scope='field' index='0'> x </identifier>
               <symbol> = </symbol>
               <expression>
                 <term>
-                  <identifier category='var_scope' is_def='False' scope='field' index='0'> x </identifier>
+                  <identifier category='variable' is_def='False' scope='field' index='0'> x </identifier>
                 </term>
               </expression>
               <symbol> ; </symbol>
             </letStatement>
             <doStatement>
               <keyword> do </keyword>
-              <identifier category='class' is_def='False' scope='None' index='None'> Screen </identifier>
+              <identifier category='class' is_def='False'> Screen </identifier>
               <symbol> . </symbol>
-              <identifier category='subroutine' is_def='False' scope='None' index='None'> setColor </identifier>
+              <identifier category='subroutine' is_def='False'> setColor </identifier>
               <symbol> ( </symbol>
               <expressionList>
                 <expression>
                   <term>
-                    <identifier category='var_scope' is_def='False' scope='field' index='0'> x </identifier>
+                    <identifier category='variable' is_def='False' scope='field' index='0'> x </identifier>
                   </term>
                 </expression>
               </expressionList>
@@ -776,32 +776,32 @@
             </doStatement>
             <doStatement>
               <keyword> do </keyword>
-              <identifier category='class' is_def='False' scope='None' index='None'> Screen </identifier>
+              <identifier category='class' is_def='False'> Screen </identifier>
               <symbol> . </symbol>
-              <identifier category='subroutine' is_def='False' scope='None' index='None'> drawRectangle </identifier>
+              <identifier category='subroutine' is_def='False'> drawRectangle </identifier>
               <symbol> ( </symbol>
               <expressionList>
                 <expression>
                   <term>
-                    <identifier category='var_scope' is_def='False' scope='field' index='0'> x </identifier>
+                    <identifier category='variable' is_def='False' scope='field' index='0'> x </identifier>
                   </term>
                 </expression>
                 <symbol> , </symbol>
                 <expression>
                   <term>
-                    <identifier category='var_scope' is_def='False' scope='field' index='1'> y </identifier>
+                    <identifier category='variable' is_def='False' scope='field' index='1'> y </identifier>
                   </term>
                 </expression>
                 <symbol> , </symbol>
                 <expression>
                   <term>
-                    <identifier category='var_scope' is_def='False' scope='field' index='0'> x </identifier>
+                    <identifier category='variable' is_def='False' scope='field' index='0'> x </identifier>
                   </term>
                 </expression>
                 <symbol> , </symbol>
                 <expression>
                   <term>
-                    <identifier category='var_scope' is_def='False' scope='field' index='1'> y </identifier>
+                    <identifier category='variable' is_def='False' scope='field' index='1'> y </identifier>
                   </term>
                 </expression>
               </expressionList>
@@ -822,7 +822,7 @@
   <subroutineDec>
     <keyword> method </keyword>
     <keyword> void </keyword>
-    <identifier category='subroutine' is_def='True' scope='None' index='None'> moveRight </identifier>
+    <identifier category='subroutine' is_def='True'> moveRight </identifier>
     <symbol> ( </symbol>
     <parameterList>
     </parameterList>
@@ -835,7 +835,7 @@
           <symbol> ( </symbol>
           <expression>
             <term>
-              <identifier category='var_scope' is_def='False' scope='field' index='0'> x </identifier>
+              <identifier category='variable' is_def='False' scope='field' index='0'> x </identifier>
             </term>
           </expression>
           <symbol> ) </symbol>
@@ -843,14 +843,14 @@
           <statements>
             <doStatement>
               <keyword> do </keyword>
-              <identifier category='class' is_def='False' scope='None' index='None'> Screen </identifier>
+              <identifier category='class' is_def='False'> Screen </identifier>
               <symbol> . </symbol>
-              <identifier category='subroutine' is_def='False' scope='None' index='None'> setColor </identifier>
+              <identifier category='subroutine' is_def='False'> setColor </identifier>
               <symbol> ( </symbol>
               <expressionList>
                 <expression>
                   <term>
-                    <identifier category='var_scope' is_def='False' scope='field' index='0'> x </identifier>
+                    <identifier category='variable' is_def='False' scope='field' index='0'> x </identifier>
                   </term>
                 </expression>
               </expressionList>
@@ -859,32 +859,32 @@
             </doStatement>
             <doStatement>
               <keyword> do </keyword>
-              <identifier category='class' is_def='False' scope='None' index='None'> Screen </identifier>
+              <identifier category='class' is_def='False'> Screen </identifier>
               <symbol> . </symbol>
-              <identifier category='subroutine' is_def='False' scope='None' index='None'> drawRectangle </identifier>
+              <identifier category='subroutine' is_def='False'> drawRectangle </identifier>
               <symbol> ( </symbol>
               <expressionList>
                 <expression>
                   <term>
-                    <identifier category='var_scope' is_def='False' scope='field' index='0'> x </identifier>
+                    <identifier category='variable' is_def='False' scope='field' index='0'> x </identifier>
                   </term>
                 </expression>
                 <symbol> , </symbol>
                 <expression>
                   <term>
-                    <identifier category='var_scope' is_def='False' scope='field' index='1'> y </identifier>
+                    <identifier category='variable' is_def='False' scope='field' index='1'> y </identifier>
                   </term>
                 </expression>
                 <symbol> , </symbol>
                 <expression>
                   <term>
-                    <identifier category='var_scope' is_def='False' scope='field' index='0'> x </identifier>
+                    <identifier category='variable' is_def='False' scope='field' index='0'> x </identifier>
                   </term>
                 </expression>
                 <symbol> , </symbol>
                 <expression>
                   <term>
-                    <identifier category='var_scope' is_def='False' scope='field' index='1'> y </identifier>
+                    <identifier category='variable' is_def='False' scope='field' index='1'> y </identifier>
                   </term>
                 </expression>
               </expressionList>
@@ -893,25 +893,25 @@
             </doStatement>
             <letStatement>
               <keyword> let </keyword>
-              <identifier category='var_scope' is_def='False' scope='field' index='0'> x </identifier>
+              <identifier category='variable' is_def='False' scope='field' index='0'> x </identifier>
               <symbol> = </symbol>
               <expression>
                 <term>
-                  <identifier category='var_scope' is_def='False' scope='field' index='0'> x </identifier>
+                  <identifier category='variable' is_def='False' scope='field' index='0'> x </identifier>
                 </term>
               </expression>
               <symbol> ; </symbol>
             </letStatement>
             <doStatement>
               <keyword> do </keyword>
-              <identifier category='class' is_def='False' scope='None' index='None'> Screen </identifier>
+              <identifier category='class' is_def='False'> Screen </identifier>
               <symbol> . </symbol>
-              <identifier category='subroutine' is_def='False' scope='None' index='None'> setColor </identifier>
+              <identifier category='subroutine' is_def='False'> setColor </identifier>
               <symbol> ( </symbol>
               <expressionList>
                 <expression>
                   <term>
-                    <identifier category='var_scope' is_def='False' scope='field' index='0'> x </identifier>
+                    <identifier category='variable' is_def='False' scope='field' index='0'> x </identifier>
                   </term>
                 </expression>
               </expressionList>
@@ -920,32 +920,32 @@
             </doStatement>
             <doStatement>
               <keyword> do </keyword>
-              <identifier category='class' is_def='False' scope='None' index='None'> Screen </identifier>
+              <identifier category='class' is_def='False'> Screen </identifier>
               <symbol> . </symbol>
-              <identifier category='subroutine' is_def='False' scope='None' index='None'> drawRectangle </identifier>
+              <identifier category='subroutine' is_def='False'> drawRectangle </identifier>
               <symbol> ( </symbol>
               <expressionList>
                 <expression>
                   <term>
-                    <identifier category='var_scope' is_def='False' scope='field' index='0'> x </identifier>
+                    <identifier category='variable' is_def='False' scope='field' index='0'> x </identifier>
                   </term>
                 </expression>
                 <symbol> , </symbol>
                 <expression>
                   <term>
-                    <identifier category='var_scope' is_def='False' scope='field' index='1'> y </identifier>
+                    <identifier category='variable' is_def='False' scope='field' index='1'> y </identifier>
                   </term>
                 </expression>
                 <symbol> , </symbol>
                 <expression>
                   <term>
-                    <identifier category='var_scope' is_def='False' scope='field' index='0'> x </identifier>
+                    <identifier category='variable' is_def='False' scope='field' index='0'> x </identifier>
                   </term>
                 </expression>
                 <symbol> , </symbol>
                 <expression>
                   <term>
-                    <identifier category='var_scope' is_def='False' scope='field' index='1'> y </identifier>
+                    <identifier category='variable' is_def='False' scope='field' index='1'> y </identifier>
                   </term>
                 </expression>
               </expressionList>

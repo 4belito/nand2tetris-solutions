@@ -41,33 +41,30 @@ class CompilationEngine:
                 self._compile_enumtoken(Keyword.CLASS)
                 self.table = SymbolTable(name=self.token.value)
                 self._compile_identifier(IdContext(IdCat.CLASS, is_def=True))
-                self._compile_enumtoken(Symbol.LBRACE)
-                while self.token.is_in([Keyword.STATIC, Keyword.FIELD]):
-                    var_scope = self.token.get_variable_scope()
-                    self.compile_class_var_declaration(var_scope)
-                while self.token.is_subroutine():
-                    self.compile_subroutine_declaration()
-                if self.token == Symbol.RBRACE:
-                    self._write_token()
+                with self._braces():
+                    while self.token.is_in([Keyword.STATIC, Keyword.FIELD]):
+                        self.compile_class_var_declaration()
+                    while self.token.is_subroutine():
+                        self.compile_subroutine_declaration()
             if self.tokenizer.has_more_tokens():
-                raise ValueError("Extra tokens after class declaration")
-                
-            
+                raise ValueError("Extra tokens after class end")
 
-    def compile_class_var_declaration(self,var_scope:VarS) -> None:
+
+    def compile_class_var_declaration(self) -> None:
         '''
         Compile a static variable declaration, or a field declaration.
         grammar: (static | field) type varName (',' varName)* ';'
         '''
-        
+        var_scope = self.token.get_variable_scope()
         with self.tag('classVarDec'):
-            self._write_and_advance()  # 'static' | 'field'
+            self._compile()  # 'static' | 'field'
             var_type = self._compile_type()  # type
             self._compile_variable_def(var_scope, var_type)
             while self.token == Symbol.COMMA:
-                self._write_and_advance()
+                self._compile()
                 self._compile_variable_def(var_scope, var_type)
             self._compile_enumtoken(Symbol.SEMICOLON)
+            
 
 
 
@@ -79,15 +76,16 @@ class CompilationEngine:
         with self.tag('subroutineDec'):
             self.table.start_subroutine()
             if self.token == Keyword.METHOD:
+                # Implicit 'this' argument for methods
                 self.table.define('this', self.table.name, VarS.ARGUMENT)
-            self._write_and_advance()  # 'constructor' | 'function' | 'method'
+            self._compile()  # 'constructor' | 'function' | 'method'
             self._compile_return_type()
             self._compile_identifier(IdContext(IdCat.SUBROUTINE, is_def=True))
-            self._compile_enumtoken(Symbol.LPAREN)
-            # Implicit 'this' argument for methods
-            self.compile_parameter_list()
-            self._compile_enumtoken(Symbol.RPAREN)
+            with self._parentheses():
+                self.compile_parameter_list()
             self.compile_subroutine_body()
+
+            
 
     def compile_parameter_list(self) -> None:
         '''
@@ -99,7 +97,7 @@ class CompilationEngine:
             if self.token.is_type(): 
                 self._compile_variable_def(scope=VarS.ARGUMENT)
                 while self.token == Symbol.COMMA:  # (',' type varName)*)?
-                    self._write_and_advance()
+                    self._compile()
                     self._compile_variable_def(scope=VarS.ARGUMENT)
 
     def compile_subroutine_body(self) -> None:
@@ -108,11 +106,10 @@ class CompilationEngine:
         grammar: '{' varDec* statements '}'
         '''
         with self.tag('subroutineBody'):
-            self._compile_enumtoken(Symbol.LBRACE)
-            while self.token == Keyword.VAR:
-                self.compile_var_declaration()
-            self.compile_statements()
-            self._compile_enumtoken(Symbol.RBRACE)
+            with self._braces():
+                while self.token == Keyword.VAR:
+                    self.compile_var_declaration()
+                self.compile_statements()
 
     def compile_var_declaration(self) -> None:
         '''
@@ -120,13 +117,13 @@ class CompilationEngine:
         grammar: 'var' type varName (',' varName)* ';'
         '''
         with self.tag('varDec'):
-            self._write_and_advance()  # 'var'
+            self._compile()  # 'var'
             if self.token.is_type():  # type
                 var_type = self._compile_type()
                 self._compile_variable_def(VarS.VAR, var_type)
                 #self._compile_identifier()  # varName
                 while self.token == Symbol.COMMA:  # (',' varName)*?
-                    self._write_and_advance()
+                    self._compile()
                     self._compile_variable_def(VarS.VAR, var_type)  # varName
                 self._compile_enumtoken(Symbol.SEMICOLON)
 
@@ -161,9 +158,8 @@ class CompilationEngine:
             self._compile_enumtoken(Keyword.LET)
             self._compile_variable(var_name=self.token.value,is_def=False)
             if self.token == Symbol.LBRACK:
-                self._compile_enumtoken(Symbol.LBRACK)
-                self.compile_expression()
-                self._compile_enumtoken(Symbol.RBRACK)
+                with self._brackets():
+                    self.compile_expression()
             self._compile_enumtoken(Symbol.EQ)
             self.compile_expression()
             self._compile_enumtoken(Symbol.SEMICOLON)
@@ -175,17 +171,14 @@ class CompilationEngine:
         '''
         with self.tag('ifStatement'):
             self._compile_enumtoken(Keyword.IF)
-            self._compile_enumtoken(Symbol.LPAREN)
-            self.compile_expression()
-            self._compile_enumtoken(Symbol.RPAREN)
-            self._compile_enumtoken(Symbol.LBRACE)
-            self.compile_statements()
-            self._compile_enumtoken(Symbol.RBRACE)
+            with self._parentheses():
+                self.compile_expression()
+            with self._braces():
+                self.compile_statements()
             if self.token == Keyword.ELSE:
                 self._compile_enumtoken(Keyword.ELSE)
-                self._compile_enumtoken(Symbol.LBRACE)
-                self.compile_statements()
-                self._compile_enumtoken(Symbol.RBRACE)
+                with self._braces():
+                    self.compile_statements()
 
     def compile_while(self) -> None:
         '''
@@ -194,12 +187,10 @@ class CompilationEngine:
         '''
         with self.tag('whileStatement'):
             self._compile_enumtoken(Keyword.WHILE)
-            self._compile_enumtoken(Symbol.LPAREN)
-            self.compile_expression()
-            self._compile_enumtoken(Symbol.RPAREN)
-            self._compile_enumtoken(Symbol.LBRACE)
-            self.compile_statements()
-            self._compile_enumtoken(Symbol.RBRACE)
+            with self._parentheses():
+                self.compile_expression()
+            with self._braces():
+                self.compile_statements()
 
     def compile_do(self) -> None:
         '''
@@ -230,7 +221,7 @@ class CompilationEngine:
         with self.tag('expression'):
             self.compile_term()
             while self.token.is_op():
-                self._write_and_advance()
+                self._compile()
                 self.compile_term()
 
     def compile_term(self) -> None:
@@ -245,24 +236,22 @@ class CompilationEngine:
         '''
         with self.tag('term'):
             if self.token.is_constant():
-                self._write_and_advance()
+                self._compile()
             elif self.token.ttype == TokenType.IDENTIFIER:
                 next_token = self.tokenizer.peek()
                 if next_token == Symbol.LBRACK:
                     self._compile_variable(var_name=self.token.value, is_def=False)
-                    self._compile_enumtoken(Symbol.LBRACK)
-                    self.compile_expression()
-                    self._compile_enumtoken(Symbol.RBRACK)
+                    with self._brackets():
+                        self.compile_expression()
                 elif next_token.is_in([Symbol.LPAREN, Symbol.DOT]):
                     self._compile_subroutine_call(next_token)
                 else:
                     self._compile_variable(var_name=self.token.value, is_def=False)
             elif self.token == Symbol.LPAREN:
-                self._compile_enumtoken(Symbol.LPAREN)
-                self.compile_expression()
-                self._compile_enumtoken(Symbol.RPAREN)
+                with self._parentheses():
+                    self.compile_expression()
             elif self.token.is_unary_op():
-                self._write_and_advance()
+                self._compile()
                 self.compile_term()
 
     def compile_expression_list(self) -> None:
@@ -279,7 +268,7 @@ class CompilationEngine:
 
     def _compile_return_type(self):
         if self.token == Keyword.VOID:
-            self._write_and_advance()
+            self._compile()
         else:
             self._compile_type()
 
@@ -295,9 +284,8 @@ class CompilationEngine:
                 self._compile_variable(var_name=self.token.value, is_def=False)
             self._compile_enumtoken(Symbol.DOT)
         self._compile_identifier(IdContext(IdCat.SUBROUTINE, is_def=False)) # subroutineName | className | varName
-        self._compile_enumtoken(Symbol.LPAREN)
-        self.compile_expression_list()
-        self._compile_enumtoken(Symbol.RPAREN)
+        with self._parentheses():
+            self.compile_expression_list()
 
     def _open_tag(self, tag_name: str) -> None:
         self._write(f'<{tag_name}>\n')
@@ -312,6 +300,21 @@ class CompilationEngine:
         self._open_tag(tag_name)
         yield
         self._close_tag(tag_name)
+    
+    @contextmanager
+    def _symbol_context(self, open_symbol: Symbol, close_symbol: Symbol):
+        self._compile_enumtoken(open_symbol)
+        yield
+        self._compile_enumtoken(close_symbol)
+
+    def _braces(self):
+        return self._symbol_context(Symbol.LBRACE, Symbol.RBRACE)
+
+    def _parentheses(self):
+        return self._symbol_context(Symbol.LPAREN, Symbol.RPAREN)
+
+    def _brackets(self):
+        return self._symbol_context(Symbol.LBRACK, Symbol.RBRACK)
 
     def _write(self, text: str) -> None:
         self.f.write(f'{" " * self.ident}{text}')
@@ -319,9 +322,10 @@ class CompilationEngine:
     def _write_token(self) -> None:
         self._write(self.token.xml())
 
-    def _write_and_advance(self) -> None:
+    def _compile(self) -> None:
         self._write_token()
-        self.token = self.tokenizer.advance()
+        if self.tokenizer.has_more_tokens():
+            self.token = self.tokenizer.advance()
 
     def _compile_enumtoken(self, token: Keyword | Symbol) -> None:
         '''
@@ -329,7 +333,7 @@ class CompilationEngine:
         grammar: keyword | symbol
         '''
         if self.token == token:
-            self._write_and_advance()
+            self._compile()
         else:
             raise ValueError(f"Expected {token.ttype}: '{token}'")
 
@@ -340,7 +344,7 @@ class CompilationEngine:
         '''
         if self.token.ttype == TokenType.IDENTIFIER:
             self.token.set_context(context)
-            self._write_and_advance()
+            self._compile()
         else:
             raise ValueError(f"Expected an identifier")
 
@@ -353,7 +357,7 @@ class CompilationEngine:
         if self.token.ttype == TokenType.IDENTIFIER:
             self._compile_identifier(IdContext(IdCat.CLASS,is_def=False))
         elif self.token.is_primitive_type():
-            self._write_and_advance()
+            self._compile()
         else:
             raise ValueError("Expected type to be 'int', 'char', 'boolean', or className")
         return var_type
@@ -377,7 +381,7 @@ class CompilationEngine:
         symbol = self.table.get_symbol(var_name)
         if symbol is None:
             raise ValueError(f"Identifier '{var_name}' not found in symbol table.")
-        id_context = IdContext(IdCat.VAR_SCOPE, is_def=is_def, scope=symbol.kind, index=symbol.index)
+        id_context = IdContext(IdCat.VARIABLE, is_def=is_def, scope=symbol.kind, index=symbol.index)
         self._compile_identifier(id_context)
 
 

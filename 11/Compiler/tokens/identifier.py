@@ -9,7 +9,7 @@ class IdentifierCategory(Enum):
     """Enum for Jack identifier categories."""
     CLASS = "class"
     SUBROUTINE = "subroutine"
-    VAR_SCOPE = "var_scope"
+    VARIABLE = "variable"
 
     def __str__(self) -> str:
         """Return string representation of the identifier category."""
@@ -36,7 +36,7 @@ class IdentifierContext:
 
     def __repr__(self):
         # Clean, parenthesis-free string for XML output, with leading space if not empty
-        s = " ".join(f"{k}='{v}'" for k, v in vars(self).items())
+        s = " ".join(f"{k}='{v}'" for k, v in vars(self).items() if v is not None)
         if s: s=" " + s
         return s
 

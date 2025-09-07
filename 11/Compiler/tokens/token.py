@@ -57,7 +57,7 @@ class Token:
 
     def xml(self) -> str:
         """Return XML representation of the token."""
-        return f'<{self.ttype.value}{self.context}> {self._token.value} </{self.ttype.value}>\n'
+        return f'<{self.ttype.value}{self.context}> {self._token} </{self.ttype.value}>\n'
 
     def is_primitive_type(self) -> bool:
         """Return True if token is a primitive type."""
