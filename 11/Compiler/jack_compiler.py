@@ -6,6 +6,15 @@ import os
 import argparse
 
 
+def main():
+    parser = argparse.ArgumentParser(description="Jack Compiler: Analyze Jack files and generate vm code.")
+    parser.add_argument('input_path', type=str, help="Path to a .jack file or a directory containing .jack files.")
+    args = parser.parse_args()
+
+    compiler = JackCompiler(args.input_path)
+    compiler.compile()
+
+
 class JackCompiler:
     def __init__(self, input_path:str):
         self.input_files: list[str] = []
@@ -20,17 +29,11 @@ class JackCompiler:
         '''Analyze the Jack files and generate XML output for each.'''
         for file in self.input_files:
             tokenizer = JackTokenizer(file)
-            output_file = file.replace('.jack', '.xml')
+            output_file = file.replace('.jack', '.vm') #.xml
             compiler = CompilationEngine(tokenizer, output_file)
             compiler.compile_class()
 
-def main():
-    parser = argparse.ArgumentParser(description="Jack Compiler: Analyze Jack files and generate vm code.")
-    parser.add_argument('input_path', type=str, help="Path to a .jack file or a directory containing .jack files.")
-    args = parser.parse_args()
 
-    compiler = JackCompiler(args.input_path)
-    compiler.compile()
 
 if __name__ == "__main__":
     main()

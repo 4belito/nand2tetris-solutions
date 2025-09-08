@@ -8,7 +8,6 @@ Directory Example usage:
 python jack_analyzer.py test/Square
 '''
 
-from jack_tokenizer import JackTokenizer
 from compilation_engine import CompilationEngine
 import os
 import argparse
@@ -25,10 +24,9 @@ class JackAnalyzer:
 
     def analyze(self):
         '''Analyze the Jack files and generate XML output for each.'''
-        for file in self.input_files:
-            tokenizer = JackTokenizer(file)
-            output_file = file.replace('.jack', '.xml')
-            compiler = CompilationEngine(tokenizer, output_file)
+        for input_file in self.input_files:
+            output_file = input_file.replace('.jack', '.xml')
+            compiler = CompilationEngine(input_file, output_file)
             compiler.compile_class()
 
 def main():

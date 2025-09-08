@@ -44,14 +44,14 @@ class CompilationEngine:
                 self._compile_identifier(IdContext(IdCat.CLASS, is_def=True))
                 with self._braces():
                     while self.token.is_in([Keyword.STATIC, Keyword.FIELD]):
-                        self.compile_class_var_declaration()
+                        self.compile_class_var_dec()
                     while self.token.is_in(SUBROUTINES):
-                        self.compile_subroutine_declaration()
+                        self.compile_subroutine_dec()
             if self.tokenizer.has_more_tokens():
                 raise ValueError("Extra tokens after class end")
 
 
-    def compile_class_var_declaration(self) -> None:
+    def compile_class_var_dec(self) -> None:
         '''
         Compile a static variable declaration, or a field declaration.
         grammar: (static | field) type varName (',' varName)* ';'
@@ -66,7 +66,7 @@ class CompilationEngine:
                 self._compile_variable_def(var_scope, var_type)
             self._compile(Symbol.SEMICOLON)
 
-    def compile_subroutine_declaration(self) -> None:
+    def compile_subroutine_dec(self) -> None:
         '''
         Compile a complete method, function, or constructor
         grammar: ('constructor' | 'function' | 'method') ('void' | type) subroutineName '('parameterList')' subroutineBody

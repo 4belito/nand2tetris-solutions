@@ -1,0 +1,286 @@
+<class>
+  <keyword> class </keyword>
+  <identifier category='class' is_def='True'> Main </identifier>
+  <symbol> { </symbol>
+  <subroutineDec>
+    <keyword> function </keyword>
+    <keyword> void </keyword>
+    <identifier category='subroutine' is_def='True'> main </identifier>
+    <symbol> ( </symbol>
+    <parameterList>
+    </parameterList>
+    <symbol> ) </symbol>
+    <subroutineBody>
+      <symbol> { </symbol>
+      <varDec>
+        <keyword> var </keyword>
+        <identifier category='class' is_def='False'> Array </identifier>
+        <identifier category='variable' is_def='True' scope='var' index='0'> a </identifier>
+        <symbol> ; </symbol>
+      </varDec>
+      <varDec>
+        <keyword> var </keyword>
+        <keyword> int </keyword>
+        <identifier category='variable' is_def='True' scope='var' index='1'> length </identifier>
+        <symbol> ; </symbol>
+      </varDec>
+      <varDec>
+        <keyword> var </keyword>
+        <keyword> int </keyword>
+        <identifier category='variable' is_def='True' scope='var' index='2'> i </identifier>
+        <symbol> , </symbol>
+        <identifier category='variable' is_def='True' scope='var' index='3'> sum </identifier>
+        <symbol> ; </symbol>
+      </varDec>
+      <statements>
+        <letStatement>
+          <keyword> let </keyword>
+          <identifier category='variable' is_def='False' scope='var' index='1'> length </identifier>
+          <symbol> = </symbol>
+          <expression>
+            <term>
+              <identifier category='class' is_def='False'> Keyboard </identifier>
+              <symbol> . </symbol>
+              <identifier category='subroutine' is_def='False'> readInt </identifier>
+              <symbol> ( </symbol>
+              <expressionList>
+                <expression>
+                  <term>
+                    <stringConstant> HOW MANY NUMBERS?  </stringConstant>
+                  </term>
+                </expression>
+              </expressionList>
+              <symbol> ) </symbol>
+            </term>
+          </expression>
+          <symbol> ; </symbol>
+        </letStatement>
+        <letStatement>
+          <keyword> let </keyword>
+          <identifier category='variable' is_def='False' scope='var' index='0'> a </identifier>
+          <symbol> = </symbol>
+          <expression>
+            <term>
+              <identifier category='class' is_def='False'> Array </identifier>
+              <symbol> . </symbol>
+              <identifier category='subroutine' is_def='False'> new </identifier>
+              <symbol> ( </symbol>
+              <expressionList>
+                <expression>
+                  <term>
+                    <identifier category='variable' is_def='False' scope='var' index='1'> length </identifier>
+                  </term>
+                </expression>
+              </expressionList>
+              <symbol> ) </symbol>
+            </term>
+          </expression>
+          <symbol> ; </symbol>
+        </letStatement>
+        <letStatement>
+          <keyword> let </keyword>
+          <identifier category='variable' is_def='False' scope='var' index='2'> i </identifier>
+          <symbol> = </symbol>
+          <expression>
+            <term>
+              <integerConstant> 0 </integerConstant>
+            </term>
+          </expression>
+          <symbol> ; </symbol>
+        </letStatement>
+        <whileStatement>
+          <keyword> while </keyword>
+          <symbol> ( </symbol>
+          <expression>
+            <term>
+              <identifier category='variable' is_def='False' scope='var' index='2'> i </identifier>
+            </term>
+            <symbol> &lt; </symbol>
+            <term>
+              <identifier category='variable' is_def='False' scope='var' index='1'> length </identifier>
+            </term>
+          </expression>
+          <symbol> ) </symbol>
+          <symbol> { </symbol>
+          <statements>
+            <letStatement>
+              <keyword> let </keyword>
+              <identifier category='variable' is_def='False' scope='var' index='0'> a </identifier>
+              <symbol> [ </symbol>
+              <expression>
+                <term>
+                  <identifier category='variable' is_def='False' scope='var' index='2'> i </identifier>
+                </term>
+              </expression>
+              <symbol> ] </symbol>
+              <symbol> = </symbol>
+              <expression>
+                <term>
+                  <identifier category='class' is_def='False'> Keyboard </identifier>
+                  <symbol> . </symbol>
+                  <identifier category='subroutine' is_def='False'> readInt </identifier>
+                  <symbol> ( </symbol>
+                  <expressionList>
+                    <expression>
+                      <term>
+                        <stringConstant> ENTER THE NEXT NUMBER:  </stringConstant>
+                      </term>
+                    </expression>
+                  </expressionList>
+                  <symbol> ) </symbol>
+                </term>
+              </expression>
+              <symbol> ; </symbol>
+            </letStatement>
+            <letStatement>
+              <keyword> let </keyword>
+              <identifier category='variable' is_def='False' scope='var' index='2'> i </identifier>
+              <symbol> = </symbol>
+              <expression>
+                <term>
+                  <identifier category='variable' is_def='False' scope='var' index='2'> i </identifier>
+                </term>
+                <symbol> + </symbol>
+                <term>
+                  <integerConstant> 1 </integerConstant>
+                </term>
+              </expression>
+              <symbol> ; </symbol>
+            </letStatement>
+          </statements>
+          <symbol> } </symbol>
+        </whileStatement>
+        <letStatement>
+          <keyword> let </keyword>
+          <identifier category='variable' is_def='False' scope='var' index='2'> i </identifier>
+          <symbol> = </symbol>
+          <expression>
+            <term>
+              <integerConstant> 0 </integerConstant>
+            </term>
+          </expression>
+          <symbol> ; </symbol>
+        </letStatement>
+        <letStatement>
+          <keyword> let </keyword>
+          <identifier category='variable' is_def='False' scope='var' index='3'> sum </identifier>
+          <symbol> = </symbol>
+          <expression>
+            <term>
+              <integerConstant> 0 </integerConstant>
+            </term>
+          </expression>
+          <symbol> ; </symbol>
+        </letStatement>
+        <whileStatement>
+          <keyword> while </keyword>
+          <symbol> ( </symbol>
+          <expression>
+            <term>
+              <identifier category='variable' is_def='False' scope='var' index='2'> i </identifier>
+            </term>
+            <symbol> &lt; </symbol>
+            <term>
+              <identifier category='variable' is_def='False' scope='var' index='1'> length </identifier>
+            </term>
+          </expression>
+          <symbol> ) </symbol>
+          <symbol> { </symbol>
+          <statements>
+            <letStatement>
+              <keyword> let </keyword>
+              <identifier category='variable' is_def='False' scope='var' index='3'> sum </identifier>
+              <symbol> = </symbol>
+              <expression>
+                <term>
+                  <identifier category='variable' is_def='False' scope='var' index='3'> sum </identifier>
+                </term>
+                <symbol> + </symbol>
+                <term>
+                  <identifier category='variable' is_def='False' scope='var' index='0'> a </identifier>
+                  <symbol> [ </symbol>
+                  <expression>
+                    <term>
+                      <identifier category='variable' is_def='False' scope='var' index='2'> i </identifier>
+                    </term>
+                  </expression>
+                  <symbol> ] </symbol>
+                </term>
+              </expression>
+              <symbol> ; </symbol>
+            </letStatement>
+            <letStatement>
+              <keyword> let </keyword>
+              <identifier category='variable' is_def='False' scope='var' index='2'> i </identifier>
+              <symbol> = </symbol>
+              <expression>
+                <term>
+                  <identifier category='variable' is_def='False' scope='var' index='2'> i </identifier>
+                </term>
+                <symbol> + </symbol>
+                <term>
+                  <integerConstant> 1 </integerConstant>
+                </term>
+              </expression>
+              <symbol> ; </symbol>
+            </letStatement>
+          </statements>
+          <symbol> } </symbol>
+        </whileStatement>
+        <doStatement>
+          <keyword> do </keyword>
+          <identifier category='class' is_def='False'> Output </identifier>
+          <symbol> . </symbol>
+          <identifier category='subroutine' is_def='False'> printString </identifier>
+          <symbol> ( </symbol>
+          <expressionList>
+            <expression>
+              <term>
+                <stringConstant> THE AVERAGE IS:  </stringConstant>
+              </term>
+            </expression>
+          </expressionList>
+          <symbol> ) </symbol>
+          <symbol> ; </symbol>
+        </doStatement>
+        <doStatement>
+          <keyword> do </keyword>
+          <identifier category='class' is_def='False'> Output </identifier>
+          <symbol> . </symbol>
+          <identifier category='subroutine' is_def='False'> printInt </identifier>
+          <symbol> ( </symbol>
+          <expressionList>
+            <expression>
+              <term>
+                <identifier category='variable' is_def='False' scope='var' index='3'> sum </identifier>
+              </term>
+              <symbol> / </symbol>
+              <term>
+                <identifier category='variable' is_def='False' scope='var' index='1'> length </identifier>
+              </term>
+            </expression>
+          </expressionList>
+          <symbol> ) </symbol>
+          <symbol> ; </symbol>
+        </doStatement>
+        <doStatement>
+          <keyword> do </keyword>
+          <identifier category='class' is_def='False'> Output </identifier>
+          <symbol> . </symbol>
+          <identifier category='subroutine' is_def='False'> println </identifier>
+          <symbol> ( </symbol>
+          <expressionList>
+          </expressionList>
+          <symbol> ) </symbol>
+          <symbol> ; </symbol>
+        </doStatement>
+        <returnStatement>
+          <keyword> return </keyword>
+          <symbol> ; </symbol>
+        </returnStatement>
+      </statements>
+      <symbol> } </symbol>
+    </subroutineBody>
+  </subroutineDec>
+  <symbol> } </symbol>
+</class>

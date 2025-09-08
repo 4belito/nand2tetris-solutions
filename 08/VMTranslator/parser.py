@@ -6,17 +6,29 @@ This module provides the `Parser` class for parsing VM commands and the `CMDType
 
 from enum import Enum
 
-class CMDType(Enum):
+class CMD(Enum):
     """Enum class to represent different command types."""
-    C_ARITHMETIC = "C_ARITHMETIC"
-    C_PUSH = "C_PUSH"
-    C_POP = "C_POP"
-    C_LABEL = "C_LABEL"
-    C_GOTO = "C_GOTO"
-    C_IF = "C_IF"
-    C_FUNCTION = "C_FUNCTION"
-    C_RETURN = "C_RETURN"
-    C_CALL = "C_CALL"
+    ARITHMETIC = "ARITHMETIC"
+    PUSH = "PUSH"
+    POP = "POP"
+    LABEL = "LABEL"
+    GOTO = "GOTO"
+    IF_GOTO = "IF_GOTO"
+    FUNCTION = "FUNCTION"
+    RETURN = "RETURN"
+    CALL = "CALL"
+
+OPERATION_MAP = {
+        "add": "+",
+        "sub": "-",
+        "neg": "-",
+        "eq": "JEQ",
+        "gt": "JGT",
+        "lt": "JLT",
+        "and": "&",
+        "or": "|",
+        "not": "!"
+    }
 
 class Parser:
     """
@@ -50,28 +62,28 @@ class Parser:
             return True
         return False
 
-    def command_type(self) -> CMDType:
+    def command_type(self) -> CMD:
         '''Determines the type of the current command.'''
 
         match (len(self.tokens), self.keyword):
-            case (1, self.keyword) if self.keyword in {"add", "sub", "neg", "eq", "gt", "lt", "and", "or", "not"}:
-                return CMDType.C_ARITHMETIC
+            case (1, self.keyword) if self.keyword in OPERATION_MAP:
+                return CMD.ARITHMETIC
             case (3, "push"):
-                return CMDType.C_PUSH
+                return CMD.PUSH
             case (3, "pop"):
-                return CMDType.C_POP            
+                return CMD.POP
             case (2, "label"):
-                return CMDType.C_LABEL
+                return CMD.LABEL
             case (2, "goto"):
-                return CMDType.C_GOTO
+                return CMD.GOTO
             case (2, "if-goto"):
-                return CMDType.C_IF
+                return CMD.IF_GOTO
             case (3, "function"):
-                return CMDType.C_FUNCTION
+                return CMD.FUNCTION
             case (3, "call"):
-                return CMDType.C_CALL
+                return CMD.CALL
             case (1, "return"):
-                return CMDType.C_RETURN
+                return CMD.RETURN
             case _:
                 raise ValueError(f"Unknown command type: {self.instruction}")
 

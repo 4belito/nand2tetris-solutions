@@ -4,28 +4,17 @@ This class handles arithmetic operations, memory access commands, and manages th
 It provides methods to write arithmetic operations, push and pop commands, and finalize the assembly code
 """
 import os
-from parser import CMDType
+from parser import CMD,OPERATION_MAP
 
 TEMP_BASE = 5
 WORK_REG = "R13"
 FRAME_REG = "R14"
 RET_REG = "R15"
 
+SEGMENT_MAP = {"local": "LCL", "argument": "ARG", "this": "THIS", "that": "THAT"}
 
 class CodeWriter:
     """A class to write Hack assembly code from VM commands."""
-    ARITH_MAP = {
-        "add": "+",
-        "sub": "-",
-        "neg": "-",
-        "eq": "JEQ",
-        "gt": "JGT",
-        "lt": "JLT",
-        "and": "&",
-        "or": "|",
-        "not": "!"
-    }
-    SEG_MAP = {"local": "LCL", "argument": "ARG", "this": "THIS", "that": "THAT"}
     
     def __init__(self, output_filepath: str):
         full_file_name = os.path.basename(output_filepath)
@@ -73,13 +62,13 @@ class CodeWriter:
         self.file.write("\n" + assembly_code + "\n")
 
 
-    def write_push_pop(self, cmd: CMDType, segment: str, index: int) -> None:
+    def write_push_pop(self, cmd: CMD, segment: str, index: int) -> None:
         """
         Translates the given push or pop VM command into Hack assembly and writes to file.
         """
-        if cmd == CMDType.C_PUSH:
+        if cmd == CMD.PUSH:
             assembly_code = self._push(segment=segment, index=index)
-        elif cmd == CMDType.C_POP:
+        elif cmd == CMD.POP:
             assembly_code = self._pop(segment=segment, index=index)
         else:
             raise ValueError(f"Unknown command: {cmd}")
@@ -216,7 +205,7 @@ M=D'''
 {self._point_last()}
 D=M-D
 @TRUE.{self.bool_counter}
-D;{self.ARITH_MAP[op]}
+D;{OPERATION_MAP[op]}
 @SP
 A=M
 M=0
@@ -235,14 +224,14 @@ M=-1
         # neg, not
         return f'''// {op}
 {self._point_last()}
-M={self.ARITH_MAP[op]}M
+M={OPERATION_MAP[op]}M
 {self._increment()}'''
 
     def _arithmetic_operation2(self, op: str) -> str:
         if op == "sub":
             operation = "M-D"
         else:
-            operation = f"D{self.ARITH_MAP[op]}M"
+            operation = f"D{OPERATION_MAP[op]}M"
         # add, sub, and, or
         return f'''// {op}
 {self._pop_toD()}
@@ -267,10 +256,10 @@ M={operation}
             case "local" | "argument" | "this" | "that":
                 assembly_code = f'{comment}\n'
                 if index == 0:
-                    temp_reg = self.SEG_MAP[segment]
+                    temp_reg = SEGMENT_MAP[segment]
                 else:
                     assembly_code += f'''// get address of {segment} {index}
-{self._load_reg_value(reg=self.SEG_MAP[segment])}
+{self._load_reg_value(reg=SEGMENT_MAP[segment])}
 {self._calculate_address(index=index)}
 {self._storeD(reg=temp_reg)}
 '''
@@ -292,7 +281,7 @@ M={operation}
                 segment_ptr = self._pointer_segment(index)
                 return f'''{comment}
 {self._pop_toD()}
-{self._storeD(reg=f'{self.SEG_MAP[segment_ptr]}')}'''
+{self._storeD(reg=f'{SEGMENT_MAP[segment_ptr]}')}'''
             case _:
                 raise ValueError(f"Unknown segment: {segment}")
 
@@ -301,7 +290,7 @@ M={operation}
         match segment:
             case "local" | "argument" | "this" | "that":
                 return f'''{comment}
-{self._load_reg_value(reg=self.SEG_MAP[segment])}
+{self._load_reg_value(reg=SEGMENT_MAP[segment])}
 {self._calculate_address(index=index)}
 A=D
 D=M
@@ -321,7 +310,7 @@ D=M
             case "pointer":
                 segment_ptr = self._pointer_segment(index)
                 return f'''{comment}
-{self._load_reg_value(reg=f'{self.SEG_MAP[segment_ptr]}')}
+{self._load_reg_value(reg=f'{SEGMENT_MAP[segment_ptr]}')}
 {self._push_fromD()}'''
             case _:
                 raise ValueError(f"Unknown segment: {segment}")

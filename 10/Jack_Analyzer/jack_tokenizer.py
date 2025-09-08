@@ -44,6 +44,7 @@ class JackTokenizer:
             return Token(raw_token)
         raise RuntimeError("No more tokens available to peek.")
 
+
     @staticmethod
     def tokenize_raw(text: str) -> list[str]:
         """
@@ -64,3 +65,6 @@ class JackTokenizer:
         # Split and filter out empty strings
         raw_tokens = [p for p in re.split(pattern, text) if p]
         return raw_tokens
+
+# Note: Peek method is added to the API for looking the next token without consuming it.
+# The remaining method in the API are substituted by the token data structure itself.

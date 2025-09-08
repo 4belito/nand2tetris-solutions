@@ -1,11 +1,16 @@
 '''VMTranslator.py
 This script translates VM commands into Hack assembly code.
 It uses the Parser class to read VM commands and the CodeWriter class to write the corresponding assembly code.
-It takes a VM file as input and generates an assembly file with the same name but with a .asm extension.'''
+It takes a VM file as input and generates an assembly file with the same name but with a .asm extension.
+
+Example usage:
+    python3 VMTranslator.py test/FunctionCalls/FibonacciElement/Main.vm
+
+'''
 
 
 import argparse
-from parser import Parser, CMDType
+from parser import Parser, CMD
 from codewriter import CodeWriter
 import os
 
@@ -28,21 +33,21 @@ def main():
                 vm_parser.advance()
                 cmd_type = vm_parser.command_type()
                 match cmd_type:
-                    case CMDType.C_ARITHMETIC:
+                    case CMD.ARITHMETIC:
                         writer.write_arithmetic(vm_parser.keyword)
-                    case CMDType.C_PUSH | CMDType.C_POP:
+                    case CMD.PUSH | CMD.POP:
                         writer.write_push_pop(cmd_type, vm_parser.arg1(), vm_parser.arg2())
-                    case CMDType.C_LABEL:
+                    case CMD.LABEL:
                         writer.write_label(vm_parser.arg1())
-                    case CMDType.C_GOTO:
+                    case CMD.GOTO:
                         writer.write_goto(vm_parser.arg1())
-                    case CMDType.C_IF:
+                    case CMD.IF_GOTO:
                         writer.write_if(vm_parser.arg1())
-                    case CMDType.C_FUNCTION:
+                    case CMD.FUNCTION:
                         writer.write_function(vm_parser.arg1(), vm_parser.arg2())
-                    case CMDType.C_RETURN:
+                    case CMD.RETURN:
                         writer.write_return()
-                    case CMDType.C_CALL:
+                    case CMD.CALL:
                         writer.write_call(vm_parser.arg1(), vm_parser.arg2())
                     case _:
                         raise ValueError(f"Unknown command type: {cmd_type}")
