@@ -20,23 +20,22 @@ class JackTokenizer:
                 text = f.read()
         except OSError as e:
             raise RuntimeError(f"Failed to open {input_file}: {e}")
-        # Use deque for efficient left pops
         self.raw_tokens: deque[str] = deque(JackTokenizer.tokenize_raw(text))
+        self.current_token: Token
+        self.advance()
 
     def has_more_tokens(self) -> bool:
         """Return True if there are more tokens to process."""
         return len(self.raw_tokens) > 0
 
-    def advance(self) -> Token:
+    def advance(self):
         '''
         Get the next token from the input, and makes it the current token.
         This method should be called only if has_more_tokens() is true.
         Initially there is not current token.
         '''
-        if self.has_more_tokens():
-            raw_token = self.raw_tokens.popleft()
-            return Token(raw_token)
-        raise RuntimeError("No more tokens available to advance.")
+        raw_token = self.raw_tokens.popleft()
+        self.current_token = Token(raw_token)
 
     def peek(self) -> Token:
         """Return the next token object without removing it."""
@@ -50,11 +49,6 @@ class JackTokenizer:
         """
         Perform raw tokenization of Jack source code and return a list of tokens.
         Removes comments and splits by symbols, string constants, and whitespace.
-
-        Regex pattern explanation:
-        - Matches Jack symbols (from Symbol enum)
-        - Matches string constants (quoted strings)
-        - Splits on whitespace
         """
         # Remove block comments (/* ... */) and line comments (// ...)
         text = re.sub(r'/\*.*?\*/', '', text, flags=re.DOTALL)
@@ -65,3 +59,6 @@ class JackTokenizer:
         # Split and filter out empty strings
         raw_tokens = [p for p in re.split(pattern, text) if p]
         return raw_tokens
+    
+# Note: Peek method is added to the API for looking the next token without consuming it.
+# The remaining method in the API are substituted by the token data structure itself.

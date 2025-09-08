@@ -3,7 +3,7 @@ compilation_engine.py
 
 This module implements the CompilationEngine for the Jack Analyzer project in nand2tetris.
 It parses Jack source code according to the Jack grammar and generates the corresponding output,
-serving as the core of the Jack compiler's syntax analysis phase.
+serving as the core of the Jack _compiler's syntax analysis phase.
 """
 
 from contextlib import contextmanager
@@ -21,15 +21,17 @@ class CompilationEngine:
     '''Builds the XML representation of the Jack program.
     It has a compile method for 15 of the 21 non-terminal rules of the Jack grammar
     '''
-    def __init__(self, tokenizer: JackTokenizer, output_file: str):
-        self.tokenizer = tokenizer
+
+    def __init__(self, input_file:str, output_file: str):
+        self.tokenizer = JackTokenizer(input_file)
         self.output_file = output_file
         self.ident = 0
-        self.table: SymbolTable
-        self.token: Token
         self.f: TextIO
+        self.table: SymbolTable
 
-
+    # ----------------------------------------
+    # Compilation Methods
+    # ----------------------------------------
 
     def compile_class(self) -> None:
         '''
@@ -37,36 +39,34 @@ class CompilationEngine:
         grammar: 'class' className '{' classVarDec* subroutineDec* '}'
         '''
         with open(self.output_file, 'w') as self.f:
-            self.token = self.tokenizer.advance()
             with self.tag('class'):
-                self._compile(Keyword.CLASS)
+                self._consume(Keyword.CLASS)
                 self.table = SymbolTable(name=self.token.value)
-                self._compile_identifier(IdContext(IdCat.CLASS, is_def=True))
+                self._consume_identifier(IdContext(IdCat.CLASS, is_def=True))
                 with self._braces():
                     while self.token.is_in([Keyword.STATIC, Keyword.FIELD]):
-                        self.compile_class_var_dec()
+                        self._compile_class_var_dec()
                     while self.token.is_in(SUBROUTINES):
-                        self.compile_subroutine_dec()
+                        self._compile_subroutine_dec()
             if self.tokenizer.has_more_tokens():
                 raise ValueError("Extra tokens after class end")
 
-
-    def compile_class_var_dec(self) -> None:
+    def _compile_class_var_dec(self) -> None:
         '''
         Compile a static variable declaration, or a field declaration.
         grammar: (static | field) type varName (',' varName)* ';'
         '''
         var_scope = self.token.get_variable_scope()
         with self.tag('classVarDec'):
-            self._compile(Keyword.STATIC, Keyword.FIELD)
+            self._consume(Keyword.STATIC, Keyword.FIELD)
             var_type = self._compile_type()  # type
             self._compile_variable_def(var_scope, var_type)
             while self.token == Symbol.COMMA:
-                self._compile()
+                self._consume()
                 self._compile_variable_def(var_scope, var_type)
-            self._compile(Symbol.SEMICOLON)
+            self._consume(Symbol.SEMICOLON)
 
-    def compile_subroutine_dec(self) -> None:
+    def _compile_subroutine_dec(self) -> None:
         '''
         Compile a complete method, function, or constructor
         grammar: ('constructor' | 'function' | 'method') ('void' | type) subroutineName '('parameterList')' subroutineBody
@@ -76,16 +76,14 @@ class CompilationEngine:
             if self.token == Keyword.METHOD:
                 # Implicit 'this' argument for methods
                 self.table.define('this', self.table.name, VarS.ARGUMENT)
-            self._compile(*SUBROUTINES)
+            self._consume(*SUBROUTINES)
             self._compile_return_type()
-            self._compile_identifier(IdContext(IdCat.SUBROUTINE, is_def=True))
+            self._consume_identifier(IdContext(IdCat.SUBROUTINE, is_def=True))
             with self._parentheses():
-                self.compile_parameter_list()
-            self.compile_subroutine_body()
+                self._compile_parameter_list()
+            self._compile_subroutine_body()
 
-            
-
-    def compile_parameter_list(self) -> None:
+    def _compile_parameter_list(self) -> None:
         '''
         Compile a (possibly empty) parameter list.
         Does not handle the enclosing parentheses ().
@@ -95,10 +93,10 @@ class CompilationEngine:
             if self.token.is_type(): 
                 self._compile_variable_def(scope=VarS.ARGUMENT)
                 while self.token == Symbol.COMMA:  # (',' type varName)*)?
-                    self._compile()
+                    self._consume()
                     self._compile_variable_def(scope=VarS.ARGUMENT)
 
-    def compile_subroutine_body(self) -> None:
+    def _compile_subroutine_body(self) -> None:
         '''
         Compile a subroutine's body
         grammar: '{' varDec* statements '}'
@@ -106,26 +104,25 @@ class CompilationEngine:
         with self.tag('subroutineBody'):
             with self._braces():
                 while self.token == Keyword.VAR:
-                    self.compile_var_declaration()
-                self.compile_statements()
+                    self._compile_var_declaration()
+                self._compile_statements()
 
-    def compile_var_declaration(self) -> None:
+    def _compile_var_declaration(self) -> None:
         '''
         Compile a variable declaration
         grammar: 'var' type varName (',' varName)* ';'
         '''
         with self.tag('varDec'):
-            self._compile(Keyword.VAR)
+            self._consume(Keyword.VAR)
             if self.token.is_type():  # type
                 var_type = self._compile_type()
                 self._compile_variable_def(VarS.VAR, var_type)
-                #self._compile_identifier()  # varName
                 while self.token == Symbol.COMMA:  # (',' varName)*?
-                    self._compile()
+                    self._consume()
                     self._compile_variable_def(VarS.VAR, var_type)  # varName
-                self._compile(Symbol.SEMICOLON)
+                self._consume(Symbol.SEMICOLON)
 
-    def compile_statements(self) -> None:
+    def _compile_statements(self) -> None:
         '''
         Compile a sequence of statements.
         Does not handle the enclosing braces {}.
@@ -135,94 +132,94 @@ class CompilationEngine:
             while True:
                 match self.token:
                     case Keyword.LET:
-                        self.compile_let()
+                        self._compile_let()
                     case Keyword.IF:
-                        self.compile_if()
+                        self._compile_if()
                     case Keyword.WHILE:
-                        self.compile_while()
+                        self._compile_while()
                     case Keyword.DO:
-                        self.compile_do()
+                        self._compile_do()
                     case Keyword.RETURN:
-                        self.compile_return()
+                        self._compile_return()
                     case _:
                         break
 
-    def compile_let(self) -> None:
+    def _compile_let(self) -> None:
         '''
         Compile a let statement.
         grammar: 'let' varName('[' expression ']')? '=' expression ';'
         '''
         with self.tag('letStatement'):
-            self._compile(Keyword.LET)
-            self._compile_variable(var_name=self.token.value,is_def=False)
+            self._consume(Keyword.LET)
+            self._consume_variable(var_name=self.token.value,is_def=False)
             if self.token == Symbol.LBRACK:
                 with self._brackets():
-                    self.compile_expression()
-            self._compile(Symbol.EQ)
-            self.compile_expression()
-            self._compile(Symbol.SEMICOLON)
+                    self._compile_expression()
+            self._consume(Symbol.EQ)
+            self._compile_expression()
+            self._consume(Symbol.SEMICOLON)
 
-    def compile_if(self) -> None:
+    def _compile_if(self) -> None:
         '''
         Compile an if statement, possibly with a trailing else clause.
         grammar: 'if' '(' expression ')' '{' statements '}' ('else' '{' statements '}')?
         '''
         with self.tag('ifStatement'):
-            self._compile(Keyword.IF)
+            self._consume(Keyword.IF)
             with self._parentheses():
-                self.compile_expression()
+                self._compile_expression()
             with self._braces():
-                self.compile_statements()
+                self._compile_statements()
             if self.token == Keyword.ELSE:
-                self._compile(Keyword.ELSE)
+                self._consume(Keyword.ELSE)
                 with self._braces():
-                    self.compile_statements()
+                    self._compile_statements()
 
-    def compile_while(self) -> None:
+    def _compile_while(self) -> None:
         '''
         Compile a while statement.
         grammar: 'while' '(' expression ')' '{' statements '}'
         '''
         with self.tag('whileStatement'):
-            self._compile(Keyword.WHILE)
+            self._consume(Keyword.WHILE)
             with self._parentheses():
-                self.compile_expression()
+                self._compile_expression()
             with self._braces():
-                self.compile_statements()
+                self._compile_statements()
 
-    def compile_do(self) -> None:
+    def _compile_do(self) -> None:
         '''
         Compile a do statement.
         grammar: 'do' subroutineCall  ';'
         '''
         with self.tag('doStatement'):
-            self._compile(Keyword.DO)
+            self._consume(Keyword.DO)
             self._compile_subroutine_call(self.tokenizer.peek())
-            self._compile(Symbol.SEMICOLON)
+            self._consume(Symbol.SEMICOLON)
 
-    def compile_return(self) -> None:
+    def _compile_return(self) -> None:
         '''
         Compile a return statement.
         grammar: 'return' expression? ';'
         '''
         with self.tag('returnStatement'):
-            self._compile(Keyword.RETURN)
+            self._consume(Keyword.RETURN)
             if self.token != Symbol.SEMICOLON:
-                self.compile_expression()
-            self._compile(Symbol.SEMICOLON)
+                self._compile_expression()
+            self._consume(Symbol.SEMICOLON)
 
-    def compile_expression(self) -> None:
+    def _compile_expression(self) -> None:
         '''
         Compile an expression.
         grammar: term (op term)*
         '''
         with self.tag('expression'):
-            self.compile_term()
+            self._compile_term()
             while self.token.is_in(BINARY_OPS):
-                self._compile()
-                self.compile_term()
+                self._consume()
+                self._compile_term()
 
-    def compile_term(self) -> None:
+    def _compile_term(self) -> None:
         '''
         Compile a term. 
         If the current token is an identifier, the routine must distinguish 
@@ -234,35 +231,35 @@ class CompilationEngine:
         '''
         with self.tag('term'):
             if self.token.is_constant():
-                self._compile()
+                self._consume()
             elif self.token.ttype == TokenType.IDENTIFIER:
                 next_token = self.tokenizer.peek()
                 if next_token == Symbol.LBRACK:
-                    self._compile_variable(var_name=self.token.value, is_def=False)
+                    self._consume_variable(var_name=self.token.value, is_def=False)
                     with self._brackets():
-                        self.compile_expression()
+                        self._compile_expression()
                 elif next_token.is_in([Symbol.LPAREN, Symbol.DOT]):
                     self._compile_subroutine_call(next_token)
                 else:
-                    self._compile_variable(var_name=self.token.value, is_def=False)
+                    self._consume_variable(var_name=self.token.value, is_def=False)
             elif self.token == Symbol.LPAREN:
                 with self._parentheses():
-                    self.compile_expression()
+                    self._compile_expression()
             elif self.token.is_in(UNARY_OPS):
-                self._compile()
-                self.compile_term()
+                self._consume()
+                self._compile_term()
 
-    def compile_expression_list(self) -> None:
+    def _compile_expression_list(self) -> None:
         '''
         Compile a (possibly empty) comma-separated list of expressions.
         grammar: (expression (',' expression)*)?
         '''
         with self.tag('expressionList'):
             if self.token != Symbol.RPAREN:
-                self.compile_expression()
+                self._compile_expression()
                 while self.token == Symbol.COMMA:
-                    self._compile()
-                    self.compile_expression()
+                    self._consume()
+                    self._compile_expression()
 
     def _compile_subroutine_call(self, next_token: Token) -> None:
         '''
@@ -271,78 +268,13 @@ class CompilationEngine:
         '''
         if next_token == Symbol.DOT:
             if self.table.get_symbol(self.token.value) is None:
-                self._compile_identifier(IdContext(IdCat.CLASS, is_def=False))
+                self._consume_identifier(IdContext(IdCat.CLASS, is_def=False))
             else:
-                self._compile_variable(var_name=self.token.value, is_def=False)
-            self._compile(Symbol.DOT)
-        self._compile_identifier(IdContext(IdCat.SUBROUTINE, is_def=False))
+                self._consume_variable(var_name=self.token.value, is_def=False)
+            self._consume(Symbol.DOT)
+        self._consume_identifier(IdContext(IdCat.SUBROUTINE, is_def=False))
         with self._parentheses():
-            self.compile_expression_list()
-
-    def _open_tag(self, tag_name: str) -> None:
-        self._write(f'<{tag_name}>\n')
-        self.ident += 2
-
-    def _close_tag(self, tag_name: str) -> None:
-        self.ident -= 2
-        self._write(f'</{tag_name}>\n')
-
-    @contextmanager
-    def tag(self, tag_name: str):
-        self._open_tag(tag_name)
-        yield
-        self._close_tag(tag_name)
-    
-    @contextmanager
-    def _symbol_context(self, open_symbol: Symbol, close_symbol: Symbol):
-        self._compile(open_symbol)
-        yield
-        self._compile(close_symbol)
-
-    def _braces(self):
-        return self._symbol_context(Symbol.LBRACE, Symbol.RBRACE)
-
-    def _parentheses(self):
-        return self._symbol_context(Symbol.LPAREN, Symbol.RPAREN)
-
-    def _brackets(self):
-        return self._symbol_context(Symbol.LBRACK, Symbol.RBRACK)
-
-    def _write(self, text: str) -> None:
-        self.f.write(f'{" " * self.ident}{text}')
-
-    def _write_token(self) -> None:
-        self._write(self.token.xml())
-
-    def _compile(self, *tokens: Keyword | Symbol) -> None:
-        """
-        Write and advance if the current token matches any of the provided tokens.
-        If no tokens are provided, always write and advance.
-        """
-        if not tokens or any(self.token == t for t in tokens):
-            self._write_token()
-            if self.tokenizer.has_more_tokens():
-                self.token = self.tokenizer.advance()
-        else:
-            expected = ', '.join(str(t) for t in tokens)
-            raise ValueError(f"Expected one of: {expected}, got: '{self.token}'")
-
-    def _compile_identifier(self,context: IdContext ) -> None: #
-        '''
-        Compile an identifier
-        grammar: varName
-        '''
-        if self.token.ttype == TokenType.IDENTIFIER:
-            self.token.set_context(context)
-            self._compile()
-        else:
-            raise ValueError(f"Expected an identifier")
-
-    def _compile_return_type(self):
-        if self.token == Keyword.VOID:
-            self._compile()
-        else:
-            self._compile_type()
+            self._compile_expression_list()
 
     def _compile_type(self) -> str:
         '''
@@ -351,12 +283,22 @@ class CompilationEngine:
         '''
         var_type = self.token.value
         if self.token.ttype == TokenType.IDENTIFIER:
-            self._compile_identifier(IdContext(IdCat.CLASS,is_def=False))
+            self._consume_identifier(IdContext(IdCat.CLASS,is_def=False))
         elif self.token.is_in(PRIMITIVE_TYPE):
-            self._compile()
+            self._consume()
         else:
             raise ValueError("Expected type to be 'int', 'char', 'boolean', or className")
         return var_type
+
+    def _compile_return_type(self) -> None:
+        '''
+        Compile a return type
+        grammar: 'void' | type
+        '''
+        if self.token == Keyword.VOID:
+            self._consume()
+        else:
+            self._compile_type()
 
     def _compile_variable_def(self, scope: VarS, var_type: str|None=None) -> None:
         '''
@@ -367,25 +309,98 @@ class CompilationEngine:
             var_type = self._compile_type()
         var_name = self.token.value
         self.table.define(var_name, var_type, scope)
-        self._compile_variable(var_name, is_def=True)
+        self._consume_variable(var_name, is_def=True)
+    
+    # ----------------------------------------
+    # Compile Helpers (token handling)
+    # ----------------------------------------
 
-    def _compile_variable(self, var_name: str, is_def: bool) -> None:
+    def _consume(self, *tokens: Keyword | Symbol) -> None:
+        """
+        Write and advance if the current token matches any of the provided tokens.
+        If no tokens are provided, always write and advance.
+        """
+        if not tokens or any(self.token == t for t in tokens):
+            self._write_token()
+            if self.tokenizer.has_more_tokens():
+                self.tokenizer.advance()
+        else:
+            expected = ', '.join(str(t) for t in tokens)
+            raise ValueError(f"Expected one of: {expected}, got: '{self.token}'")
+
+    def _consume_identifier(self,context: IdContext) -> None: #
         '''
-        Compile a variable
+        Consume an identifier
+        grammar: varName|className|subroutineName
+        '''
+        if self.token.ttype == TokenType.IDENTIFIER:
+            self.token.set_context(context)
+            self._consume()
+        else:
+            raise ValueError(f"Expected an identifier")
+
+    def _consume_variable(self, var_name: str, is_def: bool) -> None:
+        '''
+        Consume a variable
         grammar: varName
         '''
         symbol = self.table.get_symbol(var_name)
         if symbol is None:
             raise ValueError(f"Identifier '{var_name}' not found in symbol table.")
         id_context = IdContext(IdCat.VARIABLE, is_def=is_def, scope=symbol.kind, index=symbol.index)
-        self._compile_identifier(id_context)
+        self._consume_identifier(id_context)
+
+    @property
+    def token(self) -> Token:
+        """Alias for the current token from the tokenizer."""
+        return self.tokenizer.current_token
+    
+    # ------------------------------------------------------------
+    # Output and XML/context management helper methods (private)
+    # ------------------------------------------------------------
+    
+    def _write(self, text: str) -> None:
+        '''Write text to the output file with current indentation.'''
+        self.f.write(f'{" " * self.ident}{text}')
+
+    def _write_token(self) -> None:
+        """Write the current token in XML format to the output file."""
+        self._write(self.token.xml())
+
+    def _open_tag(self, tag_name: str) -> None:
+        '''Open an XML tag and increase indentation.'''
+        self._write(f'<{tag_name}>\n')
+        self.ident += 2
+
+    def _close_tag(self, tag_name: str) -> None:
+        '''Close an XML tag and decrease indentation.'''
+        self.ident -= 2
+        self._write(f'</{tag_name}>\n')
+
+    @contextmanager
+    def tag(self, tag_name: str):
+        '''Context manager for XML tags.'''
+        self._open_tag(tag_name)
+        yield
+        self._close_tag(tag_name)
+    
+    @contextmanager
+    def _symbol_context(self, open_symbol: Symbol, close_symbol: Symbol):
+        '''Context manager for symbols like {}, (), []'''
+        self._consume(open_symbol)
+        yield
+        self._consume(close_symbol)
+
+    def _braces(self):
+        '''Context manager for braces {}'''
+        return self._symbol_context(Symbol.LBRACE, Symbol.RBRACE)
+
+    def _parentheses(self):
+        '''Context manager for parentheses ()'''
+        return self._symbol_context(Symbol.LPAREN, Symbol.RPAREN)
+
+    def _brackets(self):
+        '''Context manager for brackets []'''
+        return self._symbol_context(Symbol.LBRACK, Symbol.RBRACK)
 
 
-# Note: The following rules in the Jack grammar have no corresponding compile_xxx methods:
-# - type
-# - className
-# - subroutineName
-# - variableName
-# - statement
-# - subroutineCall
-# The parsing logic of these rules is handled by the rules that invoke them.

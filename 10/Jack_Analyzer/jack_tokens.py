@@ -184,7 +184,6 @@ class Token:
         else:
             raise ValueError(f"Unknown token type for value {value}")
 
-
     @property
     def ttype(self) -> TokenType:
         """Return token type."""
