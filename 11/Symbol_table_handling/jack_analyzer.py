@@ -1,11 +1,11 @@
 '''
-Class for compiling Jack programs and generating vm output.
+Class for analyzing Jack programs, understanding the semantics of the symbols and generating XML output.
 
 Individual Jack file Example usage:  
-python jack_compiler.py test1/ArrayTest/Main.jack
+python jack_compiler.py test/ArrayTest/Main.jack
 
 Directory Example usage:  
-python jack_compiler.py test1/Square
+python jack_compiler.py test/Square
 
 '''
 
@@ -15,14 +15,14 @@ import argparse
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Jack Compiler: Compile Jack files and generate vm code.")
-    parser.add_argument('input_path', type=str, help="Path to a .jack file or a directory containing .jack files.")
+    parser = argparse.ArgumentParser(description="Jack Analyzer: Tokenizes and compiles Jack files to XML.")
+    parser.add_argument('input_path', help="Input .jack file or directory containing .jack files")
     args = parser.parse_args()
-    compiler = JackCompiler(args.input_path)
-    compiler.compile()
 
+    analyzer = JackAnalyzer(args.input_path)
+    analyzer.analyze()
 
-class JackCompiler:
+class JackAnalyzer:
     def __init__(self, input_path:str):
         self.input_files: list[str] = []
         if input_path.endswith('.jack'):
@@ -32,10 +32,10 @@ class JackCompiler:
                 if file.endswith('.jack'):
                     self.input_files.append(os.path.join(input_path, file))
 
-    def compile(self):
-        '''Compile the Jack files and generate .vm output for each input file.'''
+    def analyze(self):
+        '''Analyze the Jack files and generate XML output for each input file.'''
         for input_file in self.input_files:
-            output_file = input_file.replace('.jack', '.vm')
+            output_file = input_file.replace('.jack', '.xml')
             compiler = CompilationEngine(input_file, output_file)
             compiler.compile_class()
 
