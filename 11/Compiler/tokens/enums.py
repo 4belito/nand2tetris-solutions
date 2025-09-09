@@ -1,5 +1,4 @@
 from enum import Enum
-from tokens.type import TokenType
 
 class EnumTokens(Enum):
     """Base enum class for Jack token types with utility methods."""
@@ -16,12 +15,6 @@ class EnumTokens(Enum):
     def __str__(self) -> str:
         """Return string representation of the enum member."""
         return self.value
-    
-    @property
-    def context(self) -> str:
-        """Return context for the keyword."""
-        return ""
-
 
 class Keyword(EnumTokens):
     """Enum for Jack language keywords."""
@@ -46,11 +39,6 @@ class Keyword(EnumTokens):
     ELSE = "else"
     WHILE = "while"
     RETURN = "return"
-
-    @property
-    def ttype(self) -> TokenType:
-        """Return TokenType.KEYWORD."""
-        return TokenType.KEYWORD
 
 PRIMITIVE_TYPE={Keyword.INT, Keyword.CHAR, Keyword.BOOLEAN}
 SUBROUTINES={Keyword.CONSTRUCTOR, Keyword.FUNCTION, Keyword.METHOD}
@@ -77,11 +65,6 @@ class Symbol(EnumTokens):
     GT = ">"
     EQ = "="
     NOT = "~"
-
-    @property
-    def ttype(self) -> TokenType:
-        """Return TokenType.SYMBOL."""
-        return TokenType.SYMBOL
 
     def __str__(self) -> str:
         """Return string representation of the symbol."""
