@@ -46,7 +46,7 @@
               <expressionList>
                 <expression>
                   <term>
-                    <stringConstant> HOW MANY NUMBERS?  </stringConstant>
+                    <stringconstant> HOW MANY NUMBERS?  </stringconstant>
                   </term>
                 </expression>
               </expressionList>
@@ -83,7 +83,7 @@
           <symbol> = </symbol>
           <expression>
             <term>
-              <integerConstant> 0 </integerConstant>
+              <integerconstant> 0 </integerconstant>
             </term>
           </expression>
           <symbol> ; </symbol>
@@ -123,7 +123,7 @@
                   <expressionList>
                     <expression>
                       <term>
-                        <stringConstant> ENTER THE NEXT NUMBER:  </stringConstant>
+                        <stringconstant> ENTER THE NEXT NUMBER:  </stringconstant>
                       </term>
                     </expression>
                   </expressionList>
@@ -142,7 +142,7 @@
                 </term>
                 <symbol> + </symbol>
                 <term>
-                  <integerConstant> 1 </integerConstant>
+                  <integerconstant> 1 </integerconstant>
                 </term>
               </expression>
               <symbol> ; </symbol>
@@ -156,7 +156,7 @@
           <symbol> = </symbol>
           <expression>
             <term>
-              <integerConstant> 0 </integerConstant>
+              <integerconstant> 0 </integerconstant>
             </term>
           </expression>
           <symbol> ; </symbol>
@@ -167,7 +167,7 @@
           <symbol> = </symbol>
           <expression>
             <term>
-              <integerConstant> 0 </integerConstant>
+              <integerconstant> 0 </integerconstant>
             </term>
           </expression>
           <symbol> ; </symbol>
@@ -219,7 +219,7 @@
                 </term>
                 <symbol> + </symbol>
                 <term>
-                  <integerConstant> 1 </integerConstant>
+                  <integerconstant> 1 </integerconstant>
                 </term>
               </expression>
               <symbol> ; </symbol>
@@ -236,7 +236,7 @@
           <expressionList>
             <expression>
               <term>
-                <stringConstant> THE AVERAGE IS:  </stringConstant>
+                <stringconstant> THE AVERAGE IS:  </stringconstant>
               </term>
             </expression>
           </expressionList>

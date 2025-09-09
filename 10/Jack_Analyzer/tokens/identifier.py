@@ -30,5 +30,3 @@ class Identifier(str):
     def valid(cls, value: str) -> bool:
         """Return True if value is a valid Jack identifier."""
         return bool(re.match(r'^[A-Za-z_][A-Za-z0-9_]*$', value))
-    
-

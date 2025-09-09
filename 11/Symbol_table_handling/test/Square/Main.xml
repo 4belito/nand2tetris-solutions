@@ -5,7 +5,7 @@
   <classVarDec>
     <keyword> static </keyword>
     <keyword> boolean </keyword>
-    <identifier category='variable' is_def='True' scope='static' index='0'> test </identifier>
+    <identifier category='variable' is_def='True' kind='static' index='0'> test </identifier>
     <symbol> ; </symbol>
   </classVarDec>
   <subroutineDec>
@@ -21,13 +21,13 @@
       <varDec>
         <keyword> var </keyword>
         <identifier category='class' is_def='False'> SquareGame </identifier>
-        <identifier category='variable' is_def='True' scope='var' index='0'> game </identifier>
+        <identifier category='variable' is_def='True' kind='var' index='0'> game </identifier>
         <symbol> ; </symbol>
       </varDec>
       <statements>
         <letStatement>
           <keyword> let </keyword>
-          <identifier category='variable' is_def='False' scope='var' index='0'> game </identifier>
+          <identifier category='variable' is_def='False' kind='var' index='0'> game </identifier>
           <symbol> = </symbol>
           <expression>
             <term>
@@ -44,7 +44,7 @@
         </letStatement>
         <doStatement>
           <keyword> do </keyword>
-          <identifier category='variable' is_def='False' scope='var' index='0'> game </identifier>
+          <identifier category='variable' is_def='False' kind='var' index='0'> game </identifier>
           <symbol> . </symbol>
           <identifier category='subroutine' is_def='False'> run </identifier>
           <symbol> ( </symbol>
@@ -55,7 +55,7 @@
         </doStatement>
         <doStatement>
           <keyword> do </keyword>
-          <identifier category='variable' is_def='False' scope='var' index='0'> game </identifier>
+          <identifier category='variable' is_def='False' kind='var' index='0'> game </identifier>
           <symbol> . </symbol>
           <identifier category='subroutine' is_def='False'> dispose </identifier>
           <symbol> ( </symbol>
@@ -85,21 +85,21 @@
       <varDec>
         <keyword> var </keyword>
         <keyword> int </keyword>
-        <identifier category='variable' is_def='True' scope='var' index='0'> i </identifier>
+        <identifier category='variable' is_def='True' kind='var' index='0'> i </identifier>
         <symbol> , </symbol>
-        <identifier category='variable' is_def='True' scope='var' index='1'> j </identifier>
+        <identifier category='variable' is_def='True' kind='var' index='1'> j </identifier>
         <symbol> ; </symbol>
       </varDec>
       <varDec>
         <keyword> var </keyword>
         <identifier category='class' is_def='False'> String </identifier>
-        <identifier category='variable' is_def='True' scope='var' index='2'> s </identifier>
+        <identifier category='variable' is_def='True' kind='var' index='2'> s </identifier>
         <symbol> ; </symbol>
       </varDec>
       <varDec>
         <keyword> var </keyword>
         <identifier category='class' is_def='False'> Array </identifier>
-        <identifier category='variable' is_def='True' scope='var' index='3'> a </identifier>
+        <identifier category='variable' is_def='True' kind='var' index='3'> a </identifier>
         <symbol> ; </symbol>
       </varDec>
       <statements>
@@ -116,18 +116,18 @@
           <statements>
             <letStatement>
               <keyword> let </keyword>
-              <identifier category='variable' is_def='False' scope='var' index='2'> s </identifier>
+              <identifier category='variable' is_def='False' kind='var' index='2'> s </identifier>
               <symbol> = </symbol>
               <expression>
                 <term>
-                  <stringConstant> string constant </stringConstant>
+                  <stringconstant> string constant </stringconstant>
                 </term>
               </expression>
               <symbol> ; </symbol>
             </letStatement>
             <letStatement>
               <keyword> let </keyword>
-              <identifier category='variable' is_def='False' scope='var' index='2'> s </identifier>
+              <identifier category='variable' is_def='False' kind='var' index='2'> s </identifier>
               <symbol> = </symbol>
               <expression>
                 <term>
@@ -138,22 +138,22 @@
             </letStatement>
             <letStatement>
               <keyword> let </keyword>
-              <identifier category='variable' is_def='False' scope='var' index='3'> a </identifier>
+              <identifier category='variable' is_def='False' kind='var' index='3'> a </identifier>
               <symbol> [ </symbol>
               <expression>
                 <term>
-                  <integerConstant> 1 </integerConstant>
+                  <integerconstant> 1 </integerconstant>
                 </term>
               </expression>
               <symbol> ] </symbol>
               <symbol> = </symbol>
               <expression>
                 <term>
-                  <identifier category='variable' is_def='False' scope='var' index='3'> a </identifier>
+                  <identifier category='variable' is_def='False' kind='var' index='3'> a </identifier>
                   <symbol> [ </symbol>
                   <expression>
                     <term>
-                      <integerConstant> 2 </integerConstant>
+                      <integerconstant> 2 </integerconstant>
                     </term>
                   </expression>
                   <symbol> ] </symbol>
@@ -168,11 +168,11 @@
           <statements>
             <letStatement>
               <keyword> let </keyword>
-              <identifier category='variable' is_def='False' scope='var' index='0'> i </identifier>
+              <identifier category='variable' is_def='False' kind='var' index='0'> i </identifier>
               <symbol> = </symbol>
               <expression>
                 <term>
-                  <identifier category='variable' is_def='False' scope='var' index='0'> i </identifier>
+                  <identifier category='variable' is_def='False' kind='var' index='0'> i </identifier>
                 </term>
                 <symbol> * </symbol>
                 <term>
@@ -181,7 +181,7 @@
                     <term>
                       <symbol> - </symbol>
                       <term>
-                        <identifier category='variable' is_def='False' scope='var' index='1'> j </identifier>
+                        <identifier category='variable' is_def='False' kind='var' index='1'> j </identifier>
                       </term>
                     </term>
                   </expression>
@@ -192,11 +192,11 @@
             </letStatement>
             <letStatement>
               <keyword> let </keyword>
-              <identifier category='variable' is_def='False' scope='var' index='1'> j </identifier>
+              <identifier category='variable' is_def='False' kind='var' index='1'> j </identifier>
               <symbol> = </symbol>
               <expression>
                 <term>
-                  <identifier category='variable' is_def='False' scope='var' index='1'> j </identifier>
+                  <identifier category='variable' is_def='False' kind='var' index='1'> j </identifier>
                 </term>
                 <symbol> / </symbol>
                 <term>
@@ -205,7 +205,7 @@
                     <term>
                       <symbol> - </symbol>
                       <term>
-                        <integerConstant> 2 </integerConstant>
+                        <integerconstant> 2 </integerconstant>
                       </term>
                     </term>
                   </expression>
@@ -216,15 +216,15 @@
             </letStatement>
             <letStatement>
               <keyword> let </keyword>
-              <identifier category='variable' is_def='False' scope='var' index='0'> i </identifier>
+              <identifier category='variable' is_def='False' kind='var' index='0'> i </identifier>
               <symbol> = </symbol>
               <expression>
                 <term>
-                  <identifier category='variable' is_def='False' scope='var' index='0'> i </identifier>
+                  <identifier category='variable' is_def='False' kind='var' index='0'> i </identifier>
                 </term>
                 <symbol> | </symbol>
                 <term>
-                  <identifier category='variable' is_def='False' scope='var' index='1'> j </identifier>
+                  <identifier category='variable' is_def='False' kind='var' index='1'> j </identifier>
                 </term>
               </expression>
               <symbol> ; </symbol>

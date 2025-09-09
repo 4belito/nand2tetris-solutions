@@ -5,13 +5,13 @@
   <classVarDec>
     <keyword> field </keyword>
     <identifier category='class' is_def='False'> Square </identifier>
-    <identifier category='variable' is_def='True' scope='field' index='0'> square </identifier>
+    <identifier category='variable' is_def='True' kind='field' index='0'> square </identifier>
     <symbol> ; </symbol>
   </classVarDec>
   <classVarDec>
     <keyword> field </keyword>
     <keyword> int </keyword>
-    <identifier category='variable' is_def='True' scope='field' index='1'> direction </identifier>
+    <identifier category='variable' is_def='True' kind='field' index='1'> direction </identifier>
     <symbol> ; </symbol>
   </classVarDec>
   <subroutineDec>
@@ -27,22 +27,22 @@
       <statements>
         <letStatement>
           <keyword> let </keyword>
-          <identifier category='variable' is_def='False' scope='field' index='0'> square </identifier>
+          <identifier category='variable' is_def='False' kind='field' index='0'> square </identifier>
           <symbol> = </symbol>
           <expression>
             <term>
-              <identifier category='variable' is_def='False' scope='field' index='0'> square </identifier>
+              <identifier category='variable' is_def='False' kind='field' index='0'> square </identifier>
             </term>
           </expression>
           <symbol> ; </symbol>
         </letStatement>
         <letStatement>
           <keyword> let </keyword>
-          <identifier category='variable' is_def='False' scope='field' index='1'> direction </identifier>
+          <identifier category='variable' is_def='False' kind='field' index='1'> direction </identifier>
           <symbol> = </symbol>
           <expression>
             <term>
-              <identifier category='variable' is_def='False' scope='field' index='1'> direction </identifier>
+              <identifier category='variable' is_def='False' kind='field' index='1'> direction </identifier>
             </term>
           </expression>
           <symbol> ; </symbol>
@@ -51,7 +51,7 @@
           <keyword> return </keyword>
           <expression>
             <term>
-              <identifier category='variable' is_def='False' scope='field' index='0'> square </identifier>
+              <identifier category='variable' is_def='False' kind='field' index='0'> square </identifier>
             </term>
           </expression>
           <symbol> ; </symbol>
@@ -73,7 +73,7 @@
       <statements>
         <doStatement>
           <keyword> do </keyword>
-          <identifier category='variable' is_def='False' scope='field' index='0'> square </identifier>
+          <identifier category='variable' is_def='False' kind='field' index='0'> square </identifier>
           <symbol> . </symbol>
           <identifier category='subroutine' is_def='False'> dispose </identifier>
           <symbol> ( </symbol>
@@ -91,7 +91,7 @@
           <expressionList>
             <expression>
               <term>
-                <identifier category='variable' is_def='False' scope='field' index='0'> square </identifier>
+                <identifier category='variable' is_def='False' kind='field' index='0'> square </identifier>
               </term>
             </expression>
           </expressionList>
@@ -122,7 +122,7 @@
           <symbol> ( </symbol>
           <expression>
             <term>
-              <identifier category='variable' is_def='False' scope='field' index='1'> direction </identifier>
+              <identifier category='variable' is_def='False' kind='field' index='1'> direction </identifier>
             </term>
           </expression>
           <symbol> ) </symbol>
@@ -130,7 +130,7 @@
           <statements>
             <doStatement>
               <keyword> do </keyword>
-              <identifier category='variable' is_def='False' scope='field' index='0'> square </identifier>
+              <identifier category='variable' is_def='False' kind='field' index='0'> square </identifier>
               <symbol> . </symbol>
               <identifier category='subroutine' is_def='False'> moveUp </identifier>
               <symbol> ( </symbol>
@@ -147,7 +147,7 @@
           <symbol> ( </symbol>
           <expression>
             <term>
-              <identifier category='variable' is_def='False' scope='field' index='1'> direction </identifier>
+              <identifier category='variable' is_def='False' kind='field' index='1'> direction </identifier>
             </term>
           </expression>
           <symbol> ) </symbol>
@@ -155,7 +155,7 @@
           <statements>
             <doStatement>
               <keyword> do </keyword>
-              <identifier category='variable' is_def='False' scope='field' index='0'> square </identifier>
+              <identifier category='variable' is_def='False' kind='field' index='0'> square </identifier>
               <symbol> . </symbol>
               <identifier category='subroutine' is_def='False'> moveDown </identifier>
               <symbol> ( </symbol>
@@ -172,7 +172,7 @@
           <symbol> ( </symbol>
           <expression>
             <term>
-              <identifier category='variable' is_def='False' scope='field' index='1'> direction </identifier>
+              <identifier category='variable' is_def='False' kind='field' index='1'> direction </identifier>
             </term>
           </expression>
           <symbol> ) </symbol>
@@ -180,7 +180,7 @@
           <statements>
             <doStatement>
               <keyword> do </keyword>
-              <identifier category='variable' is_def='False' scope='field' index='0'> square </identifier>
+              <identifier category='variable' is_def='False' kind='field' index='0'> square </identifier>
               <symbol> . </symbol>
               <identifier category='subroutine' is_def='False'> moveLeft </identifier>
               <symbol> ( </symbol>
@@ -197,7 +197,7 @@
           <symbol> ( </symbol>
           <expression>
             <term>
-              <identifier category='variable' is_def='False' scope='field' index='1'> direction </identifier>
+              <identifier category='variable' is_def='False' kind='field' index='1'> direction </identifier>
             </term>
           </expression>
           <symbol> ) </symbol>
@@ -205,7 +205,7 @@
           <statements>
             <doStatement>
               <keyword> do </keyword>
-              <identifier category='variable' is_def='False' scope='field' index='0'> square </identifier>
+              <identifier category='variable' is_def='False' kind='field' index='0'> square </identifier>
               <symbol> . </symbol>
               <identifier category='subroutine' is_def='False'> moveRight </identifier>
               <symbol> ( </symbol>
@@ -226,7 +226,7 @@
           <expressionList>
             <expression>
               <term>
-                <identifier category='variable' is_def='False' scope='field' index='1'> direction </identifier>
+                <identifier category='variable' is_def='False' kind='field' index='1'> direction </identifier>
               </term>
             </expression>
           </expressionList>
@@ -254,23 +254,23 @@
       <varDec>
         <keyword> var </keyword>
         <keyword> char </keyword>
-        <identifier category='variable' is_def='True' scope='var' index='0'> key </identifier>
+        <identifier category='variable' is_def='True' kind='var' index='0'> key </identifier>
         <symbol> ; </symbol>
       </varDec>
       <varDec>
         <keyword> var </keyword>
         <keyword> boolean </keyword>
-        <identifier category='variable' is_def='True' scope='var' index='1'> exit </identifier>
+        <identifier category='variable' is_def='True' kind='var' index='1'> exit </identifier>
         <symbol> ; </symbol>
       </varDec>
       <statements>
         <letStatement>
           <keyword> let </keyword>
-          <identifier category='variable' is_def='False' scope='var' index='1'> exit </identifier>
+          <identifier category='variable' is_def='False' kind='var' index='1'> exit </identifier>
           <symbol> = </symbol>
           <expression>
             <term>
-              <identifier category='variable' is_def='False' scope='var' index='0'> key </identifier>
+              <identifier category='variable' is_def='False' kind='var' index='0'> key </identifier>
             </term>
           </expression>
           <symbol> ; </symbol>
@@ -280,7 +280,7 @@
           <symbol> ( </symbol>
           <expression>
             <term>
-              <identifier category='variable' is_def='False' scope='var' index='1'> exit </identifier>
+              <identifier category='variable' is_def='False' kind='var' index='1'> exit </identifier>
             </term>
           </expression>
           <symbol> ) </symbol>
@@ -291,7 +291,7 @@
               <symbol> ( </symbol>
               <expression>
                 <term>
-                  <identifier category='variable' is_def='False' scope='var' index='0'> key </identifier>
+                  <identifier category='variable' is_def='False' kind='var' index='0'> key </identifier>
                 </term>
               </expression>
               <symbol> ) </symbol>
@@ -299,11 +299,11 @@
               <statements>
                 <letStatement>
                   <keyword> let </keyword>
-                  <identifier category='variable' is_def='False' scope='var' index='0'> key </identifier>
+                  <identifier category='variable' is_def='False' kind='var' index='0'> key </identifier>
                   <symbol> = </symbol>
                   <expression>
                     <term>
-                      <identifier category='variable' is_def='False' scope='var' index='0'> key </identifier>
+                      <identifier category='variable' is_def='False' kind='var' index='0'> key </identifier>
                     </term>
                   </expression>
                   <symbol> ; </symbol>
@@ -325,7 +325,7 @@
               <symbol> ( </symbol>
               <expression>
                 <term>
-                  <identifier category='variable' is_def='False' scope='var' index='0'> key </identifier>
+                  <identifier category='variable' is_def='False' kind='var' index='0'> key </identifier>
                 </term>
               </expression>
               <symbol> ) </symbol>
@@ -333,11 +333,11 @@
               <statements>
                 <letStatement>
                   <keyword> let </keyword>
-                  <identifier category='variable' is_def='False' scope='var' index='1'> exit </identifier>
+                  <identifier category='variable' is_def='False' kind='var' index='1'> exit </identifier>
                   <symbol> = </symbol>
                   <expression>
                     <term>
-                      <identifier category='variable' is_def='False' scope='var' index='1'> exit </identifier>
+                      <identifier category='variable' is_def='False' kind='var' index='1'> exit </identifier>
                     </term>
                   </expression>
                   <symbol> ; </symbol>
@@ -350,7 +350,7 @@
               <symbol> ( </symbol>
               <expression>
                 <term>
-                  <identifier category='variable' is_def='False' scope='var' index='0'> key </identifier>
+                  <identifier category='variable' is_def='False' kind='var' index='0'> key </identifier>
                 </term>
               </expression>
               <symbol> ) </symbol>
@@ -358,7 +358,7 @@
               <statements>
                 <doStatement>
                   <keyword> do </keyword>
-                  <identifier category='variable' is_def='False' scope='field' index='0'> square </identifier>
+                  <identifier category='variable' is_def='False' kind='field' index='0'> square </identifier>
                   <symbol> . </symbol>
                   <identifier category='subroutine' is_def='False'> decSize </identifier>
                   <symbol> ( </symbol>
@@ -375,7 +375,7 @@
               <symbol> ( </symbol>
               <expression>
                 <term>
-                  <identifier category='variable' is_def='False' scope='var' index='0'> key </identifier>
+                  <identifier category='variable' is_def='False' kind='var' index='0'> key </identifier>
                 </term>
               </expression>
               <symbol> ) </symbol>
@@ -383,7 +383,7 @@
               <statements>
                 <doStatement>
                   <keyword> do </keyword>
-                  <identifier category='variable' is_def='False' scope='field' index='0'> square </identifier>
+                  <identifier category='variable' is_def='False' kind='field' index='0'> square </identifier>
                   <symbol> . </symbol>
                   <identifier category='subroutine' is_def='False'> incSize </identifier>
                   <symbol> ( </symbol>
@@ -400,7 +400,7 @@
               <symbol> ( </symbol>
               <expression>
                 <term>
-                  <identifier category='variable' is_def='False' scope='var' index='0'> key </identifier>
+                  <identifier category='variable' is_def='False' kind='var' index='0'> key </identifier>
                 </term>
               </expression>
               <symbol> ) </symbol>
@@ -408,11 +408,11 @@
               <statements>
                 <letStatement>
                   <keyword> let </keyword>
-                  <identifier category='variable' is_def='False' scope='field' index='1'> direction </identifier>
+                  <identifier category='variable' is_def='False' kind='field' index='1'> direction </identifier>
                   <symbol> = </symbol>
                   <expression>
                     <term>
-                      <identifier category='variable' is_def='False' scope='var' index='1'> exit </identifier>
+                      <identifier category='variable' is_def='False' kind='var' index='1'> exit </identifier>
                     </term>
                   </expression>
                   <symbol> ; </symbol>
@@ -425,7 +425,7 @@
               <symbol> ( </symbol>
               <expression>
                 <term>
-                  <identifier category='variable' is_def='False' scope='var' index='0'> key </identifier>
+                  <identifier category='variable' is_def='False' kind='var' index='0'> key </identifier>
                 </term>
               </expression>
               <symbol> ) </symbol>
@@ -433,11 +433,11 @@
               <statements>
                 <letStatement>
                   <keyword> let </keyword>
-                  <identifier category='variable' is_def='False' scope='field' index='1'> direction </identifier>
+                  <identifier category='variable' is_def='False' kind='field' index='1'> direction </identifier>
                   <symbol> = </symbol>
                   <expression>
                     <term>
-                      <identifier category='variable' is_def='False' scope='var' index='0'> key </identifier>
+                      <identifier category='variable' is_def='False' kind='var' index='0'> key </identifier>
                     </term>
                   </expression>
                   <symbol> ; </symbol>
@@ -450,7 +450,7 @@
               <symbol> ( </symbol>
               <expression>
                 <term>
-                  <identifier category='variable' is_def='False' scope='var' index='0'> key </identifier>
+                  <identifier category='variable' is_def='False' kind='var' index='0'> key </identifier>
                 </term>
               </expression>
               <symbol> ) </symbol>
@@ -458,11 +458,11 @@
               <statements>
                 <letStatement>
                   <keyword> let </keyword>
-                  <identifier category='variable' is_def='False' scope='field' index='1'> direction </identifier>
+                  <identifier category='variable' is_def='False' kind='field' index='1'> direction </identifier>
                   <symbol> = </symbol>
                   <expression>
                     <term>
-                      <identifier category='variable' is_def='False' scope='field' index='0'> square </identifier>
+                      <identifier category='variable' is_def='False' kind='field' index='0'> square </identifier>
                     </term>
                   </expression>
                   <symbol> ; </symbol>
@@ -475,7 +475,7 @@
               <symbol> ( </symbol>
               <expression>
                 <term>
-                  <identifier category='variable' is_def='False' scope='var' index='0'> key </identifier>
+                  <identifier category='variable' is_def='False' kind='var' index='0'> key </identifier>
                 </term>
               </expression>
               <symbol> ) </symbol>
@@ -483,11 +483,11 @@
               <statements>
                 <letStatement>
                   <keyword> let </keyword>
-                  <identifier category='variable' is_def='False' scope='field' index='1'> direction </identifier>
+                  <identifier category='variable' is_def='False' kind='field' index='1'> direction </identifier>
                   <symbol> = </symbol>
                   <expression>
                     <term>
-                      <identifier category='variable' is_def='False' scope='field' index='1'> direction </identifier>
+                      <identifier category='variable' is_def='False' kind='field' index='1'> direction </identifier>
                     </term>
                   </expression>
                   <symbol> ; </symbol>
@@ -500,7 +500,7 @@
               <symbol> ( </symbol>
               <expression>
                 <term>
-                  <identifier category='variable' is_def='False' scope='var' index='0'> key </identifier>
+                  <identifier category='variable' is_def='False' kind='var' index='0'> key </identifier>
                 </term>
               </expression>
               <symbol> ) </symbol>
@@ -508,11 +508,11 @@
               <statements>
                 <letStatement>
                   <keyword> let </keyword>
-                  <identifier category='variable' is_def='False' scope='var' index='0'> key </identifier>
+                  <identifier category='variable' is_def='False' kind='var' index='0'> key </identifier>
                   <symbol> = </symbol>
                   <expression>
                     <term>
-                      <identifier category='variable' is_def='False' scope='var' index='0'> key </identifier>
+                      <identifier category='variable' is_def='False' kind='var' index='0'> key </identifier>
                     </term>
                   </expression>
                   <symbol> ; </symbol>
