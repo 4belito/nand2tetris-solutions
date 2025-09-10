@@ -8,10 +8,10 @@ individual tokens for further parsing and analysis.
 import re
 from collections import deque
 from tokens.identifier import Identifier
-from tokens.enums import Keyword, Symbol, PRIMITIVE_TYPE, KEYWORD_CONSTANTS
+from tokens.enums import Keyword, Symbol, PRIMITIVE_TYPES, KEYWORD_CONSTANTS
 from tokens.inmutables import IntegerConstant, StringConstant
 from tokens.enums import Symbol
-from symbol_table import VariableKind, PrimitiveType, VarT
+from symbol_table import VariableKind
 
 Token = Identifier | Keyword | Symbol | IntegerConstant | StringConstant
 
@@ -52,6 +52,12 @@ class JackTokenizer:
             return self.token
         raise RuntimeError("Current token is not an Identifier.")
 
+    def keyword(self) -> Keyword:
+        """Return the current token as a Keyword."""
+        if isinstance(self.token, Keyword):
+            return self.token
+        raise RuntimeError("Current token is not a Keyword.")
+
     def peek(self) -> Token:
         """Return the next token without advancing the tokenizer."""
         if self.has_more_tokens():
@@ -63,28 +69,11 @@ class JackTokenizer:
 
     def token_is_var_type(self) -> bool:
         """Return True if token is a type keyword or identifier."""
-        return self.token in PRIMITIVE_TYPE or isinstance(self.token, Identifier)
+        return self.token in PRIMITIVE_TYPES or isinstance(self.token, Identifier)
 
     def token_is_constant(self) -> bool:
         """Return True if token is any kind of constant."""
         return isinstance(self.token, (IntegerConstant, StringConstant)) or self.token in KEYWORD_CONSTANTS
-
-    def var_type(self) -> VarT:
-        """
-        Map a Keyword to a VariableKind.
-        note: Argument is excluded because it is not a keyword.
-        """
-        if isinstance(self.token, Identifier):
-            return self.token
-        match self.token:
-            case Keyword.INT:
-                return PrimitiveType.INT
-            case Keyword.CHAR:
-                return PrimitiveType.CHAR
-            case Keyword.BOOLEAN:
-                return PrimitiveType.BOOLEAN
-            case _:
-                raise ValueError(f"Cannot get VariableType from {self.token}.")
 
     def var_kind(self) -> VariableKind:
         """
@@ -93,11 +82,11 @@ class JackTokenizer:
         """
         match self.token:
             case Keyword.VAR:
-                return VariableKind.VAR
+                return VariableKind.LOCAL
             case Keyword.STATIC:
                 return VariableKind.STATIC
             case Keyword.FIELD:
-                return VariableKind.FIELD
+                return VariableKind.THIS
             case _:
                 raise ValueError(f"Cannot get VariableKind from {self.token}.")
 

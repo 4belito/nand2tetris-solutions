@@ -8,7 +8,7 @@ individual tokens for further parsing and analysis.
 import re
 from collections import deque
 from tokens.identifier import Identifier
-from tokens.enums import Keyword, Symbol, PRIMITIVE_TYPE, KEYWORD_CONSTANTS
+from tokens.enums import Keyword, Symbol, PRIMITIVE_TYPES, KEYWORD_CONSTANTS
 from tokens.inmutables import IntegerConstant, StringConstant
 from tokens.enums import Symbol
 
@@ -62,7 +62,7 @@ class JackTokenizer:
 
     def token_is_var_type(self) -> bool:
         """Return True if token is a type keyword or identifier."""
-        return self.token in PRIMITIVE_TYPE or isinstance(self.token, Identifier)
+        return self.token in PRIMITIVE_TYPES or isinstance(self.token, Identifier)
 
     def token_is_constant(self) -> bool:
         """Return True if token is any kind of constant."""

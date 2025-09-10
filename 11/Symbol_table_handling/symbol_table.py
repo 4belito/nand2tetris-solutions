@@ -4,7 +4,8 @@ from tokens.identifier import Identifier
 from enum import Enum
 from dataclasses import dataclass
 from tokens.identifier import Identifier, IdentifierCategory
-
+from tokens.enums import Keyword
+from typing import Literal
 
 class VariableKind(Enum):
     """Enum for Jack variable kinds."""
@@ -15,16 +16,6 @@ class VariableKind(Enum):
 
     def __str__(self) -> str:
         """Return string representation of the identifier category."""
-        return self.value
-
-class PrimitiveType(Enum):
-    """Enum for Jack variable types."""
-    INT = "int"
-    CHAR = "char"
-    BOOLEAN = "boolean"
-
-    def __str__(self) -> str:
-        """Return string representation of the variable type."""
         return self.value
 
 @dataclass
@@ -43,7 +34,7 @@ class IdentifierContext:
 
 
 VarK = VariableKind  # Alias for brevity
-VarT = PrimitiveType | Identifier  # Variable type can be a primitive or a class name
+VarT = Literal[Keyword.INT,Keyword.CHAR,Keyword.BOOLEAN] | Identifier  # Variable type can be a primitive or a class name
 
 @dataclass(slots=True)
 class Symbol:

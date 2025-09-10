@@ -9,7 +9,7 @@ serving as the core of the Jack _compiler's syntax analysis phase.
 from contextlib import contextmanager
 
 from jack_tokenizer import JackTokenizer, Token
-from tokens.enums import Keyword, Symbol, UNARY_OPS, BINARY_OPS,SUBROUTINES,PRIMITIVE_TYPE
+from tokens.enums import Keyword, Symbol, UNARY_OPS, BINARY_OPS,SUBROUTINES,PRIMITIVE_TYPES
 from tokens.identifier import Identifier
 from typing import TextIO
 
@@ -67,7 +67,7 @@ class CompilationEngine:
         '''
         with self.tag('subroutineDec'):
             self._consume(*SUBROUTINES)
-            self._consume(Keyword.VOID,*PRIMITIVE_TYPE, Identifier)
+            self._consume(Keyword.VOID,*PRIMITIVE_TYPES, Identifier)
             self._consume(Identifier)
             with self._parentheses():
                 self._compile_parameter_list()
@@ -105,7 +105,7 @@ class CompilationEngine:
         with self.tag('varDec'):
             self._consume(Keyword.VAR)  # 'var'
             if self.tokenizer.token_is_var_type():  # type
-                self._consume(*PRIMITIVE_TYPE, Identifier)
+                self._consume(*PRIMITIVE_TYPES, Identifier)
                 self._consume(Identifier)  # varName
                 while self.token == Symbol.COMMA:  # (',' varName)*?
                     self._consume()
@@ -271,7 +271,7 @@ class CompilationEngine:
         Compile a variable definition
         grammar: type varName
         '''
-        self._consume(*PRIMITIVE_TYPE, Identifier)
+        self._consume(*PRIMITIVE_TYPES, Identifier)
         self._consume(Identifier)
 
     # ----------------------------------------

@@ -9,7 +9,7 @@ serving as the core of the Jack _compiler's syntax analysis phase.
 from contextlib import contextmanager
 
 from jack_tokenizer import JackTokenizer, Token
-from tokens.enums import UNARY_OPS, BINARY_OPS,SUBROUTINES, PRIMITIVE_TYPE, Keyword, Symbol
+from tokens.enums import UNARY_OPS, BINARY_OPS,SUBROUTINES, Keyword, Symbol
 from tokens.identifier import IdentifierCategory as IdCat, Identifier
 from symbol_table import SymbolTable,VarK, VarT, IdentifierContext as IdContext
 from typing import TextIO, Literal
@@ -289,14 +289,17 @@ class CompilationEngine:
         Compile a type
         grammar: 'int' | 'char' | 'boolean' | className
         '''
-        var_type = self.tokenizer.var_type()
+        
         if isinstance(self.token, Identifier):
             self.context = IdContext(IdCat.CLASS, is_def=False)
-            self._consume(Identifier)
-        elif self.token in PRIMITIVE_TYPE:
-            self._consume()
         else:
-            raise ValueError("Expected type to be 'int', 'char', 'boolean', or className")
+            match self.token:
+                case Keyword.INT | Keyword.CHAR | Keyword.BOOLEAN:
+                    pass
+                case _:
+                    raise ValueError("Expected type to be 'int', 'char', 'boolean', or className")
+        var_type = self.token
+        self._consume()
         return var_type
 
     def _compile_return_type(self) -> None:

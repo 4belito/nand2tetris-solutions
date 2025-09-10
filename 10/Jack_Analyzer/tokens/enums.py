@@ -40,7 +40,7 @@ class Keyword(EnumTokens):
     WHILE = "while"
     RETURN = "return"
 
-PRIMITIVE_TYPE={Keyword.INT, Keyword.CHAR, Keyword.BOOLEAN}
+PRIMITIVE_TYPES={Keyword.INT, Keyword.CHAR, Keyword.BOOLEAN}
 SUBROUTINES={Keyword.CONSTRUCTOR, Keyword.FUNCTION, Keyword.METHOD}
 KEYWORD_CONSTANTS={Keyword.TRUE, Keyword.FALSE, Keyword.NULL, Keyword.THIS}
 

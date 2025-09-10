@@ -1,7 +1,6 @@
-
-
 from enum import Enum
-
+from typing import TextIO
+from contextlib import contextmanager
 
 class CMD(Enum):
     """Enum class to represent different command types."""
@@ -39,37 +38,44 @@ class ARITHMETIC_CMD(Enum):
     NOT = "not"
 
 class VMWriter:
+    ident = 4
     def __init__(self, output_file: str):
         self.output_file = output_file
-        self.commands: list[str] = []
+        self.f: TextIO
 
     def write_push(self, segment: SEGMENT, index: int):
-        self.commands.append(f"push {segment.value} {index}")
+        self.write(f"{' ' * self.ident}push {segment.value} {index}")
 
     def write_pop(self, segment: SEGMENT, index: int):
-        self.commands.append(f"pop {segment.value} {index}")
+        self.write(f"{' ' * self.ident}pop {segment.value} {index}")
 
     def write_arithmetic(self, command: ARITHMETIC_CMD):
-        self.commands.append(command.value)
+        self.write(f"{' ' * self.ident}{command.value}")
 
-    def write_label(self, label: str):  
-        self.commands.append(f"label {label}")
+    def write_label(self, label: str):
+        self.write(f"label {label}")
 
     def write_goto(self, label: str):
-        self.commands.append(f"goto {label}")
-    
+        self.write(f"{' ' * self.ident}goto {label}")
+
     def write_if(self, label: str):
-        self.commands.append(f"if-goto {label}")
+        self.write(f"{' ' * self.ident}if-goto {label}")
 
     def write_call(self, name: str, n_args: int):
-        self.commands.append(f"call {name} {n_args}")
+        self.write(f"{' ' * self.ident}call {name} {n_args}")
 
     def write_function(self, name: str, n_locals: int):
-        self.commands.append(f"function {name} {n_locals}")
+        self.write(f"function {name} {n_locals}")
 
     def write_return(self):
-        self.commands.append("return")
+        self.write(f"{' ' * self.ident}return")
 
-    def close(self):
-        with open(self.output_file, 'w') as f:
-            f.write("\n".join(self.commands))
+    @contextmanager
+    def open(self):
+        self.f = open(self.output_file, 'w')
+        yield
+        self.f.close()
+
+    def write(self,command:str):
+        self.f.write(command+'\n')
+
