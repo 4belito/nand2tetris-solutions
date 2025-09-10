@@ -12,7 +12,7 @@ from jack_tokenizer import JackTokenizer, Token
 from vm_writer import VMWriter,SEGMENT as SEG,ARITHMETIC_CMD as A_CMD
 from tokens.enums import UNARY_OPS, BINARY_OPS,SUBROUTINES,JACK_OPS, Keyword, Symbol
 from tokens.identifier import IdentifierCategory as IdCat, Identifier
-from tokens.inmutables import IntegerConstant
+from tokens.inmutables import IntegerConstant,StringConstant
 from symbol_table import SymbolTable,VarK, VarT, IdentifierContext as IdContext,VarUse, VarSymbol
 from typing import Literal
 from itertools import count
@@ -178,12 +178,21 @@ class CompilationEngine:
         if symbol is None:
             raise ValueError(f"Identifier '{var_name}' not found in symbol table.")
         self._consume_variable(var_name=var_name, use=VarUse.ASSIGN)
-        if self.token == Symbol.LBRACK:
+        array_var = self.token == Symbol.LBRACK
+        if array_var:
             with self._brackets():
                 self._compile_expression()
+            self.vm_writer.write_push(SEG[symbol.kind.name], symbol.index)
+            self.vm_writer.write_arithmetic(A_CMD['ADD'])
         self._consume(Symbol.EQ)
         self._compile_expression()
-        self.vm_writer.write_pop(SEG[symbol.kind.name], symbol.index)  # for assignment
+        if array_var:
+            self.vm_writer.write_pop(SEG.TEMP, 0)  # store the value to be assigned in temp 0
+            self.vm_writer.write_pop(SEG.POINTER, 1)  # that = base address + offset
+            self.vm_writer.write_push(SEG.TEMP, 0)  # push the value of 'that' (base address + offset)
+            self.vm_writer.write_pop(SEG.THAT, 0)  # store the value to be assigned in temp 0
+        else:
+            self.vm_writer.write_pop(SEG[symbol.kind.name], symbol.index)  # for assignment
         self._consume(Symbol.SEMICOLON)
 
     def _compile_if(self) -> None:
@@ -247,8 +256,10 @@ class CompilationEngine:
         grammar: 'return' expression? ';'
         '''
         self._consume(Keyword.RETURN)
+        ## void subroutine
         if self.token == Symbol.SEMICOLON:
             self.vm_writer.write_push(SEG.CONST, 0)
+        ## constructor or method
         elif self.token == Keyword.THIS:
             self.vm_writer.write_push(SEG.POINTER, 0)
             self._consume(Keyword.THIS)
@@ -289,12 +300,19 @@ class CompilationEngine:
             if self.token == Keyword.TRUE:
                 self.vm_writer.write_push(SEG.CONST, 1)
                 self.vm_writer.write_arithmetic(A_CMD['NEG'])
-            if self.token == Keyword.FALSE or self.token == Keyword.NULL:
+            if self.token in (Keyword.FALSE, Keyword.NULL):
                 self.vm_writer.write_push(SEG.CONST, 0)
             if self.token == Keyword.THIS:
                 self.vm_writer.write_push(SEG.POINTER, 0)
             if isinstance(self.token,IntegerConstant):
                 self.vm_writer.write_push(SEG.CONST, self.token)
+            if isinstance(self.token, StringConstant):  # stringConstant
+                string = str(self.token)
+                self.vm_writer.write_push(SEG.CONST, len(string))
+                self.vm_writer.write_call("String.new", 1)
+                for char in string:
+                    self.vm_writer.write_push(SEG.CONST, ord(char))
+                    self.vm_writer.write_call("String.appendChar", 2)
             self._consume()
         # '(' expression ')' 
         elif self.token == Symbol.LPAREN:
@@ -318,9 +336,15 @@ class CompilationEngine:
                 if symbol is None:
                     raise ValueError(f"Identifier '{self.token}' not found in symbol table.")
                 self._consume_variable(var_name=self.token, use=VarUse.REF)
+                # varName '[' expression ']'
                 if self.token == Symbol.LBRACK:
                     with self._brackets():
                         self._compile_expression()
+                    self.vm_writer.write_push(SEG[symbol.kind.name], symbol.index)
+                    self.vm_writer.write_arithmetic(A_CMD['ADD'])
+                    self.vm_writer.write_pop(SEG.POINTER, 1)  # that = base address + offset
+                    self.vm_writer.write_push(SEG.THAT, 0)  # push the value of 'that' (base address + offset)
+                # varName 
                 else:
                     self.vm_writer.write_push(SEG[symbol.kind.name], symbol.index)  # to match the course compiler implementation
         else:
@@ -448,8 +472,6 @@ class CompilationEngine:
         if symbol is None:
             raise ValueError(f"Identifier '{var_name}' not found in symbol table.")
         self.context = IdContext(IdCat.VARIABLE, use=use, kind=symbol.kind, index=symbol.index)
-        # if use == VarUse.REF and symbol.kind != VarK.THIS:
-        #     self.vm_writer.write_push(SEG[symbol.kind.name], symbol.index)
         self._consume(Identifier)
         return symbol
 
