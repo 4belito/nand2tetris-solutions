@@ -46,11 +46,9 @@ class JackTokenizer:
                 return
         raise RuntimeError(f"Unknown token type for value {raw_token}")
 
-    def identifier(self) -> Identifier:
-        """Return the current token as an Identifier."""
-        if isinstance(self.token, Identifier):
-            return self.token
-        raise RuntimeError("Current token is not an Identifier.")
+    def token_type(self) -> type[Token]:
+        """Return the type of the current token."""
+        return type(self.token)
 
     def keyword(self) -> Keyword:
         """Return the current token as a Keyword."""
@@ -58,6 +56,31 @@ class JackTokenizer:
             return self.token
         raise RuntimeError("Current token is not a Keyword.")
 
+    def symbol(self) -> Symbol:
+        """Return the current token as a Symbol."""
+        if isinstance(self.token, Symbol):
+            return self.token
+        raise RuntimeError("Current token is not a Symbol.")
+
+    def identifier(self) -> Identifier:
+        """Return the current token as an Identifier."""
+        if isinstance(self.token, Identifier):
+            return self.token
+        raise RuntimeError("Current token is not an Identifier.")
+
+    def int_val(self) -> IntegerConstant:
+        """Return the current token as an IntegerConstant."""
+        if isinstance(self.token, IntegerConstant):
+            return self.token
+        raise RuntimeError("Current token is not an IntegerConstant.")
+
+    def string_val(self) -> StringConstant:
+        """Return the current token as a StringConstant."""
+        if isinstance(self.token, StringConstant):
+            return self.token
+        raise RuntimeError("Current token is not a StringConstant.")
+
+    ## NO API METHODS BELOW THIS LINE ##
     def peek(self) -> Token:
         """Return the next token without advancing the tokenizer."""
         if self.has_more_tokens():
@@ -89,6 +112,22 @@ class JackTokenizer:
                 return VariableKind.THIS
             case _:
                 raise ValueError(f"Cannot get VariableKind from {self.token}.")
+
+    def consume(self, *tokens: Keyword | Symbol | type[Identifier]) -> None:
+        """
+        Write and advance if the current token matches any of the provided tokens.
+        If no tokens are provided, always write and advance.
+        """
+        if not tokens or any(
+            self.token == t or (isinstance(t, type) and isinstance(self.token, t))
+            for t in tokens
+        ):
+            if self.has_more_tokens():
+                self.advance()
+        else:
+            expected = ', '.join(str(t) for t in tokens)
+            raise ValueError(f"Expected one of: {expected}, got: '{self.token}'")
+
 
     @staticmethod
     def _raw_tokenize(text: str) -> list[str]:

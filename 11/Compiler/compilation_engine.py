@@ -13,8 +13,7 @@ from vm_writer import VMWriter,SEGMENT as SEG,ARITHMETIC_CMD as A_CMD
 from tokens.enums import UNARY_OPS, BINARY_OPS,SUBROUTINES,JACK_OPS, Keyword, Symbol
 from tokens.identifier import IdentifierCategory as IdCat, Identifier
 from tokens.inmutables import IntegerConstant,StringConstant
-from symbol_table import SymbolTable,VarK, VarT, IdentifierContext as IdContext,VarUse, VarSymbol
-from typing import Literal
+from symbol_table import SymbolTable,VarK, VarT, IdentifierContext as IdContext,VarUse
 from itertools import count
 
 class CompilationEngine:
@@ -28,16 +27,16 @@ class CompilationEngine:
         self.tokenizer = JackTokenizer(input_file)
         self.vm_writer = VMWriter(output_file)
         self.table = SymbolTable()
-        self.output_file = output_file
-        self.ident = 0
-        self.n_expr = 0
+        
         # The labels id can be jointly managed with a single counter
         # I implement it this way just to reproduce the course compiler implementation
         self.golabel_id: count[int] = count(start=0, step=2)
         self.iflabel_id: count[int] = count(start=1, step=2)
+        self.n_expr = 0
         self.class_name: Identifier
         self.subroutine_token: Keyword
-        self.context: IdContext | Literal[""] = ""
+
+        self.context: IdContext
 
     # ----------------------------------------
     # Compilation Methods
@@ -48,21 +47,17 @@ class CompilationEngine:
         Compile a complete class
         grammar: 'class' className '{' classVarDec* subroutineDec* '}'
         '''
-        try:
-            with self.vm_writer.open():
-                self._consume(Keyword.CLASS)
-                self.class_name = self.tokenizer.identifier()
-                self.context = IdContext(IdCat.CLASS, use=VarUse.DEF)
-                self._consume(Identifier)
-                with self._braces():
-                    while self.token in (Keyword.STATIC, Keyword.FIELD):
-                        self._compile_class_var_dec()
-                    while self.token in SUBROUTINES:
-                        self._compile_subroutine_dec()
-                if self.tokenizer.has_more_tokens():
-                    raise ValueError("Extra tokens after class end")
-        finally:
-            self.vm_writer.f.close()
+        with self.vm_writer.open():
+            self.tokenizer.consume(Keyword.CLASS)
+            self.class_name = self.tokenizer.identifier()
+            self.tokenizer.consume(Identifier)
+            with self._braces():
+                while self.token in (Keyword.STATIC, Keyword.FIELD):
+                    self._compile_class_var_dec()
+                while self.token in SUBROUTINES:
+                    self._compile_subroutine_dec()
+            if self.tokenizer.has_more_tokens():
+                raise ValueError("Extra tokens after class end")
 
     def _compile_class_var_dec(self) -> None:
         '''
@@ -70,13 +65,13 @@ class CompilationEngine:
         grammar: (static | field) type varName (',' varName)* ';'
         '''
         var_kind = self.tokenizer.var_kind()
-        self._consume(Keyword.STATIC, Keyword.FIELD)
+        self.tokenizer.consume(Keyword.STATIC, Keyword.FIELD)
         var_type = self._compile_type()  # type
         self._compile_variable_def(var_kind, var_type)
         while self.token == Symbol.COMMA:
-            self._consume()
+            self.tokenizer.consume()
             self._compile_variable_def(var_kind, var_type)
-        self._consume(Symbol.SEMICOLON)
+        self.tokenizer.consume(Symbol.SEMICOLON)
 
     def _compile_subroutine_dec(self) -> None:
         '''
@@ -85,14 +80,14 @@ class CompilationEngine:
         '''
         self.table.start_subroutine()
         self.subroutine_token = self.tokenizer.keyword()
-        self._consume(*SUBROUTINES)
+        self.tokenizer.consume(*SUBROUTINES)
         if self.subroutine_token == Keyword.CONSTRUCTOR:
             return_type = self.tokenizer.identifier()
             assert self.class_name == return_type, f"Constructor return type must be the class name '{self.class_name}', got '{return_type}'"
         self._compile_return_type()
         self.context = IdContext(IdCat.SUBROUTINE, use=VarUse.DEF)
         self.table.subroutine_name = self.tokenizer.identifier()
-        self._consume(Identifier)
+        self.tokenizer.consume(Identifier)
         if self.subroutine_token == Keyword.METHOD:
             # Implicit 'this' argument for methods
             self.table.define(Identifier('this'), self.class_name, VarK.ARG)
@@ -109,7 +104,7 @@ class CompilationEngine:
         if self.tokenizer.token_is_var_type():
             self._compile_variable_def(kind=VarK.ARG)
             while self.token == Symbol.COMMA:  # (',' type varName)*)?
-                self._consume()
+                self.tokenizer.consume()
                 self._compile_variable_def(kind=VarK.ARG)
 
     def _compile_subroutine_body(self) -> None:
@@ -137,14 +132,14 @@ class CompilationEngine:
         Compile a variable declaration
         grammar: 'var' type varName (',' varName)* ';'
         '''
-        self._consume(Keyword.VAR)
+        self.tokenizer.consume(Keyword.VAR)
         if self.tokenizer.token_is_var_type():  # type
             var_type = self._compile_type()
             self._compile_variable_def(VarK.LOCAL, var_type)
             while self.token == Symbol.COMMA:  # (',' varName)*?
-                self._consume()
+                self.tokenizer.consume()
                 self._compile_variable_def(VarK.LOCAL, var_type)  # varName
-            self._consume(Symbol.SEMICOLON)
+            self.tokenizer.consume(Symbol.SEMICOLON)
 
     def _compile_statements(self) -> None:
         '''
@@ -172,19 +167,20 @@ class CompilationEngine:
         Compile a let statement.
         grammar: 'let' varName('[' expression ']')? '=' expression ';'
         '''
-        self._consume(Keyword.LET)
+        self.tokenizer.consume(Keyword.LET)
         var_name = self.tokenizer.identifier()
-        symbol = self.table.get_symbol(var_name)  # to ensure it exists
-        if symbol is None:
+        var_kind = self.table.kind_of(var_name)  # to ensure it exists
+        if var_kind is None:
             raise ValueError(f"Identifier '{var_name}' not found in symbol table.")
+        var_idx = self.table.index_of(var_name)
         self._consume_variable(var_name=var_name, use=VarUse.ASSIGN)
         array_var = self.token == Symbol.LBRACK
         if array_var:
             with self._brackets():
                 self._compile_expression()
-            self.vm_writer.write_push(SEG[symbol.kind.name], symbol.index)
+            self.vm_writer.write_push(SEG[var_kind.name], var_idx)
             self.vm_writer.write_arithmetic(A_CMD['ADD'])
-        self._consume(Symbol.EQ)
+        self.tokenizer.consume(Symbol.EQ)
         self._compile_expression()
         if array_var:
             self.vm_writer.write_pop(SEG.TEMP, 0)  # store the value to be assigned in temp 0
@@ -192,8 +188,8 @@ class CompilationEngine:
             self.vm_writer.write_push(SEG.TEMP, 0)  # push the value of 'that' (base address + offset)
             self.vm_writer.write_pop(SEG.THAT, 0)  # store the value to be assigned in temp 0
         else:
-            self.vm_writer.write_pop(SEG[symbol.kind.name], symbol.index)  # for assignment
-        self._consume(Symbol.SEMICOLON)
+            self.vm_writer.write_pop(SEG[var_kind.name], var_idx)  # for assignment
+        self.tokenizer.consume(Symbol.SEMICOLON)
 
     def _compile_if(self) -> None:
         '''
@@ -205,19 +201,17 @@ class CompilationEngine:
         # I placed here just to reproduce the course compiler implementation
         l1 = next(self.iflabel_id)
         l2 = next(self.golabel_id)
-        self._consume(Keyword.IF)
+        self.tokenizer.consume(Keyword.IF)
         with self._parentheses():
             self._compile_expression()
         self.vm_writer.write_arithmetic(A_CMD['NOT'])
-
-        self.vm_writer.write_if(f"{self.class_name}_{l1}")
+        self._write_if(l1)
         with self._braces():
             self._compile_statements()
-        
-        self.vm_writer.write_goto(f"{self.class_name}_{l2}")
+        self._write_goto(l2)
         self._write_label(l1)
         if self.token == Keyword.ELSE:
-            self._consume(Keyword.ELSE)
+            self.tokenizer.consume(Keyword.ELSE)
             with self._braces():
                 self._compile_statements()
         self._write_label(l2)
@@ -227,17 +221,17 @@ class CompilationEngine:
         Compile a while statement.
         grammar: 'while' '(' expression ')' '{' statements '}'
         '''
-        self._consume(Keyword.WHILE)
+        self.tokenizer.consume(Keyword.WHILE)
         l1 = next(self.golabel_id)
         self._write_label(l1)
         with self._parentheses():
             self._compile_expression()
             self.vm_writer.write_arithmetic(A_CMD['NOT'])
             l2 = next(self.iflabel_id)
-            self.vm_writer.write_if(f"{self.class_name}_{l2}")
+            self._write_if(l2)
         with self._braces():
             self._compile_statements()
-        self.vm_writer.write_goto(f"{self.class_name}_{l1}")
+        self._write_goto(l1)
         self._write_label(l2)
 
     def _compile_do(self) -> None:
@@ -245,27 +239,27 @@ class CompilationEngine:
         Compile a do statement.
         grammar: 'do' subroutineCall  ';'
         '''
-        self._consume(Keyword.DO)
+        self.tokenizer.consume(Keyword.DO)
         self._compile_subroutine_call(self.tokenizer.peek())
         self.vm_writer.write_pop(SEG.TEMP,0)  # discard return value
-        self._consume(Symbol.SEMICOLON)
+        self.tokenizer.consume(Symbol.SEMICOLON)
 
     def _compile_return(self) -> None:
         '''
         Compile a return statement.
         grammar: 'return' expression? ';'
         '''
-        self._consume(Keyword.RETURN)
+        self.tokenizer.consume(Keyword.RETURN)
         ## void subroutine
         if self.token == Symbol.SEMICOLON:
             self.vm_writer.write_push(SEG.CONST, 0)
         ## constructor or method
         elif self.token == Keyword.THIS:
             self.vm_writer.write_push(SEG.POINTER, 0)
-            self._consume(Keyword.THIS)
+            self.tokenizer.consume(Keyword.THIS)
         else:
             self._compile_expression()
-        self._consume(Symbol.SEMICOLON)
+        self.tokenizer.consume(Symbol.SEMICOLON)
         self.vm_writer.write_return()
 
     def _compile_expression(self) -> None:
@@ -276,7 +270,7 @@ class CompilationEngine:
         self._compile_term()
         while self.token in BINARY_OPS:
             op_token = self.token
-            self._consume()
+            self.tokenizer.consume()
             self._compile_term()
             if op_token in JACK_OPS:
                 self.vm_writer.write_arithmetic(A_CMD[op_token.name])
@@ -313,7 +307,7 @@ class CompilationEngine:
                 for char in string:
                     self.vm_writer.write_push(SEG.CONST, ord(char))
                     self.vm_writer.write_call("String.appendChar", 2)
-            self._consume()
+            self.tokenizer.consume()
         # '(' expression ')' 
         elif self.token == Symbol.LPAREN:
             with self._parentheses():
@@ -321,7 +315,7 @@ class CompilationEngine:
         # unaryOp term
         elif self.token in UNARY_OPS:
             uop_token = self.token
-            self._consume()
+            self.tokenizer.consume()
             self._compile_term()
             self.vm_writer.write_arithmetic(A_CMD['NEG' if uop_token == Symbol.SUB else 'NOT'])
         # varName| varName '[' expression ']' | subroutineCall
@@ -332,21 +326,22 @@ class CompilationEngine:
                 self._compile_subroutine_call(next_token)
             # varName | varName '[' expression ']'
             else:
-                symbol = self.table.get_symbol(self.token)
-                if symbol is None:
+                var_kind = self.table.kind_of(self.token)
+                if var_kind is None:
                     raise ValueError(f"Identifier '{self.token}' not found in symbol table.")
+                var_idx = self.table.index_of(self.token)
                 self._consume_variable(var_name=self.token, use=VarUse.REF)
                 # varName '[' expression ']'
                 if self.token == Symbol.LBRACK:
                     with self._brackets():
                         self._compile_expression()
-                    self.vm_writer.write_push(SEG[symbol.kind.name], symbol.index)
+                    self.vm_writer.write_push(SEG[var_kind.name], var_idx)
                     self.vm_writer.write_arithmetic(A_CMD['ADD'])
                     self.vm_writer.write_pop(SEG.POINTER, 1)  # that = base address + offset
                     self.vm_writer.write_push(SEG.THAT, 0)  # push the value of 'that' (base address + offset)
                 # varName 
                 else:
-                    self.vm_writer.write_push(SEG[symbol.kind.name], symbol.index)  # to match the course compiler implementation
+                    self.vm_writer.write_push(SEG[var_kind.name], var_idx)  # to match the course compiler implementation
         else:
             raise ValueError(f"Unexpected token in term: {self.token}")
 
@@ -360,7 +355,7 @@ class CompilationEngine:
             self._compile_expression()
             self.n_expr += 1
             while self.token == Symbol.COMMA:
-                self._consume()
+                self.tokenizer.consume()
                 self._compile_expression()
                 self.n_expr += 1
 
@@ -374,7 +369,7 @@ class CompilationEngine:
         # (className | varName) '.' subroutineName '(' expressionList  ')'
         if next_token == Symbol.DOT:
             identifier = self.tokenizer.identifier()
-            symbol = self.table.get_symbol(identifier)
+            symbol = self.table.get_var(identifier)
             # className
             if symbol is None:
                 call_text += str(self.token)
@@ -388,9 +383,9 @@ class CompilationEngine:
                 self.context = IdContext(IdCat.VARIABLE, use=VarUse.REF, kind=symbol.kind, index=symbol.index)
             else:
                 raise ValueError(f"A class name or variable name is expected.")
-            self._consume(Identifier)
+            self.tokenizer.consume(Identifier)
             call_text += str(self.token)
-            self._consume(Symbol.DOT)
+            self.tokenizer.consume(Symbol.DOT)
         # subroutineName '(' expressionList ')'
         # this is a call from the current object 
         else:
@@ -399,7 +394,7 @@ class CompilationEngine:
             call_text += str(self.class_name)+"."
         self.context = IdContext(IdCat.SUBROUTINE, use=VarUse.REF)
         call_text += str(self.token)
-        self._consume(Identifier)
+        self.tokenizer.consume(Identifier)
         with self._parentheses():
             self._compile_expression_list()
         self.vm_writer.write_call(call_text, self.n_expr+object_call)
@@ -419,7 +414,7 @@ class CompilationEngine:
                 case _:
                     raise ValueError("Expected type to be 'int', 'char', 'boolean', or className")
         var_type = self.token
-        self._consume()
+        self.tokenizer.consume()
         return var_type
 
     def _compile_return_type(self) -> None:
@@ -428,7 +423,7 @@ class CompilationEngine:
         grammar: 'void' | type
         '''
         if self.token == Keyword.VOID:
-            self._consume()
+            self.tokenizer.consume()
         else:
             self._compile_type()
 
@@ -447,33 +442,17 @@ class CompilationEngine:
     # Compile Helpers (token handling)
     # ----------------------------------------
 
-    def _consume(self, *tokens: Keyword | Symbol | type[Identifier]) -> None:
-        """
-        Write and advance if the current token matches any of the provided tokens.
-        If no tokens are provided, always write and advance.
-        """
-        if not tokens or any(
-            self.token == t or (isinstance(t, type) and isinstance(self.token, t))
-            for t in tokens
-        ):
-            #self._write_token()
-            if self.tokenizer.has_more_tokens():
-                self.tokenizer.advance()
-        else:
-            expected = ', '.join(str(t) for t in tokens)
-            raise ValueError(f"Expected one of: {expected}, got: '{self.token}'")
-
-    def _consume_variable(self, var_name: Identifier, use: VarUse) -> VarSymbol:
+    def _consume_variable(self, var_name: Identifier, use: VarUse):
         '''
         Consume a variable
         grammar: varName
         '''
-        symbol = self.table.get_symbol(var_name)
-        if symbol is None:
+        var_kind = self.table.kind_of(var_name)
+        if var_kind is None:
             raise ValueError(f"Identifier '{var_name}' not found in symbol table.")
-        self.context = IdContext(IdCat.VARIABLE, use=use, kind=symbol.kind, index=symbol.index)
-        self._consume(Identifier)
-        return symbol
+        var_idx = self.table.index_of(var_name)
+        self.context = IdContext(IdCat.VARIABLE, use=use, kind=var_kind, index=var_idx)
+        self.tokenizer.consume(Identifier)
 
     @property
     def token(self) -> Token:
@@ -483,6 +462,12 @@ class CompilationEngine:
     def _write_label(self,label_id:int):            
         self.vm_writer.write_label(f"{self.class_name}_{label_id}")
 
+    def _write_if(self,label_id:int):            
+        self.vm_writer.write_if(f"{self.class_name}_{label_id}")
+
+    def _write_goto(self,label_id:int):            
+        self.vm_writer.write_goto(f"{self.class_name}_{label_id}")
+
     # ------------------------------------------------------------
     # context management helper methods (private)
     # ------------------------------------------------------------
@@ -490,9 +475,9 @@ class CompilationEngine:
     @contextmanager
     def _symbol_context(self, open_symbol: Symbol, close_symbol: Symbol):
         '''Context manager for symbols like {}, (), []'''
-        self._consume(open_symbol)
+        self.tokenizer.consume(open_symbol)
         yield
-        self._consume(close_symbol)
+        self.tokenizer.consume(close_symbol)
 
     def _braces(self):
         '''Context manager for braces {}'''

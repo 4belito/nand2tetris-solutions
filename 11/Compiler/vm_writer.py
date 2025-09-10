@@ -2,18 +2,6 @@ from enum import Enum
 from typing import TextIO
 from contextlib import contextmanager
 
-class CMD(Enum):
-    """Enum class to represent different command types."""
-    ARITHMETIC = "ARITHMETIC"
-    PUSH = "PUSH"
-    POP = "POP"
-    LABEL = "LABEL"
-    GOTO = "GOTO"
-    IF_GOTO = "IF_GOTO"
-    FUNCTION = "FUNCTION"
-    RETURN = "RETURN"
-    CALL = "CALL"
-
 class SEGMENT(Enum):
     """Enum class to represent different memory segments."""
     CONST = "constant"
@@ -40,42 +28,45 @@ class ARITHMETIC_CMD(Enum):
 class VMWriter:
     ident = 4
     def __init__(self, output_file: str):
-        self.output_file = output_file
-        self.f: TextIO
+        self._output_file = output_file
+        self._f: TextIO
 
     def write_push(self, segment: SEGMENT, index: int):
-        self.write(f"{' ' * self.ident}push {segment.value} {index}")
+        self.write(f"push {segment.value} {index}")
 
     def write_pop(self, segment: SEGMENT, index: int):
-        self.write(f"{' ' * self.ident}pop {segment.value} {index}")
+        self.write(f"pop {segment.value} {index}")
 
     def write_arithmetic(self, command: ARITHMETIC_CMD):
-        self.write(f"{' ' * self.ident}{command.value}")
+        self.write(f"{command.value}")
 
     def write_label(self, label: str):
-        self.write(f"label {label}")
+        self.write(f"label {label}", indent=False)
 
     def write_goto(self, label: str):
-        self.write(f"{' ' * self.ident}goto {label}")
+        self.write(f"goto {label}")
 
     def write_if(self, label: str):
-        self.write(f"{' ' * self.ident}if-goto {label}")
+        self.write(f"if-goto {label}")
 
     def write_call(self, name: str, n_args: int):
-        self.write(f"{' ' * self.ident}call {name} {n_args}")
+        self.write(f"call {name} {n_args}")
 
     def write_function(self, name: str, n_locals: int):
-        self.write(f"function {name} {n_locals}")
+        self.write(f"function {name} {n_locals}", indent=False)
 
     def write_return(self):
-        self.write(f"{' ' * self.ident}return")
+        self.write(f"return")
 
+    ## NO API METHODS BELOW THIS LINE ##
     @contextmanager
     def open(self):
-        self.f = open(self.output_file, 'w')
+        self._f = open(self._output_file, 'w')
         yield
-        self.f.close()
+        self._f.close()
 
-    def write(self,command:str):
-        self.f.write(command+'\n')
+    def write(self,command:str,indent:bool=True):
+        if indent:
+            command = f"{' ' * self.ident}{command}"
+        self._f.write(command+'\n')
 

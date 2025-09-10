@@ -47,43 +47,62 @@ VarK = VariableKind  # Alias for brevity
 VarT = Literal[Keyword.INT,Keyword.CHAR,Keyword.BOOLEAN] | Identifier
 
 @dataclass(slots=True)
-class VarSymbol:
+class Variable:
     type: VarT
     kind: VarK
     index: int
 
 class SymbolTable:
     def __init__(self) -> None:
-        self.class_table: dict[str, VarSymbol] = {}
-        self.subroutine_table: dict[Identifier, VarSymbol] = {}
-        self.index_counters: dict[VarK, int] = {kind: 0 for kind in VarK}
+        self._class_table: dict[str, Variable] = {}
+        self._subroutine_table: dict[Identifier, Variable] = {}
+        self._index_counters: dict[VarK, int] = {kind: 0 for kind in VarK}
         self.subroutine_name: Identifier
 
     def start_subroutine(self):
         """Reset the subroutine scope and index counters for ARGUMENT and VAR."""
-        self.subroutine_table.clear()
-        self.index_counters[VarK.ARG] = 0
-        self.index_counters[VarK.LOCAL] = 0
+        self._subroutine_table.clear()
+        self._index_counters[VarK.ARG] = 0
+        self._index_counters[VarK.LOCAL] = 0
 
     def define(self, name: Identifier, type: VarT, kind: VarK) -> None:
         """Define a new identifier of a given name, type, and kind."""
         index = self.var_count(kind)
-        symbol = VarSymbol(type=type, kind=kind, index=index)
+        symbol = Variable(type=type, kind=kind, index=index)
         match kind:
             case VarK.STATIC | VarK.THIS:
-                self.class_table[name] = symbol
+                self._class_table[name] = symbol
             case VarK.ARG | VarK.LOCAL:
-                self.subroutine_table[name] = symbol
+                self._subroutine_table[name] = symbol
             case _:
                 raise ValueError(f"Invalid kind: {kind}")
-        self.index_counters[kind] += 1
+        self._index_counters[kind] += 1
 
     def var_count(self, kind: VarK) -> int:
         """Return the number of variables of the given kind already defined."""
-        return self.index_counters[kind]
+        return self._index_counters[kind]
 
-    def get_symbol(self, name: Identifier) -> VarSymbol | None:
+    def kind_of(self, name: Identifier) -> VarK | None:
+        """Return the kind of the named identifier in the current scope."""
+        symbol = self.get_var(name)
+        return symbol.kind if symbol else None
+    
+    def type_of(self, name: Identifier) -> VarT:
+        """Return the type of the named identifier in the current scope."""
+        symbol = self.get_var(name)
+        if symbol is None:
+            raise ValueError(f"Identifier '{name}' not found in symbol table.")
+        return symbol.type
+
+    def index_of(self, name: Identifier) -> int:
+        """Return the index assigned to the named identifier."""
+        symbol = self.get_var(name)
+        if symbol is None:
+            raise ValueError(f"Identifier '{name}' not found in symbol table.")
+        return symbol.index
+
+    ## NO API METHODS BELOW THIS LINE ##
+    def get_var(self, name: Identifier) -> Variable| None:
         """Return the symbol of the named identifier in the current scope."""
-        symbol = self.subroutine_table.get(name) or self.class_table.get(name)
-        return symbol
+        return self._subroutine_table.get(name) or self._class_table.get(name)
 
