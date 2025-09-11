@@ -4,14 +4,16 @@ This module defines the JackTokenizer class, which reads Jack source files,
 removes comments, splits the code into raw tokens, and provides access to
 individual tokens for further parsing and analysis.
 """
+from __future__ import annotations
 
 import re
 from collections import deque
 from tokens.identifier import Identifier
 from tokens.enums import Keyword, Symbol, PRIMITIVE_TYPES, KEYWORD_CONSTANTS
 from tokens.inmutables import IntegerConstant, StringConstant
-from tokens.enums import Symbol
-from symbol_table import VariableKind
+from tokens.enums import Symbol,KEYWORD_VAR_KIND
+from symbol_table import VariableKind,VarT
+from typing import overload,Literal
 
 Token = Identifier | Keyword | Symbol | IntegerConstant | StringConstant
 
@@ -98,22 +100,43 @@ class JackTokenizer:
         """Return True if token is any kind of constant."""
         return isinstance(self.token, (IntegerConstant, StringConstant)) or self.token in KEYWORD_CONSTANTS
 
-    def var_kind(self) -> VariableKind:
+    def consume_var_kind(self,*var_kinds:KEYWORD_VAR_KIND) -> VariableKind:
         """
         Map a Keyword to a VariableKind.
         note: Argument is excluded because it is not a keyword.
         """
         match self.token:
             case Keyword.VAR:
-                return VariableKind.LOCAL
+                var_kind = VariableKind.LOCAL
             case Keyword.STATIC:
-                return VariableKind.STATIC
+                var_kind = VariableKind.STATIC
             case Keyword.FIELD:
-                return VariableKind.THIS
+                var_kind = VariableKind.THIS
             case _:
                 raise ValueError(f"Cannot get VariableKind from {self.token}.")
+        self.consume(*var_kinds)
+        return var_kind
 
-    def consume(self, *tokens: Keyword | Symbol | type[Identifier]) -> None:
+    @overload
+    def consume(self, *token: Keyword) -> Keyword: ...
+
+    @overload
+    def consume(self, *token: Symbol) -> Symbol: ...
+
+    @overload
+    def consume(self, *token: type[Identifier]) -> Identifier: ...
+
+    @overload
+    def consume(self, __token1: Literal[Keyword.INT],
+                __token2: Literal[Keyword.CHAR],
+                __token3: Literal[Keyword.BOOLEAN],
+                __token4: type[Identifier],
+                ) -> VarT: ...
+
+    @overload
+    def consume(self,*tokens: Keyword | Symbol | type[Identifier]) -> Token: ...
+
+    def consume(self, *tokens: Keyword | Symbol | type[Identifier]) -> Token:
         """
         Write and advance if the current token matches any of the provided tokens.
         If no tokens are provided, always write and advance.
@@ -122,11 +145,15 @@ class JackTokenizer:
             self.token == t or (isinstance(t, type) and isinstance(self.token, t))
             for t in tokens
         ):
+            token = self.token
             if self.has_more_tokens():
                 self.advance()
+            return token
         else:
             expected = ', '.join(str(t) for t in tokens)
             raise ValueError(f"Expected one of: {expected}, got: '{self.token}'")
+
+
 
 
     @staticmethod
@@ -144,6 +171,10 @@ class JackTokenizer:
         # Split and filter out empty strings
         tokens = [raw_token for raw_token in re.split(pattern, text) if raw_token]
         return tokens
-    
+
+
+
+
+
 # Note: Peek method is added to the API for looking the next token without consuming it.
 # The remaining method in the API are substituted by the token data structure itself.
