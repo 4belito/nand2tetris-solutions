@@ -36,31 +36,31 @@ class VMWriter:
         self.iflabel_id: count[int] = count(start=1, step=2)
 
     def write_push(self, segment: SEGMENT, index: int):
-        self.write(f"push {segment.value} {index}")
+        self._write(f"push {segment.value} {index}")
 
     def write_pop(self, segment: SEGMENT, index: int):
-        self.write(f"pop {segment.value} {index}")
+        self._write(f"pop {segment.value} {index}")
 
     def write_arithmetic(self, command: ARITHMETIC_CMD):
-        self.write(f"{command.value}")
+        self._write(f"{command.value}")
 
     def write_label(self, label: str):
-        self.write(f"label {label}", indent=False)
+        self._write(f"label {label}", indent=False)
 
     def write_goto(self, label: str):
-        self.write(f"goto {label}")
+        self._write(f"goto {label}")
 
     def write_if(self, label: str):
-        self.write(f"if-goto {label}")
+        self._write(f"if-goto {label}")
 
     def write_call(self, name: str, n_args: int):
-        self.write(f"call {name} {n_args}")
+        self._write(f"call {name} {n_args}")
 
     def write_function(self, name: str, n_locals: int):
-        self.write(f"function {name} {n_locals}", indent=False)
+        self._write(f"function {name} {n_locals}", indent=False)
 
     def write_return(self):
-        self.write(f"return")
+        self._write(f"return")
 
     ## NO API METHODS BELOW THIS LINE ##
     @contextmanager
@@ -73,7 +73,7 @@ class VMWriter:
             self._f.truncate(self._f.tell() - 1)  
         self._f.close()
 
-    def write(self,command:str,indent:bool=True):
+    def _write(self,command:str,indent:bool=True):
         if indent:
             command = f"{' ' * self.ident}{command}"
         self._f.write(command+'\n')
@@ -110,8 +110,6 @@ class VMWriter:
         self.write_push(SEGMENT.TEMP, 0)  # push the value to be assigned in the stack
         self.write_pop(SEGMENT.THAT, 0)  # put the value to be assigned in the array element
 
-
-
     def write_string_constant(self, string: str):
         """Write VM code to create a string constant."""
         self.write_push(SEGMENT.CONST, len(string))
@@ -119,3 +117,9 @@ class VMWriter:
         for char in string:
             self.write_push(SEGMENT.CONST, ord(char))
             self.write_call("String.appendChar", 2)
+
+    def write_push_variable(self, kind: VarK, index: int):
+        self.write_push(SEGMENT[kind.name], index)
+
+    def write_pop_variable(self, kind: VarK, index: int):
+        self.write_pop(SEGMENT[kind.name], index)

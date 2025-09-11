@@ -10,7 +10,7 @@ from contextlib import contextmanager
 
 from jack_tokenizer import JackTokenizer, Token
 from vm_writer import VMWriter,SEGMENT as SEG,ARITHMETIC_CMD as A_CMD
-from tokens.enums import UNARY_OPS, BINARY_OPS,SUBROUTINES, Keyword as Key, Symbol,PRIMITIVE_TYPES
+from tokens.enums import UNARY_OPS, BINARY_OPS,SUBROUTINES,PRIMITIVE_TYPES, Keyword as Key, Symbol
 from tokens.identifier import IdentifierCategory as IdCat, Identifier
 from tokens.inmutables import IntegerConstant,StringConstant
 from symbol_table import SymbolTable,VarK, VarT, IdentifierContext as IdContext,VarUse
@@ -43,30 +43,15 @@ class CompilationEngine:
         '''
         with self.vm_writer.open():
             self.tokenizer.consume(Key.CLASS)
-            self.class_name = self.tokenizer.identifier()
-            self.tokenizer.consume(Identifier)
+            self.class_name = self.tokenizer.consume(Identifier)
             with self._braces():
                 while self.token in (Key.STATIC, Key.FIELD):
-                    self._compile_class_var_dec()
+                    self._compile_var_dec(Key.STATIC, Key.FIELD)
                 while self.token in SUBROUTINES:
                     self._compile_subroutine_dec()
             if self.tokenizer.has_more_tokens():
                 raise ValueError("Extra tokens after class end")
 
-    def _compile_class_var_dec(self) -> None:
-        '''
-        Compile a static variable declaration, or a field declaration.
-        grammar: (static | field) type varName (',' varName)* ';'
-        '''
-        var_kind = self.tokenizer.consume_var_kind(Key.STATIC, Key.FIELD)
-        if isinstance(self.token, Identifier):
-            self.context = IdContext(IdCat.CLASS, use=VarUse.REF)
-        var_type = self.tokenizer.consume(Key.INT, Key.CHAR, Key.BOOLEAN, Identifier)
-        self._compile_variable_def(var_kind, var_type)
-        while self.token == Symbol.COMMA:
-            self.tokenizer.consume(Symbol.COMMA)
-            self._compile_variable_def(var_kind, var_type)
-        self.tokenizer.consume(Symbol.SEMICOLON)
 
     def _compile_subroutine_dec(self) -> None:
         '''
@@ -81,20 +66,20 @@ class CompilationEngine:
         if subroutine_key == Key.METHOD:
             self.table.define(Identifier('this'), self.class_name, VarK.ARG)
         with self._parentheses():
-            self._compile_parameter_list()
+            if self.tokenizer.token_is_var_type():
+                self._compile_parameter_list(var_kind=VarK.ARG)
         self._compile_subroutine_body(subroutine_key)
 
-    def _compile_parameter_list(self) -> None:
+    def _compile_parameter_list(self,var_kind: VarK, var_type: VarT|None=None) -> None:
         '''
         Compile a (possibly empty) parameter list.
         Does not handle the enclosing parentheses ().
         grammar: ((type varName) (',' type varName)*)?
         '''
-        if self.tokenizer.token_is_var_type():
-            self._compile_variable_def(kind=VarK.ARG)
-            while self.token == Symbol.COMMA:  # (',' type varName)*)?
-                self.tokenizer.consume(Symbol.COMMA)
-                self._compile_variable_def(kind=VarK.ARG)
+        self._compile_variable_def(kind=var_kind, var_type=var_type)
+        while self.token == Symbol.COMMA:  # (',' type varName)*)?
+            self.tokenizer.consume(Symbol.COMMA)
+            self._compile_variable_def(kind=var_kind, var_type=var_type)
 
     def _compile_subroutine_body(self, subroutine_key: Key) -> None:
         '''
@@ -103,7 +88,7 @@ class CompilationEngine:
         '''
         with self._braces():
             while self.token == Key.VAR:
-                self._compile_var_dec()
+                self._compile_var_dec(Key.VAR)
             function_name = f"{self.class_name}.{self.table.subroutine_name}"
             self.vm_writer.write_function(function_name, self.table.var_count(VarK.LOCAL))
             if subroutine_key == Key.CONSTRUCTOR:
@@ -113,19 +98,17 @@ class CompilationEngine:
                 self.vm_writer.write_method_setup()
             self._compile_statements()
 
-    def _compile_var_dec(self) -> None:
+    def _compile_var_dec(self, *var_kind_keys: Key) -> None:
         '''
         Compile a variable declaration
-        grammar: 'var' type varName (',' varName)* ';'
+        grammar: var_kind type varName (',' varName)* ';'
         '''
-        self.tokenizer.consume(Key.VAR)
-        if self.tokenizer.token_is_var_type(): 
-            var_type = self.tokenizer.consume(Key.INT, Key.CHAR, Key.BOOLEAN, Identifier)
-            self._compile_variable_def(VarK.LOCAL, var_type)
-            while self.token == Symbol.COMMA:  # (',' varName)*?
-                self.tokenizer.consume(Symbol.COMMA)
-                self._compile_variable_def(VarK.LOCAL, var_type)  # varName
-            self.tokenizer.consume(Symbol.SEMICOLON)
+        var_kind = self.tokenizer.consume_var_kind(*var_kind_keys)
+        if isinstance(self.token, Identifier):
+            self.context = IdContext(IdCat.CLASS, use=VarUse.REF)
+        var_type = self.tokenizer.consume(Key.INT, Key.CHAR, Key.BOOLEAN, Identifier)
+        self._compile_parameter_list(var_kind,var_type)
+        self.tokenizer.consume(Symbol.SEMICOLON)
 
     def _compile_statements(self) -> None:
         '''
@@ -154,18 +137,18 @@ class CompilationEngine:
         grammar: 'let' varName('[' expression ']')? '=' expression ';'
         '''
         self.tokenizer.consume(Key.LET)
-        var_kind, var_idx = self._compile_variable(use=VarUse.ASSIGN)
+        var_address = self._compile_variable(use=VarUse.ASSIGN)
         is_array_var = self.token == Symbol.LBRACK
         if is_array_var:
             with self._brackets():
                 self._compile_expression()
-            self.vm_writer.write_push_array_element_address(var_kind, var_idx)
+            self.vm_writer.write_push_array_element_address(*var_address)
         self.tokenizer.consume(Symbol.EQ)
         self._compile_expression()
         if is_array_var:
             self.vm_writer.write_assign_to_array_element()
         else:
-            self.vm_writer.write_pop(SEG[var_kind.name], var_idx)  # for assignment
+            self.vm_writer.write_pop_variable(*var_address)  # for assignment
         self.tokenizer.consume(Symbol.SEMICOLON)
 
     def _compile_if(self) -> None:
@@ -299,15 +282,15 @@ class CompilationEngine:
                 self._compile_subroutine_call(next_token)
             # varName | varName '[' expression ']'
             else:
-                var_kind, var_idx = self._compile_variable(use=VarUse.REF)
+                var_address = self._compile_variable(use=VarUse.REF)
                 # varName '[' expression ']'
                 if self.token == Symbol.LBRACK:
                     with self._brackets():
                         self._compile_expression()
-                    self.vm_writer.write_push_array_element(var_kind, var_idx)
+                    self.vm_writer.write_push_array_element(*var_address)
                 # varName 
                 else:
-                    self.vm_writer.write_push(SEG[var_kind.name], var_idx)  # to match the course compiler implementation
+                    self.vm_writer.write_push_variable(*var_address)  # to match the course compiler implementation
         else:
             raise ValueError(f"Unexpected token in term: {self.token}")
 
@@ -372,7 +355,7 @@ class CompilationEngine:
             elif isinstance(variable.type, Identifier):
                 object_call = True
                 call_name += str(variable.type)
-                self.vm_writer.write_push(SEG[variable.kind.name], variable.index) # push object to the stack (to become arg1)
+                self.vm_writer.write_push_variable(variable.kind, variable.index)  # push 'this' to the stack (to become arg0)
                 self.context = IdContext(IdCat.VARIABLE, use=VarUse.REF, kind=variable.kind, index=variable.index)
             else:
                 raise ValueError(f"A class name or variable name is expected.")

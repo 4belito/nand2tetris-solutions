@@ -1,5 +1,4 @@
 from enum import Enum
-from typing import Literal
 
 class EnumTokens(Enum):
     """Base enum class for Jack token types with utility methods."""
@@ -41,11 +40,9 @@ class Keyword(EnumTokens):
     WHILE = "while"
     RETURN = "return"
 
-PRIMITIVE_TYPES=[Keyword.INT, Keyword.CHAR, Keyword.BOOLEAN]
+PRIMITIVE_TYPES={Keyword.INT, Keyword.CHAR, Keyword.BOOLEAN}
 SUBROUTINES={Keyword.CONSTRUCTOR, Keyword.FUNCTION, Keyword.METHOD}
 KEYWORD_CONSTANTS={Keyword.TRUE, Keyword.FALSE, Keyword.NULL, Keyword.THIS}
-KEYWORD_VAR_KIND = Literal[Keyword.STATIC, Keyword.FIELD, Keyword.VAR]
-KEYWORD_VAR_TYPES = Literal[Keyword.INT, Keyword.CHAR, Keyword.BOOLEAN]
 
 class Symbol(EnumTokens):
     """Enum for Jack language symbols."""

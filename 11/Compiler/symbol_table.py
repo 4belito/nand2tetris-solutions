@@ -86,13 +86,14 @@ class SymbolTable:
         """Return the kind of the named identifier in the current scope."""
         symbol = self.get_var(name)
         return symbol.kind if symbol else None
-    
-    def type_of(self, name: Identifier) -> VarT:
-        """Return the type of the named identifier in the current scope."""
-        symbol = self.get_var(name)
-        if symbol is None:
-            raise ValueError(f"Identifier '{name}' not found in symbol table.")
-        return symbol.type
+
+    ### THIS API METHOD WERE NOT USED.
+    # def type_of(self, name: Identifier) -> VarT:
+    #     """Return the type of the named identifier in the current scope."""
+    #     symbol = self.get_var(name)
+    #     if symbol is None:
+    #         raise ValueError(f"Identifier '{name}' not found in symbol table.")
+    #     return symbol.type
 
     def index_of(self, name: Identifier) -> int:
         """Return the index assigned to the named identifier."""
