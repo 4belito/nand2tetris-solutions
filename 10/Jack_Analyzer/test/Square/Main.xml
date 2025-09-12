@@ -120,7 +120,7 @@
               <symbol> = </symbol>
               <expression>
                 <term>
-                  <stringconstant> string constant </stringconstant>
+                  <stringConstant> string constant </stringConstant>
                 </term>
               </expression>
               <symbol> ; </symbol>
@@ -142,7 +142,7 @@
               <symbol> [ </symbol>
               <expression>
                 <term>
-                  <integerconstant> 1 </integerconstant>
+                  <integerConstant> 1 </integerConstant>
                 </term>
               </expression>
               <symbol> ] </symbol>
@@ -153,7 +153,7 @@
                   <symbol> [ </symbol>
                   <expression>
                     <term>
-                      <integerconstant> 2 </integerconstant>
+                      <integerConstant> 2 </integerConstant>
                     </term>
                   </expression>
                   <symbol> ] </symbol>
@@ -205,7 +205,7 @@
                     <term>
                       <symbol> - </symbol>
                       <term>
-                        <integerconstant> 2 </integerconstant>
+                        <integerConstant> 2 </integerConstant>
                       </term>
                     </term>
                   </expression>

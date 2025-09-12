@@ -1,11 +1,11 @@
 <class>
   <keyword> class </keyword>
-  <identifier category='class' is_def='True'> Main </identifier>
+  <identifier> Main </identifier>
   <symbol> { </symbol>
   <subroutineDec>
     <keyword> function </keyword>
     <keyword> void </keyword>
-    <identifier category='subroutine' is_def='True'> main </identifier>
+    <identifier> main </identifier>
     <symbol> ( </symbol>
     <parameterList>
     </parameterList>
@@ -14,39 +14,39 @@
       <symbol> { </symbol>
       <varDec>
         <keyword> var </keyword>
-        <identifier category='class' is_def='False'> Array </identifier>
-        <identifier category='variable' is_def='True' kind='var' index='0'> a </identifier>
+        <identifier> Array </identifier>
+        <identifier> a </identifier>
         <symbol> ; </symbol>
       </varDec>
       <varDec>
         <keyword> var </keyword>
         <keyword> int </keyword>
-        <identifier category='variable' is_def='True' kind='var' index='1'> length </identifier>
+        <identifier> length </identifier>
         <symbol> ; </symbol>
       </varDec>
       <varDec>
         <keyword> var </keyword>
         <keyword> int </keyword>
-        <identifier category='variable' is_def='True' kind='var' index='2'> i </identifier>
+        <identifier> i </identifier>
         <symbol> , </symbol>
-        <identifier category='variable' is_def='True' kind='var' index='3'> sum </identifier>
+        <identifier> sum </identifier>
         <symbol> ; </symbol>
       </varDec>
       <statements>
         <letStatement>
           <keyword> let </keyword>
-          <identifier category='variable' is_def='False' kind='var' index='1'> length </identifier>
+          <identifier> length </identifier>
           <symbol> = </symbol>
           <expression>
             <term>
-              <identifier category='class' is_def='False'> Keyboard </identifier>
+              <identifier> Keyboard </identifier>
               <symbol> . </symbol>
-              <identifier category='subroutine' is_def='False'> readInt </identifier>
+              <identifier> readInt </identifier>
               <symbol> ( </symbol>
               <expressionList>
                 <expression>
                   <term>
-                    <stringconstant> HOW MANY NUMBERS?  </stringconstant>
+                    <stringConstant> HOW MANY NUMBERS?  </stringConstant>
                   </term>
                 </expression>
               </expressionList>
@@ -57,18 +57,18 @@
         </letStatement>
         <letStatement>
           <keyword> let </keyword>
-          <identifier category='variable' is_def='False' kind='var' index='0'> a </identifier>
+          <identifier> a </identifier>
           <symbol> = </symbol>
           <expression>
             <term>
-              <identifier category='class' is_def='False'> Array </identifier>
+              <identifier> Array </identifier>
               <symbol> . </symbol>
-              <identifier category='subroutine' is_def='False'> new </identifier>
+              <identifier> new </identifier>
               <symbol> ( </symbol>
               <expressionList>
                 <expression>
                   <term>
-                    <identifier category='variable' is_def='False' kind='var' index='1'> length </identifier>
+                    <identifier> length </identifier>
                   </term>
                 </expression>
               </expressionList>
@@ -79,11 +79,11 @@
         </letStatement>
         <letStatement>
           <keyword> let </keyword>
-          <identifier category='variable' is_def='False' kind='var' index='2'> i </identifier>
+          <identifier> i </identifier>
           <symbol> = </symbol>
           <expression>
             <term>
-              <integerconstant> 0 </integerconstant>
+              <integerConstant> 0 </integerConstant>
             </term>
           </expression>
           <symbol> ; </symbol>
@@ -93,11 +93,11 @@
           <symbol> ( </symbol>
           <expression>
             <term>
-              <identifier category='variable' is_def='False' kind='var' index='2'> i </identifier>
+              <identifier> i </identifier>
             </term>
             <symbol> &lt; </symbol>
             <term>
-              <identifier category='variable' is_def='False' kind='var' index='1'> length </identifier>
+              <identifier> length </identifier>
             </term>
           </expression>
           <symbol> ) </symbol>
@@ -105,25 +105,25 @@
           <statements>
             <letStatement>
               <keyword> let </keyword>
-              <identifier category='variable' is_def='False' kind='var' index='0'> a </identifier>
+              <identifier> a </identifier>
               <symbol> [ </symbol>
               <expression>
                 <term>
-                  <identifier category='variable' is_def='False' kind='var' index='2'> i </identifier>
+                  <identifier> i </identifier>
                 </term>
               </expression>
               <symbol> ] </symbol>
               <symbol> = </symbol>
               <expression>
                 <term>
-                  <identifier category='class' is_def='False'> Keyboard </identifier>
+                  <identifier> Keyboard </identifier>
                   <symbol> . </symbol>
-                  <identifier category='subroutine' is_def='False'> readInt </identifier>
+                  <identifier> readInt </identifier>
                   <symbol> ( </symbol>
                   <expressionList>
                     <expression>
                       <term>
-                        <stringconstant> ENTER THE NEXT NUMBER:  </stringconstant>
+                        <stringConstant> ENTER THE NEXT NUMBER:  </stringConstant>
                       </term>
                     </expression>
                   </expressionList>
@@ -134,15 +134,15 @@
             </letStatement>
             <letStatement>
               <keyword> let </keyword>
-              <identifier category='variable' is_def='False' kind='var' index='2'> i </identifier>
+              <identifier> i </identifier>
               <symbol> = </symbol>
               <expression>
                 <term>
-                  <identifier category='variable' is_def='False' kind='var' index='2'> i </identifier>
+                  <identifier> i </identifier>
                 </term>
                 <symbol> + </symbol>
                 <term>
-                  <integerconstant> 1 </integerconstant>
+                  <integerConstant> 1 </integerConstant>
                 </term>
               </expression>
               <symbol> ; </symbol>
@@ -152,22 +152,22 @@
         </whileStatement>
         <letStatement>
           <keyword> let </keyword>
-          <identifier category='variable' is_def='False' kind='var' index='2'> i </identifier>
+          <identifier> i </identifier>
           <symbol> = </symbol>
           <expression>
             <term>
-              <integerconstant> 0 </integerconstant>
+              <integerConstant> 0 </integerConstant>
             </term>
           </expression>
           <symbol> ; </symbol>
         </letStatement>
         <letStatement>
           <keyword> let </keyword>
-          <identifier category='variable' is_def='False' kind='var' index='3'> sum </identifier>
+          <identifier> sum </identifier>
           <symbol> = </symbol>
           <expression>
             <term>
-              <integerconstant> 0 </integerconstant>
+              <integerConstant> 0 </integerConstant>
             </term>
           </expression>
           <symbol> ; </symbol>
@@ -177,11 +177,11 @@
           <symbol> ( </symbol>
           <expression>
             <term>
-              <identifier category='variable' is_def='False' kind='var' index='2'> i </identifier>
+              <identifier> i </identifier>
             </term>
             <symbol> &lt; </symbol>
             <term>
-              <identifier category='variable' is_def='False' kind='var' index='1'> length </identifier>
+              <identifier> length </identifier>
             </term>
           </expression>
           <symbol> ) </symbol>
@@ -189,19 +189,19 @@
           <statements>
             <letStatement>
               <keyword> let </keyword>
-              <identifier category='variable' is_def='False' kind='var' index='3'> sum </identifier>
+              <identifier> sum </identifier>
               <symbol> = </symbol>
               <expression>
                 <term>
-                  <identifier category='variable' is_def='False' kind='var' index='3'> sum </identifier>
+                  <identifier> sum </identifier>
                 </term>
                 <symbol> + </symbol>
                 <term>
-                  <identifier category='variable' is_def='False' kind='var' index='0'> a </identifier>
+                  <identifier> a </identifier>
                   <symbol> [ </symbol>
                   <expression>
                     <term>
-                      <identifier category='variable' is_def='False' kind='var' index='2'> i </identifier>
+                      <identifier> i </identifier>
                     </term>
                   </expression>
                   <symbol> ] </symbol>
@@ -211,15 +211,15 @@
             </letStatement>
             <letStatement>
               <keyword> let </keyword>
-              <identifier category='variable' is_def='False' kind='var' index='2'> i </identifier>
+              <identifier> i </identifier>
               <symbol> = </symbol>
               <expression>
                 <term>
-                  <identifier category='variable' is_def='False' kind='var' index='2'> i </identifier>
+                  <identifier> i </identifier>
                 </term>
                 <symbol> + </symbol>
                 <term>
-                  <integerconstant> 1 </integerconstant>
+                  <integerConstant> 1 </integerConstant>
                 </term>
               </expression>
               <symbol> ; </symbol>
@@ -229,14 +229,14 @@
         </whileStatement>
         <doStatement>
           <keyword> do </keyword>
-          <identifier category='class' is_def='False'> Output </identifier>
+          <identifier> Output </identifier>
           <symbol> . </symbol>
-          <identifier category='subroutine' is_def='False'> printString </identifier>
+          <identifier> printString </identifier>
           <symbol> ( </symbol>
           <expressionList>
             <expression>
               <term>
-                <stringconstant> THE AVERAGE IS:  </stringconstant>
+                <stringConstant> THE AVERAGE IS:  </stringConstant>
               </term>
             </expression>
           </expressionList>
@@ -245,18 +245,18 @@
         </doStatement>
         <doStatement>
           <keyword> do </keyword>
-          <identifier category='class' is_def='False'> Output </identifier>
+          <identifier> Output </identifier>
           <symbol> . </symbol>
-          <identifier category='subroutine' is_def='False'> printInt </identifier>
+          <identifier> printInt </identifier>
           <symbol> ( </symbol>
           <expressionList>
             <expression>
               <term>
-                <identifier category='variable' is_def='False' kind='var' index='3'> sum </identifier>
+                <identifier> sum </identifier>
               </term>
               <symbol> / </symbol>
               <term>
-                <identifier category='variable' is_def='False' kind='var' index='1'> length </identifier>
+                <identifier> length </identifier>
               </term>
             </expression>
           </expressionList>
@@ -265,9 +265,9 @@
         </doStatement>
         <doStatement>
           <keyword> do </keyword>
-          <identifier category='class' is_def='False'> Output </identifier>
+          <identifier> Output </identifier>
           <symbol> . </symbol>
-          <identifier category='subroutine' is_def='False'> println </identifier>
+          <identifier> println </identifier>
           <symbol> ( </symbol>
           <expressionList>
           </expressionList>

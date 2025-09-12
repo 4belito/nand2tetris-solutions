@@ -1,17 +1,17 @@
 <class>
   <keyword> class </keyword>
-  <identifier category='class' is_def='True'> Main </identifier>
+  <identifier> Main </identifier>
   <symbol> { </symbol>
   <classVarDec>
     <keyword> static </keyword>
     <keyword> boolean </keyword>
-    <identifier category='variable' is_def='True' kind='static' index='0'> test </identifier>
+    <identifier> test </identifier>
     <symbol> ; </symbol>
   </classVarDec>
   <subroutineDec>
     <keyword> function </keyword>
     <keyword> void </keyword>
-    <identifier category='subroutine' is_def='True'> main </identifier>
+    <identifier> main </identifier>
     <symbol> ( </symbol>
     <parameterList>
     </parameterList>
@@ -20,27 +20,27 @@
       <symbol> { </symbol>
       <varDec>
         <keyword> var </keyword>
-        <identifier category='class' is_def='False'> SquareGame </identifier>
-        <identifier category='variable' is_def='True' kind='var' index='0'> game </identifier>
+        <identifier> SquareGame </identifier>
+        <identifier> game </identifier>
         <symbol> ; </symbol>
       </varDec>
       <statements>
         <letStatement>
           <keyword> let </keyword>
-          <identifier category='variable' is_def='False' kind='var' index='0'> game </identifier>
+          <identifier> game </identifier>
           <symbol> = </symbol>
           <expression>
             <term>
-              <identifier category='variable' is_def='False' kind='var' index='0'> game </identifier>
+              <identifier> game </identifier>
             </term>
           </expression>
           <symbol> ; </symbol>
         </letStatement>
         <doStatement>
           <keyword> do </keyword>
-          <identifier category='variable' is_def='False' kind='var' index='0'> game </identifier>
+          <identifier> game </identifier>
           <symbol> . </symbol>
-          <identifier category='subroutine' is_def='False'> run </identifier>
+          <identifier> run </identifier>
           <symbol> ( </symbol>
           <expressionList>
           </expressionList>
@@ -49,9 +49,9 @@
         </doStatement>
         <doStatement>
           <keyword> do </keyword>
-          <identifier category='variable' is_def='False' kind='var' index='0'> game </identifier>
+          <identifier> game </identifier>
           <symbol> . </symbol>
-          <identifier category='subroutine' is_def='False'> dispose </identifier>
+          <identifier> dispose </identifier>
           <symbol> ( </symbol>
           <expressionList>
           </expressionList>
@@ -69,7 +69,7 @@
   <subroutineDec>
     <keyword> function </keyword>
     <keyword> void </keyword>
-    <identifier category='subroutine' is_def='True'> more </identifier>
+    <identifier> more </identifier>
     <symbol> ( </symbol>
     <parameterList>
     </parameterList>
@@ -79,7 +79,7 @@
       <varDec>
         <keyword> var </keyword>
         <keyword> boolean </keyword>
-        <identifier category='variable' is_def='True' kind='var' index='0'> b </identifier>
+        <identifier> b </identifier>
         <symbol> ; </symbol>
       </varDec>
       <statements>
@@ -88,7 +88,7 @@
           <symbol> ( </symbol>
           <expression>
             <term>
-              <identifier category='variable' is_def='False' kind='var' index='0'> b </identifier>
+              <identifier> b </identifier>
             </term>
           </expression>
           <symbol> ) </symbol>
