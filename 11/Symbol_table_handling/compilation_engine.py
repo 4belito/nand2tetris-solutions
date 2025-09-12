@@ -13,7 +13,8 @@ from jack_tokenizer import JackTokenizer, Token
 from symbol_table import IdentifierContext as IdContext
 from symbol_table import SymbolTable, VarK, VarT
 from tokens.enums import BINARY_OPS, SUBROUTINES, UNARY_OPS, Keyword, Symbol
-from tokens.identifier import Identifier  # IdentifierCategory as  IdCat,
+from tokens.identifier import Identifier
+from tokens.identifier import IdentifierCategory as IdCat
 
 
 class CompilationEngine:
@@ -45,7 +46,7 @@ class CompilationEngine:
             with self.tag("class"):
                 self._consume(Keyword.CLASS)
                 self.table.class_name = self.tokenizer.identifier()
-                # self.context = ""#IdContext(IdCat.CLASS, is_def=True)
+                self.context = IdContext(IdCat.CLASS, is_def=True)
                 self._consume(Identifier)
                 with self._braces():
                     while self.token in (Keyword.STATIC, Keyword.FIELD):
@@ -82,7 +83,7 @@ class CompilationEngine:
                 self.table.define(Identifier("this"), self.table.class_name, VarK.ARGUMENT)
             self._consume(*SUBROUTINES)
             self._compile_return_type()
-            # self.context = ""#IdContext(IdCat.SUBROUTINE, is_def=True)
+            self.context = IdContext(IdCat.SUBROUTINE, is_def=True)
             self._consume(Identifier)
             with self._parentheses():
                 self._compile_parameter_list()
@@ -276,12 +277,12 @@ class CompilationEngine:
         if next_token == Symbol.DOT:
             var_name = self.tokenizer.identifier()
             if self.table.get_symbol(var_name) is None:
-                # self.context = ""#IdContext(IdCat.CLASS, is_def=False)
+                self.context = IdContext(IdCat.CLASS, is_def=False)
                 self._consume(Identifier)
             else:
                 self._consume_variable(var_name=var_name, is_def=False)
             self._consume(Symbol.DOT)
-        # self.context = ""#IdContext(IdCat.SUBROUTINE, is_def=False)
+        self.context = IdContext(IdCat.SUBROUTINE, is_def=False)
         self._consume(Identifier)
         with self._parentheses():
             self._compile_expression_list()
@@ -293,7 +294,7 @@ class CompilationEngine:
         """
 
         if isinstance(self.token, Identifier):
-            # self.context = ""#IdContext(IdCat.CLASS, is_def=False)
+            self.context = IdContext(IdCat.CLASS, is_def=False)
             pass
         else:
             match self.token:
@@ -353,7 +354,9 @@ class CompilationEngine:
         symbol = self.table.get_symbol(var_name)
         if symbol is None:
             raise ValueError(f"Identifier '{var_name}' not found in symbol table.")
-        # self.context = ""#IdContext(IdCat.VARIABLE, is_def=is_def, kind=symbol.kind, index=symbol.index)
+        self.context = IdContext(
+            IdCat.VARIABLE, is_def=is_def, kind=symbol.kind, index=symbol.index
+        )
         self._consume(Identifier)
 
     @property
@@ -374,7 +377,7 @@ class CompilationEngine:
         s = type(self.token).__name__
         token_type = s[0].lower() + s[1:]
         self._write(f"<{token_type}{self.context}> {self.token} </{token_type}>\n")
-        # self.context = ""#""
+        self.context = ""
 
     def _open_tag(self, tag_name: str) -> None:
         """Open an XML tag and increase indentation."""

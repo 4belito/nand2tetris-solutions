@@ -1,17 +1,17 @@
 <class>
   <keyword> class </keyword>
-  <identifier> Main </identifier>
+  <identifier category='class' is_def='True'> Main </identifier>
   <symbol> { </symbol>
   <classVarDec>
     <keyword> static </keyword>
     <keyword> boolean </keyword>
-    <identifier> test </identifier>
+    <identifier category='variable' is_def='True' kind='static' index='0'> test </identifier>
     <symbol> ; </symbol>
   </classVarDec>
   <subroutineDec>
     <keyword> function </keyword>
     <keyword> void </keyword>
-    <identifier> main </identifier>
+    <identifier category='subroutine' is_def='True'> main </identifier>
     <symbol> ( </symbol>
     <parameterList>
     </parameterList>
@@ -20,20 +20,20 @@
       <symbol> { </symbol>
       <varDec>
         <keyword> var </keyword>
-        <identifier> SquareGame </identifier>
-        <identifier> game </identifier>
+        <identifier category='class' is_def='False'> SquareGame </identifier>
+        <identifier category='variable' is_def='True' kind='var' index='0'> game </identifier>
         <symbol> ; </symbol>
       </varDec>
       <statements>
         <letStatement>
           <keyword> let </keyword>
-          <identifier> game </identifier>
+          <identifier category='variable' is_def='False' kind='var' index='0'> game </identifier>
           <symbol> = </symbol>
           <expression>
             <term>
-              <identifier> SquareGame </identifier>
+              <identifier category='class' is_def='False'> SquareGame </identifier>
               <symbol> . </symbol>
-              <identifier> new </identifier>
+              <identifier category='subroutine' is_def='False'> new </identifier>
               <symbol> ( </symbol>
               <expressionList>
               </expressionList>
@@ -44,9 +44,9 @@
         </letStatement>
         <doStatement>
           <keyword> do </keyword>
-          <identifier> game </identifier>
+          <identifier category='variable' is_def='False' kind='var' index='0'> game </identifier>
           <symbol> . </symbol>
-          <identifier> run </identifier>
+          <identifier category='subroutine' is_def='False'> run </identifier>
           <symbol> ( </symbol>
           <expressionList>
           </expressionList>
@@ -55,9 +55,9 @@
         </doStatement>
         <doStatement>
           <keyword> do </keyword>
-          <identifier> game </identifier>
+          <identifier category='variable' is_def='False' kind='var' index='0'> game </identifier>
           <symbol> . </symbol>
-          <identifier> dispose </identifier>
+          <identifier category='subroutine' is_def='False'> dispose </identifier>
           <symbol> ( </symbol>
           <expressionList>
           </expressionList>
@@ -75,7 +75,7 @@
   <subroutineDec>
     <keyword> function </keyword>
     <keyword> void </keyword>
-    <identifier> more </identifier>
+    <identifier category='subroutine' is_def='True'> more </identifier>
     <symbol> ( </symbol>
     <parameterList>
     </parameterList>
@@ -85,21 +85,21 @@
       <varDec>
         <keyword> var </keyword>
         <keyword> int </keyword>
-        <identifier> i </identifier>
+        <identifier category='variable' is_def='True' kind='var' index='0'> i </identifier>
         <symbol> , </symbol>
-        <identifier> j </identifier>
+        <identifier category='variable' is_def='True' kind='var' index='1'> j </identifier>
         <symbol> ; </symbol>
       </varDec>
       <varDec>
         <keyword> var </keyword>
-        <identifier> String </identifier>
-        <identifier> s </identifier>
+        <identifier category='class' is_def='False'> String </identifier>
+        <identifier category='variable' is_def='True' kind='var' index='2'> s </identifier>
         <symbol> ; </symbol>
       </varDec>
       <varDec>
         <keyword> var </keyword>
-        <identifier> Array </identifier>
-        <identifier> a </identifier>
+        <identifier category='class' is_def='False'> Array </identifier>
+        <identifier category='variable' is_def='True' kind='var' index='3'> a </identifier>
         <symbol> ; </symbol>
       </varDec>
       <statements>
@@ -116,7 +116,7 @@
           <statements>
             <letStatement>
               <keyword> let </keyword>
-              <identifier> s </identifier>
+              <identifier category='variable' is_def='False' kind='var' index='2'> s </identifier>
               <symbol> = </symbol>
               <expression>
                 <term>
@@ -127,7 +127,7 @@
             </letStatement>
             <letStatement>
               <keyword> let </keyword>
-              <identifier> s </identifier>
+              <identifier category='variable' is_def='False' kind='var' index='2'> s </identifier>
               <symbol> = </symbol>
               <expression>
                 <term>
@@ -138,7 +138,7 @@
             </letStatement>
             <letStatement>
               <keyword> let </keyword>
-              <identifier> a </identifier>
+              <identifier category='variable' is_def='False' kind='var' index='3'> a </identifier>
               <symbol> [ </symbol>
               <expression>
                 <term>
@@ -149,7 +149,7 @@
               <symbol> = </symbol>
               <expression>
                 <term>
-                  <identifier> a </identifier>
+                  <identifier category='variable' is_def='False' kind='var' index='3'> a </identifier>
                   <symbol> [ </symbol>
                   <expression>
                     <term>
@@ -168,11 +168,11 @@
           <statements>
             <letStatement>
               <keyword> let </keyword>
-              <identifier> i </identifier>
+              <identifier category='variable' is_def='False' kind='var' index='0'> i </identifier>
               <symbol> = </symbol>
               <expression>
                 <term>
-                  <identifier> i </identifier>
+                  <identifier category='variable' is_def='False' kind='var' index='0'> i </identifier>
                 </term>
                 <symbol> * </symbol>
                 <term>
@@ -181,7 +181,7 @@
                     <term>
                       <symbol> - </symbol>
                       <term>
-                        <identifier> j </identifier>
+                        <identifier category='variable' is_def='False' kind='var' index='1'> j </identifier>
                       </term>
                     </term>
                   </expression>
@@ -192,11 +192,11 @@
             </letStatement>
             <letStatement>
               <keyword> let </keyword>
-              <identifier> j </identifier>
+              <identifier category='variable' is_def='False' kind='var' index='1'> j </identifier>
               <symbol> = </symbol>
               <expression>
                 <term>
-                  <identifier> j </identifier>
+                  <identifier category='variable' is_def='False' kind='var' index='1'> j </identifier>
                 </term>
                 <symbol> / </symbol>
                 <term>
@@ -216,15 +216,15 @@
             </letStatement>
             <letStatement>
               <keyword> let </keyword>
-              <identifier> i </identifier>
+              <identifier category='variable' is_def='False' kind='var' index='0'> i </identifier>
               <symbol> = </symbol>
               <expression>
                 <term>
-                  <identifier> i </identifier>
+                  <identifier category='variable' is_def='False' kind='var' index='0'> i </identifier>
                 </term>
                 <symbol> | </symbol>
                 <term>
-                  <identifier> j </identifier>
+                  <identifier category='variable' is_def='False' kind='var' index='1'> j </identifier>
                 </term>
               </expression>
               <symbol> ; </symbol>
