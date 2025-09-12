@@ -95,7 +95,7 @@ class CompilationEngine:
         Does not handle the enclosing parentheses ().
         grammar: (type varName (',' type varName)*)?
         """
-        self._compile_variable_def(kind=var_kind, var_type=var_type)
+        self._compile_variable_def(var_kind, var_type)
         while self.token == Symbol.COMMA:  # (',' type varName)*)?
             self.tokenizer.consume(Symbol.COMMA)
             self._compile_variable_def(kind=var_kind, var_type=var_type)
