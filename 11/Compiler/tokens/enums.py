@@ -1,7 +1,9 @@
 from enum import Enum
 
+
 class EnumTokens(Enum):
     """Base enum class for Jack token types with utility methods."""
+
     @classmethod
     def valid(cls, value: str) -> bool:
         """Return True if value is a valid enum member."""
@@ -16,17 +18,19 @@ class EnumTokens(Enum):
         """Return string representation of the enum member."""
         return self.value
 
+
 class Keyword(EnumTokens):
     """Enum for Jack language keywords."""
+
     CLASS = "class"
-    CONSTRUCTOR = "constructor"    
-    FUNCTION = "function"    
+    CONSTRUCTOR = "constructor"
+    FUNCTION = "function"
     METHOD = "method"
     FIELD = "field"
     STATIC = "static"
-    VAR = "var"   
+    VAR = "var"
     INT = "int"
-    CHAR = "char"   
+    CHAR = "char"
     BOOLEAN = "boolean"
     VOID = "void"
     TRUE = "true"
@@ -40,18 +44,21 @@ class Keyword(EnumTokens):
     WHILE = "while"
     RETURN = "return"
 
-PRIMITIVE_TYPES={Keyword.INT, Keyword.CHAR, Keyword.BOOLEAN}
-SUBROUTINES={Keyword.CONSTRUCTOR, Keyword.FUNCTION, Keyword.METHOD}
-KEYWORD_CONSTANTS={Keyword.TRUE, Keyword.FALSE, Keyword.NULL, Keyword.THIS}
+
+PRIMITIVE_TYPES = {Keyword.INT, Keyword.CHAR, Keyword.BOOLEAN}
+SUBROUTINES = {Keyword.CONSTRUCTOR, Keyword.FUNCTION, Keyword.METHOD}
+KEYWORD_CONSTANTS = {Keyword.TRUE, Keyword.FALSE, Keyword.NULL, Keyword.THIS}
+
 
 class Symbol(EnumTokens):
     """Enum for Jack language symbols."""
-    LBRACE = '{'
-    RBRACE = '}'
-    LPAREN = '('
-    RPAREN = ')'
-    LBRACK = '['
-    RBRACK = ']'
+
+    LBRACE = "{"
+    RBRACE = "}"
+    LPAREN = "("
+    RPAREN = ")"
+    LBRACK = "["
+    RBRACK = "]"
     DOT = "."
     COMMA = ","
     SEMICOLON = ";"
@@ -66,17 +73,16 @@ class Symbol(EnumTokens):
     EQ = "="
     NOT = "~"
 
-    def __str__(self) -> str:
-        """Return string representation of the symbol."""
-        match self:
-            case Symbol.LT:
-                return "&lt;"
-            case Symbol.GT:
-                return "&gt;"
-            case Symbol.AND:
-                return "&amp;"
-            case _:
-                return self.value
 
-UNARY_OPS={Symbol.SUB, Symbol.NOT}
-BINARY_OPS={Symbol.ADD, Symbol.SUB, Symbol.MULT, Symbol.DIV, Symbol.AND, Symbol.OR, Symbol.LT, Symbol.GT, Symbol.EQ}
+UNARY_OPS = {Symbol.SUB, Symbol.NOT}
+BINARY_OPS = {
+    Symbol.ADD,
+    Symbol.SUB,
+    Symbol.MULT,
+    Symbol.DIV,
+    Symbol.AND,
+    Symbol.OR,
+    Symbol.LT,
+    Symbol.GT,
+    Symbol.EQ,
+}

@@ -4,18 +4,20 @@ This module defines the JackTokenizer class, which reads Jack source files,
 removes comments, splits the code into raw tokens, and provides access to
 individual tokens for further parsing and analysis.
 """
+
 from __future__ import annotations
 
 import re
 from collections import deque
+from typing import Literal, overload
+
+from symbol_table import VariableKind, VarT
+from tokens.enums import Keyword, Symbol
 from tokens.identifier import Identifier
-from tokens.enums import Keyword, Symbol, PRIMITIVE_TYPES, KEYWORD_CONSTANTS
 from tokens.inmutables import IntegerConstant, StringConstant
-from tokens.enums import Symbol
-from symbol_table import VariableKind,VarT
-from typing import overload,Literal
 
 Token = Identifier | Keyword | Symbol | IntegerConstant | StringConstant
+
 
 class JackTokenizer:
     """Tokenizes Jack source code and provides access to tokens."""
@@ -36,11 +38,11 @@ class JackTokenizer:
         return len(self._raw_tokens) > 0
 
     def _advance(self):
-        '''
+        """
         Get the next token from the input, and makes it the current token.
         This method should be called only if has_more_tokens() is true.
         Initially there is not current token.
-        '''
+        """
         raw_token = self._raw_tokens.popleft()
         for token_cls in (Keyword, Symbol, IntegerConstant, StringConstant, Identifier):
             if token_cls.valid(raw_token):
@@ -58,15 +60,7 @@ class JackTokenizer:
                     return token_cls(raw_token)
         raise RuntimeError("No more tokens to peek.")
 
-    def token_is_var_type(self) -> bool:
-        """Return True if token is a type keyword or identifier."""
-        return self.token in PRIMITIVE_TYPES or isinstance(self.token, Identifier)
-
-    def token_is_constant(self) -> bool:
-        """Return True if token is any kind of constant."""
-        return isinstance(self.token, (IntegerConstant, StringConstant)) or self.token in KEYWORD_CONSTANTS
-
-    def consume_var_kind(self,*var_kinds:Keyword) -> VariableKind:
+    def consume_var_kind(self, *var_kinds: Keyword) -> VariableKind:
         """
         Map a Keyword to a VariableKind.
         note: Argument is excluded because it is not a keyword.
@@ -93,14 +87,16 @@ class JackTokenizer:
     def consume(self, *token: type[Identifier]) -> Identifier: ...
 
     @overload
-    def consume(self, __token1: Literal[Keyword.INT],
-                __token2: Literal[Keyword.CHAR],
-                __token3: Literal[Keyword.BOOLEAN],
-                __token4: type[Identifier],
-                ) -> VarT: ...
+    def consume(
+        self,
+        __token1: Literal[Keyword.INT],
+        __token2: Literal[Keyword.CHAR],
+        __token3: Literal[Keyword.BOOLEAN],
+        __token4: type[Identifier],
+    ) -> VarT: ...
 
     @overload
-    def consume(self,*tokens: Keyword | Symbol | type[Identifier]) -> Token: ...
+    def consume(self, *tokens: Keyword | Symbol | type[Identifier]) -> Token: ...
 
     def consume(self, *tokens: Keyword | Symbol | type[Identifier]) -> Token:
         """
@@ -108,15 +104,14 @@ class JackTokenizer:
         If no tokens are provided, always write and advance.
         """
         if not tokens or any(
-            self.token == t or (isinstance(t, type) and isinstance(self.token, t))
-            for t in tokens
+            self.token == t or (isinstance(t, type) and isinstance(self.token, t)) for t in tokens
         ):
             token = self.token
             if self.has_more_tokens():
                 self._advance()
             return token
         else:
-            expected = ', '.join(str(t) for t in tokens)
+            expected = ", ".join(str(t) for t in tokens)
             raise ValueError(f"Expected one of: {expected}, got: '{self.token}'")
 
     @staticmethod
@@ -126,11 +121,11 @@ class JackTokenizer:
         Removes comments and splits by symbols, string constants, and whitespace.
         """
         # Remove block comments (/* ... */) and line comments (// ...)
-        text = re.sub(r'/\*.*?\*/', '', text, flags=re.DOTALL)
-        text = re.sub(r'//.*?\n', '', text, flags=re.DOTALL)
+        text = re.sub(r"/\*.*?\*/", "", text, flags=re.DOTALL)
+        text = re.sub(r"//.*?\n", "", text, flags=re.DOTALL)
         # Regex pattern: match symbols, string constants, or whitespace
         string_pattern = r'"[^"\n]*"'
-        pattern = r'([' + re.escape(''.join(Symbol.values())) + r'])|(' + string_pattern + r')|\s+'
+        pattern = r"([" + re.escape("".join(Symbol.values())) + r"])|(" + string_pattern + r")|\s+"
         # Split and filter out empty strings
         tokens = [raw_token for raw_token in re.split(pattern, text) if raw_token]
         return tokens
@@ -170,7 +165,6 @@ class JackTokenizer:
     #     if isinstance(self.token, StringConstant):
     #         return self.token
     #     raise RuntimeError("Current token is not a StringConstant.")
-
 
 
 # Note: Peek method is added to the API for looking the next token without consuming it.

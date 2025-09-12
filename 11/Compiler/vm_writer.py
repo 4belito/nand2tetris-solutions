@@ -1,11 +1,14 @@
-from enum import Enum
-from typing import TextIO
 from contextlib import contextmanager
-from symbol_table import VarK
+from enum import Enum
 from itertools import count
+from typing import TextIO
+
+from symbol_table import VarK
+
 
 class SEGMENT(Enum):
     """Enum class to represent different memory segments."""
+
     CONST = "constant"
     ARG = "argument"
     LOCAL = "local"
@@ -15,8 +18,10 @@ class SEGMENT(Enum):
     POINTER = "pointer"
     TEMP = "temp"
 
+
 class ARITHMETIC_CMD(Enum):
     """Enum class to represent different arithmetic commands."""
+
     ADD = "add"
     SUB = "sub"
     NEG = "neg"
@@ -26,14 +31,20 @@ class ARITHMETIC_CMD(Enum):
     AND = "and"
     OR = "or"
     NOT = "not"
+    MULT = "call Math.multiply 2"
+    DIV = "call Math.divide 2"
+
 
 class VMWriter:
     ident = 4
+
     def __init__(self, output_file: str):
         self._output_file = output_file
         self._f: TextIO
-        self.golabel_id: count[int] = count(start=0, step=2)
-        self.iflabel_id: count[int] = count(start=1, step=2)
+        # The labels id can be jointly managed with a single counter
+        # I implement it this way just to reproduce the course compiler implementation
+        self.golabel_id = count(start=0, step=2)
+        self.iflabel_id = count(start=1, step=2)
 
     def write_push(self, segment: SEGMENT, index: int):
         self._write(f"push {segment.value} {index}")
@@ -65,25 +76,25 @@ class VMWriter:
     ## NO API METHODS BELOW THIS LINE ##
     @contextmanager
     def open(self):
-        self._f = open(self._output_file, 'w')
+        self._f = open(self._output_file, "w")
         yield
         self._f.flush()
         self._f.seek(0, 2)
         if self._f.tell() > 0:
-            self._f.truncate(self._f.tell() - 1)  
+            self._f.truncate(self._f.tell() - 1)
         self._f.close()
 
-    def _write(self,command:str,indent:bool=True):
+    def _write(self, command: str, indent: bool = True):
         if indent:
             command = f"{' ' * self.ident}{command}"
-        self._f.write(command+'\n')
+        self._f.write(command + "\n")
 
-    def write_constructor_alloc(self, n_fields: int):                    
+    def write_constructor_alloc(self, n_fields: int):
         self.write_push(SEGMENT.CONST, n_fields)
         self.write_call("Memory.alloc", 1)
         self.write_pop(SEGMENT.POINTER, 0)
         # Alternative implementation without using SEGMENT enum
-    
+
     def write_method_setup(self):
         self.write_push(SEGMENT.ARG, 0)
         self.write_pop(SEGMENT.POINTER, 0)
@@ -99,12 +110,12 @@ class VMWriter:
         assuming the array index is in the top of stack."""
         self.write_push_array_element_address(var_kind, var_idx)
         self.write_pop(SEGMENT.POINTER, 1)  # put address in the "that" pointer
-        self.write_push(SEGMENT.THAT, 0)  # push the value of 'that'  
+        self.write_push(SEGMENT.THAT, 0)  # push the value of 'that'
 
     def write_assign_to_array_element(self):
-        '''Assign to an array element.
+        """Assign to an array element.
         Assumes the value to be assigned is at the top of the stack,
-        and the array element address is the second element in the stack.'''
+        and the array element address is the second element in the stack."""
         self.write_pop(SEGMENT.TEMP, 0)  # store the value to be assigned in temp 0
         self.write_pop(SEGMENT.POINTER, 1)  # put the array element address in the "that" pointer
         self.write_push(SEGMENT.TEMP, 0)  # push the value to be assigned in the stack
@@ -123,3 +134,9 @@ class VMWriter:
 
     def write_pop_variable(self, kind: VarK, index: int):
         self.write_pop(SEGMENT[kind.name], index)
+
+    def next_golabel_id(self) -> int:
+        return next(self.golabel_id)
+
+    def next_iflabel_id(self) -> int:
+        return next(self.iflabel_id)

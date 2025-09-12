@@ -1,56 +1,34 @@
-
 from dataclasses import dataclass
-from tokens.identifier import Identifier
 from enum import Enum
-from dataclasses import dataclass
-from tokens.identifier import Identifier, IdentifierCategory
-from tokens.enums import Keyword
 from typing import Literal
+
+from tokens.enums import Keyword
+from tokens.identifier import Identifier
+
 
 class VariableKind(Enum):
     """Enum for Jack variable kinds."""
+
     LOCAL = "var"
     ARG = "argument"
     STATIC = "static"
-    THIS = "field" # 'this' in VM, 'field' in Jack I named THIS for coding convenience.
+    THIS = "field"  # 'this' in VM, 'field' in Jack I named THIS for coding convenience.
 
     def __str__(self) -> str:
         """Return string representation of the identifier category."""
         return self.value
 
-class VarUse(Enum):
-    """Enum for Jack variable usage."""
-    DEF = "def"
-    REF = "ref"
-    ASSIGN = "assign"
-
-    def __str__(self) -> str:
-        """Return string representation of the variable usage."""
-        return self.value
-
-@dataclass
-class IdentifierContext:
-    """Class for Jack identifier context."""
-    category: IdentifierCategory
-    use: VarUse
-    kind: VariableKind | None = None
-    index: int | None = None
-
-    def __repr__(self):
-        # Clean, parenthesis-free string for XML output, with leading space if not empty
-        s = " ".join(f"{k}='{v}'" for k, v in vars(self).items() if v is not None)
-        if s: s=" " + s
-        return s
-
 
 VarK = VariableKind  # Alias for brevity
-VarT = Literal[Keyword.INT,Keyword.CHAR,Keyword.BOOLEAN] | Identifier
+VarT = Literal[Keyword.INT, Keyword.CHAR, Keyword.BOOLEAN] | Identifier
+
 
 @dataclass(slots=True)
 class Variable:
     type: VarT
     kind: VarK
     index: int
+
 
 class SymbolTable:
     def __init__(self) -> None:
@@ -59,9 +37,10 @@ class SymbolTable:
         self._index_counters: dict[VarK, int] = {kind: 0 for kind in VarK}
         self.subroutine_name: Identifier
 
-    def start_subroutine(self):
+    def start_subroutine(self, name: Identifier) -> None:
         """Reset the subroutine scope and index counters for ARGUMENT and VAR."""
         self._subroutine_table.clear()
+        self.subroutine_name = name
         self._index_counters[VarK.ARG] = 0
         self._index_counters[VarK.LOCAL] = 0
 
@@ -87,7 +66,8 @@ class SymbolTable:
         symbol = self.get_var(name)
         return symbol.kind if symbol else None
 
-    ### THIS API METHOD WERE NOT USED.
+    ### THIS API METHOD WAS NOT USED.
+    ## When needed, it was more convenient to use the get_var() method directly.
     # def type_of(self, name: Identifier) -> VarT:
     #     """Return the type of the named identifier in the current scope."""
     #     symbol = self.get_var(name)
@@ -103,7 +83,6 @@ class SymbolTable:
         return symbol.index
 
     ## NO API METHODS BELOW THIS LINE ##
-    def get_var(self, name: Identifier) -> Variable| None:
+    def get_var(self, name: Identifier) -> Variable | None:
         """Return the symbol of the named identifier in the current scope."""
         return self._subroutine_table.get(name) or self._class_table.get(name)
-
