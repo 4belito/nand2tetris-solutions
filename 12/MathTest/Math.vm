@@ -274,12 +274,4 @@ function Math.bit 0
     push constant 0
     eq
     not
-    if-goto Math_27
-    push constant 0
-    return
-    goto Math_26
-label Math_27
-label Math_26
-    push constant 1
-    neg
     return

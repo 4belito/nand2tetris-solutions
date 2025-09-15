@@ -122,9 +122,6 @@ class Math {
 
     /** Returns true if the i-th bit of x is 1, false otherwise. */
     function boolean bit(int x, int i) {
-        if ((x & powersOfTwo[i]) = 0) {
-            return false;
-        }
-        return true;
+        return ~((x & powersOfTwo[i]) = 0); 
     }
 }

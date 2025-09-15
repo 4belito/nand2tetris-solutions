@@ -1,0 +1,117 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/12/Memory.jack
+/**
+ * This library provides two services: direct access to the computer's main
+ * memory (RAM), and allocation and recycling of memory blocks. The Hack RAM
+ * consists of 32,768 words, each holding a 16-bit binary number.
+ */ 
+class Memory {
+    static Array ram;
+    static Array heap;
+    static int freeList; // PAYLOAD address of first free block (or 0)
+
+    /** Initializes the class. */
+    function void init() {
+        let ram = 0; // RAM base address
+        let heap = 2048; // heap base (header of first free block)
+        let heap[0] = 0; // header field: next = 0   (at 2048)
+        let heap[1] = 14336; //  header field: size incl. header (at 2049)
+        let freeList = heap + 2; // PAYLOAD pointer of the first block (2050)
+        return;
+    }
+
+    /** Returns the RAM value at the given address. */
+    function int peek(int address) {
+        return ram[address];
+    }
+
+    /** Sets the RAM value at the given address to the given value. */
+    function void poke(int address, int value) {
+        let ram[address] = value;
+        return;
+    }
+
+    /** Finds an available RAM block of the given size and returns
+     *  a reference to its base address. */
+    function Array alloc(int size) {
+        var int prev, curr, next, sz, newSize, allocAddr;
+
+        // Walk the free list, looking for a block of sufficient size
+        let prev = 0; // no previous block
+        let curr = freeList;
+        while (curr > 0) {
+            let sz = Memory.getSize(curr);
+            if (sz > (size + 1)) { // found a block of sufficient size
+                // Found a block
+                let newSize = (sz - size) - 2;
+                if (newSize = 0 ) {
+                    let next = Memory.getNext(curr);
+                    if (prev = 0) { // curr is the first block in the free list
+                        let freeList = next;
+                    } else { // curr is not the first block in the free list
+                        do Memory.setNext(prev, next);
+                    }
+                    return curr;
+                } else {
+                    do Memory.setSize(curr, newSize);
+                    let allocAddr = curr + newSize;
+                    do Memory.setSize(allocAddr, size + 2);
+                    do Memory.setNext(allocAddr, 0);
+                    return allocAddr;
+                }
+            }
+            let prev = curr;
+            let curr = Memory.getNext(curr);
+        }
+        return 0; // no block of sufficient size was found
+    }
+
+    /** De-allocates the given object (cast as an array) by making
+     *  it available for future allocations. */
+    function void deAlloc(Array o) {
+        var int tail;
+
+
+        // 'o' is PAYLOAD address; make it a one-node free block for now
+        do Memory.setNext(o, 0);
+
+        // empty list -> o becomes head
+        if (freeList = 0) {
+            let freeList = o;
+            return;
+        }
+
+        // Walk to the end of the free list
+        let tail = freeList;
+        while (Memory.getNext(tail) > 0) {
+            let tail = Memory.getNext(tail);
+        }
+        // Append this block
+        do Memory.setNext(tail, o);
+        return;
+    }
+
+    function int idx(int addr) {
+        return addr - heap;
+    }
+
+    function int getNext(int addr) {
+        return heap[Memory.idx(addr-2)];
+    }
+
+    function void setNext(int addr, int next) {
+        let heap[Memory.idx(addr-2)] = next;
+        return;
+    }
+
+    function int getSize(int addr) {
+        return heap[Memory.idx(addr-1)];
+    }
+
+    function void setSize(int addr, int size) {
+        let heap[Memory.idx(addr-1)] = size;
+        return;
+    }
+}
