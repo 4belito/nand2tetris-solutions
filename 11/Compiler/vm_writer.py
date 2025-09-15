@@ -93,7 +93,6 @@ class VMWriter:
         self.write_push(SEGMENT.CONST, n_fields)
         self.write_call("Memory.alloc", 1)
         self.write_pop(SEGMENT.POINTER, 0)
-        # Alternative implementation without using SEGMENT enum
 
     def write_method_setup(self):
         self.write_push(SEGMENT.ARG, 0)
