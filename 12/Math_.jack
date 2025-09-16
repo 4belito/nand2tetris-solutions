@@ -37,10 +37,10 @@ class Math {
         let sum = 0;
         let i = 0;
         while (i<n) {
-            if (~((y & powersOfTwo[i]) = 0)) {
+            if (Math.bit(y, i)) {
                 let sum = sum + x;
             }
-            let x = x + x; // x *= 2
+            let x = x + x; // shiftedX *= 2
             let i = i + 1;
         }
         return sum;
@@ -51,8 +51,7 @@ class Math {
      *  an an expression, it handles it by invoking this method.
      *  Thus, x/y and Math.divide(x,y) return the same value. */
     function int divide(int x, int y) {
-        var int q,qq,posdiv;
-        var boolean neg;
+        var int q,qq,neg;
 
         // divide by zero
         if (y = 0) { 
@@ -65,25 +64,18 @@ class Math {
         let y = Math.abs(y);
 
         // base case with overflow guard (from the slide)
-        let posdiv = Math.posDiv(x, y); 
-
-        if (neg) { return -posdiv;} 
-        else { return posdiv;}
-    }
-
-    function int posDiv(int x, int y) {
-        var int q,qq;
-
-        // base case with overflow guard (from the slide)
         if ((y > x) | (y < 0)) { return 0; }
-        let q = Math.posDiv(x, y + y); 
+        let q = Math.divide(x, y + y); 
         let qq = q + q; 
         if ((x - (qq * y)) < y) {
+            if (neg) { return -qq; }
             return qq;
         } else {
+            if (neg) { return -(qq + 1); }
             return qq + 1;
         }
-    }   
+    }
+
     /** Returns the integer part of the square root of x. */
     function int sqrt(int x) {
         var int y, j, yp,ypyp;
@@ -125,5 +117,14 @@ class Math {
         } else {
             return -x;
         }
+    }
+
+    /** Returns true if the i-th bit of x is 1, false otherwise. */
+    function boolean bit(int x, int i) {
+        return ~((x & powersOfTwo[i]) = 0); 
+    }
+
+    function Array pow2() {
+        return powersOfTwo;
     }
 }

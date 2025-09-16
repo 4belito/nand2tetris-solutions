@@ -335,7 +335,7 @@ label Screen_20
 label Screen_21
     push constant 0
     return
-function Screen.drawHorizontalLine 10
+function Screen.drawHorizontalLine 8
     push argument 0
     push constant 16
     call Math.divide 2
@@ -366,7 +366,7 @@ function Screen.drawHorizontalLine 10
     push constant 1
     sub
     not
-    pop local 7
+    pop local 6
     push local 4
     push constant 1
     add
@@ -376,7 +376,7 @@ function Screen.drawHorizontalLine 10
     push that 0
     push constant 1
     sub
-    pop local 8
+    pop local 7
     push local 0
     push local 1
     eq
@@ -385,8 +385,8 @@ function Screen.drawHorizontalLine 10
     push local 5
     push local 0
     add
+    push local 6
     push local 7
-    push local 8
     and
     call Screen.draMask 2
     pop temp 0
@@ -398,13 +398,13 @@ label Screen_22
     push local 5
     push local 0
     add
-    push local 7
+    push local 6
     call Screen.draMask 2
     pop temp 0
     push local 5
     push local 1
     add
-    push local 8
+    push local 7
     call Screen.draMask 2
     pop temp 0
     push local 0

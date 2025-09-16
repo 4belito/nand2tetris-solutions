@@ -125,30 +125,28 @@ class Screen {
 
     /** Draws a horizontal line from (x1,y) to (x2,y), where x1 < x2. */
     function void drawHorizontalLine(int x1, int x2, int y) {
-        var int w1, w2, i, r1, r2, addr, old, maskL, maskR, mask;
+        var int w1, w2, i, r1, r2, addr, maskL, maskR;
 
         let w1 = x1 / 16;            // first word index
         let w2 = x2 / 16;            // last  word index
         let r1 = x1 & 15;            // bit index within first word
         let r2 = x2 & 15;            // bit index within last  word
         let addr = 16384 + (32 * y);
-        // Build masks:
         
+        // Build masks:
         // left-edge mask = bits r1..15  →  ~((1<<r1) - 1)
         let maskL = ~ (powersOfTwo[r1] - 1);
-
         // right-edge mask = bits 0..r2  →  (1<<(r2+1)) - 1
         let maskR = (powersOfTwo[r2 + 1]) - 1;
 
         if (w1 = w2) {
-            // Entire span fits in one word → intersect the two masks
             do Screen.draMask(addr+w1, maskL & maskR);
             return;
         }
         do Screen.draMask(addr+w1, maskL);
 
         // Right edge word: apply maskR
-        do Screen.draMask(addr+ w2, maskR);
+        do Screen.draMask(addr+w2, maskR);
         
         // Middle full words
         let i = w1 + 1;
