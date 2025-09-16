@@ -14,14 +14,12 @@ function Memory.init 0
     push constant 1
     push static 1
     add
-    push constant 14336
+    push constant 14334
     pop temp 0
     pop pointer 1
     push temp 0
     pop that 0
-    push static 1
     push constant 2
-    add
     pop static 2
     push constant 0
     return
@@ -59,15 +57,15 @@ label Memory_0
     pop local 3
     push local 3
     push argument 0
-    gt
     push constant 1
     add
+    gt
     not
     if-goto Memory_3
     push local 3
     push argument 0
-    sub
     push constant 2
+    add
     sub
     pop local 4
     push local 4
@@ -78,6 +76,28 @@ label Memory_0
     push local 1
     call Memory.getNext 1
     pop local 2
+    goto Memory_4
+label Memory_5
+    push local 1
+    push argument 0
+    add
+    push constant 2
+    add
+    pop local 2
+    push local 2
+    push local 4
+    call Memory.setSize 2
+    pop temp 0
+    push local 2
+    push local 1
+    call Memory.getNext 1
+    call Memory.setNext 2
+    pop temp 0
+    push local 1
+    push argument 0
+    call Memory.setSize 2
+    pop temp 0
+label Memory_4
     push local 0
     push constant 0
     eq
@@ -93,18 +113,13 @@ label Memory_7
     pop temp 0
 label Memory_6
     push local 1
-    return
-    goto Memory_4
-label Memory_5
-    push local 1
-    push local 4
-    call Memory.setSize 2
+    push constant 0
+    call Memory.setNext 2
     pop temp 0
     push local 1
-    push local 4
+    push static 1
     add
     return
-label Memory_4
     goto Memory_2
 label Memory_3
 label Memory_2
@@ -117,17 +132,17 @@ label Memory_2
 label Memory_1
     push constant 0
     return
-function Memory.deAlloc 1
+function Memory.deAlloc 2
     push argument 0
-    push constant 0
-    call Memory.setNext 2
-    pop temp 0
+    push static 1
+    sub
+    pop local 1
     push static 2
     push constant 0
     eq
     not
     if-goto Memory_9
-    push argument 0
+    push local 1
     pop static 2
     push constant 0
     return
@@ -149,21 +164,15 @@ label Memory_10
     goto Memory_10
 label Memory_11
     push local 0
-    push argument 0
+    push local 1
     call Memory.setNext 2
     pop temp 0
     push constant 0
-    return
-function Memory.idx 0
-    push argument 0
-    push static 1
-    sub
     return
 function Memory.getNext 0
     push argument 0
     push constant 2
     sub
-    call Memory.idx 1
     push static 1
     add
     pop pointer 1
@@ -173,7 +182,6 @@ function Memory.setNext 0
     push argument 0
     push constant 2
     sub
-    call Memory.idx 1
     push static 1
     add
     push argument 1
@@ -187,7 +195,6 @@ function Memory.getSize 0
     push argument 0
     push constant 1
     sub
-    call Memory.idx 1
     push static 1
     add
     pop pointer 1
@@ -197,7 +204,6 @@ function Memory.setSize 0
     push argument 0
     push constant 1
     sub
-    call Memory.idx 1
     push static 1
     add
     push argument 1

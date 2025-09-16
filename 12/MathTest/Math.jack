@@ -124,4 +124,8 @@ class Math {
     function boolean bit(int x, int i) {
         return ~((x & powersOfTwo[i]) = 0); 
     }
+
+    function Array pow2() {
+        return powersOfTwo;
+    }
 }

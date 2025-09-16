@@ -1,0 +1,191 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/12/Screen.jack
+/**
+ * A library of functions for displaying graphics on the screen.
+ * The Hack physical screen consists of 256 rows (indexed 0..255, top to bottom)
+ * of 512 pixels each (indexed 0..511, left to right). The top left pixel on 
+ * the screen is indexed (0,0).
+ */
+class Screen {
+    static boolean color; // current color: black(true) or white(false)
+    static int n;             // Number of bits used for representing a two's complement integer
+    static Array powersOfTwo; // Stores 2^0, 2^1, 2^2,..., 2^(n-1)
+
+    /** Initializes the Screen. */
+    function void init() {
+        var int i, power;
+        let color = true; // default color: black
+        let n = 16; // for the Hack computer
+        let powersOfTwo = Array.new(n);
+        let i = 0;
+        let power = 1;
+        while (i < n) {
+            let powersOfTwo[i] = power;
+            let power = power + power; // power *= 2
+            let i = i + 1;
+        }
+        return;
+    }
+
+    /** Erases the entire screen. */
+    function void clearScreen() {
+        var boolean currentColor;
+        let currentColor = color;
+        let color = false; // white
+        do Screen.drawRectangle(0, 0, 511, 255);
+        let color = currentColor;
+        return;
+
+    }
+
+    /** Sets the current color, to be used for all subsequent drawXXX commands.
+     *  Black is represented by true, white by false. */
+    function void setColor(boolean b) {
+        let color = b;
+        return;
+    }
+
+    /** Draws the (x,y) pixel, using the current color. */
+    function void drawPixel(int x, int y) {
+        var int address,value,i;
+        let address = 16384 + (32*y) + (x / 16);
+        let value = Memory.peek(address);
+        let i = x & 15; // x % 16
+        if (color){
+            let value = value | powersOfTwo[i];
+        } else {
+            let value = value & (~ powersOfTwo[i]); // keep it 16-bit
+        }
+        do Memory.poke(address,value);
+        return;
+    }
+
+    /** Draws a line from pixel (x1,y1) to pixel (x2,y2), using the current color. */
+    function void drawLine(int x1, int y1, int x2, int y2) {
+        var int dx, dy, a, b,diff;
+        var boolean goright,goup;
+        let dx = Math.abs(x2 - x1);
+        if (dx = 0) { // vertical line
+            do Screen.drawVerticalLine(x1, Math.min(y1,y2), Math.max(y1,y2));
+            return;
+        }
+        let dy = Math.abs(y2 - y1);
+        if (dy = 0) { // horizontal line
+            do Screen.drawHorizontalLine(Math.min(x1, x2), Math.max(x1,x2),y1);
+            return;
+        }
+        let goright = x1<x2;
+        let goup = y1<y2;
+        let diff = dy - dx; // difference between the two deltas 
+        let a = 0;
+        let b = 0;
+        while (((a < dx)|(a =dx))& ((b < dy)|(b = dy))) {
+            if (goup) {
+                if (goright) { do Screen.drawPixel(x1+a, y1+b); }
+                else { do Screen.drawPixel(x1-a, y1+b); }
+            } else {
+                if (goright) { do Screen.drawPixel(x1+a, y1-b); }
+                else { do Screen.drawPixel(x1-a, y1-b); }
+            }
+            if (diff < 0) {
+                let a = a + 1;
+                let diff = diff + dy;
+            } else {
+                let b = b + 1;
+                let diff = diff - dx;
+            }
+        }
+        return;
+    }
+
+    /** Draws a filled rectangle whose top left corner is (x1, y1)
+     *  and bottom right corner is (x2,y2), using the current color. */
+    function void drawRectangle(int x1, int y1, int x2, int y2) {
+        while ((y1 < y2)|(y1 = y2)) {
+            do Screen.drawHorizontalLine(x1, x2, y1);
+            let y1 = y1 + 1;
+        }
+        return;
+    }
+
+    /** Draws a filled circle of radius r<=181 around (x,y), using the current color. */
+    function void drawCircle(int x, int y, int r) {
+        var int dy,sqrt;
+        let dy = -r;
+        let r = Math.min(r,181); // clip large circles
+        while ((dy < r)|(dy = r)) {
+            let sqrt = Math.sqrt((r*r) - (dy*dy));
+            do Screen.drawHorizontalLine(x-sqrt, x+sqrt, y+dy);
+            let dy = dy + 1;
+        }
+        return;
+    }
+
+    /** Draws a horizontal line from (x1,y) to (x2,y), where x1 < x2. */
+    function void drawHorizontalLine(int x1, int x2, int y) {
+        var int w1, w2, i, r1, r2, addr, old, maskL, maskR, mask;
+
+        let w1 = x1 / 16;            // first word index
+        let w2 = x2 / 16;            // last  word index
+        let r1 = x1 & 15;            // bit index within first word
+        let r2 = x2 & 15;            // bit index within last  word
+        let addr = 16384 + (32 * y);
+        // Build masks:
+        
+        // left-edge mask = bits r1..15  →  ~((1<<r1) - 1)
+        let maskL = ~ (powersOfTwo[r1] - 1);
+
+        // right-edge mask = bits 0..r2  →  (1<<(r2+1)) - 1
+        let maskR = (powersOfTwo[r2 + 1]) - 1;
+
+        if (w1 = w2) {
+            // Entire span fits in one word → intersect the two masks
+            do Screen.draMask(addr+w1, maskL & maskR);
+            return;
+        }
+        do Screen.draMask(addr+w1, maskL);
+
+        // Right edge word: apply maskR
+        do Screen.draMask(addr+ w2, maskR);
+        
+        // Middle full words
+        let i = w1 + 1;
+        while (i < w2) {
+            do Screen.drawWord(addr+i); 
+            let i = i + 1;
+        }
+        return;
+    }
+
+    /** Draws the bits in 'mask' at the specified address, using the current color. */
+    function void draMask(int addr, int mask) {
+        var int old;
+        let old = Memory.peek(addr);
+        if (color) { let old = old | mask; }
+        else       { let old = old & (~mask); }
+        do Memory.poke(addr, old);
+        return;
+    }
+
+    /** Draw any of the (512/16)x256=32x256 words pixels corresponding to the bits of 'word',
+     *  with the least significant bit at (x,y). */
+    function void drawWord(int addr) {
+        if (color) {
+            do Memory.poke(addr,-1); // all bits on
+        } else {
+            do Memory.poke(addr,0);
+        }    
+        return;
+    }
+    
+    /** Draws a vertical line from (x,y1) to (x,y2), where y1 < y2. */
+    function void drawVerticalLine(int x, int y1, int y2) {
+        while ((y1 < y2)|(y1 = y2)) {
+            do Screen.drawPixel(x, y1);
+            let y1 = y1 + 1;
+        }
+        return;
+    }
+}
