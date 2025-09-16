@@ -47,14 +47,7 @@ label Math_2
     if-goto Math_3
     push argument 1
     push local 1
-    push static 1
-    add
-    pop pointer 1
-    push that 0
-    and
-    push constant 0
-    eq
-    not
+    call Math.bit 2
     not
     if-goto Math_5
     push local 0
@@ -154,10 +147,10 @@ label Math_10
     pop local 1
     push argument 0
     push local 1
+    push constant 1
+    add
     push argument 1
     call Math.multiply 2
-    sub
-    push argument 1
     lt
     not
     if-goto Math_13
@@ -264,3 +257,24 @@ label Math_23
     neg
     return
 label Math_22
+function Math.bit 0
+    push argument 0
+    push argument 1
+    push static 1
+    add
+    pop pointer 1
+    push that 0
+    and
+    push constant 0
+    eq
+    not
+    not
+    if-goto Math_25
+    push constant 1
+    neg
+    return
+    goto Math_24
+label Math_25
+    push constant 0
+    return
+label Math_24

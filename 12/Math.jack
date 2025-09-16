@@ -11,17 +11,17 @@
  */
 class Math {
     static int n;             // Number of bits used for representing a two's complement integer
-    static Array powersOfTwo; // Stores 2^0, 2^1, 2^2,..., 2^(n-1)
+    static Array twoToThe; // Stores 2^0, 2^1, 2^2,..., 2^(n-1)
 
     // Initializes the Math library.
     function void init() {
         var int i, power;
         let n = 16; // for the Hack computer
-        let powersOfTwo = Array.new(n);
+        let twoToThe = Array.new(n);
         let i = 0;
         let power = 1;
         while (i < n) {
-            let powersOfTwo[i] = power;
+            let twoToThe[i] = power;
             let power = power + power; // power *= 2
             let i = i + 1;
         }
@@ -37,7 +37,7 @@ class Math {
         let sum = 0;
         let i = 0;
         while (i<n) {
-            if (~((y & powersOfTwo[i]) = 0)) {
+            if (Math.bit(y,i)) {
                 let sum = sum + x;
             }
             let x = x + x; // x *= 2
@@ -62,7 +62,7 @@ class Math {
         // sign handling
         let neg = ((x < 0) & (y > 0)) | ((x > 0) & (y < 0));
         let x = Math.abs(x);
-        let y = Math.abs(y);
+        let y = Math.abs(y); 
 
         // base case with overflow guard (from the slide)
         let posdiv = Math.posDiv(x, y); 
@@ -78,21 +78,22 @@ class Math {
         if ((y > x) | (y < 0)) { return 0; }
         let q = Math.posDiv(x, y + y); 
         let qq = q + q; 
-        if ((x - (qq * y)) < y) {
+        if (x  < Math.multiply(qq+1,y)) {
             return qq;
         } else {
             return qq + 1;
         }
     }   
+
     /** Returns the integer part of the square root of x. */
     function int sqrt(int x) {
         var int y, j, yp,ypyp;
         let y = 0;
         let j = (n / 2)- 1;
         while (j > -1) {
-            let yp = y + powersOfTwo[j];
+            let yp = y + twoToThe[j];
             let ypyp = yp * yp;
-            if (((ypyp < x) | (ypyp = x))& (ypyp > 0)) {
+            if (((ypyp < x) | (ypyp = x)) & (ypyp > 0)) {
                 let y = yp;
             }
             let j = j - 1;
@@ -124,6 +125,15 @@ class Math {
             return x;
         } else {
             return -x;
+        }
+    }
+
+    // Rturns true if the i-th bit of x is 1, false otherwise.
+    function boolean bit(int x, int i) {
+        if (~((x & twoToThe[i]) = 0)) {
+            return true;
+        } else {
+            return false;
         }
     }
 }
