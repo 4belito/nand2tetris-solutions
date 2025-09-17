@@ -10,8 +10,9 @@
  * string-oriented operations.
  */
 class String {
-    field int capacity,length;  // field 1
-    field Array str;   // field 2
+    field int capacity,length;
+    field Array str;   
+    
     
     constructor String new(int maxLength) {
         if (maxLength > 0) {
@@ -58,9 +59,10 @@ class String {
     method String appendChar(char c) {
         if (length = capacity) {
             do Sys.error(17); 
+        } else{
+            let str[length] = c;
+            let length = length + 1;
         }
-        let str[length] = c;
-        let length = length + 1;
         return this;
         
     }
@@ -76,9 +78,16 @@ class String {
     /** Returns the integer value of this string, 
      *  until a non-digit character is detected. */
     method int intValue() {
-        var int i, digit, val;
+        var int i, digit, val,sign;
         let val = 0;
+        let sign = 1;
         let i = 0;
+        // Check for leading '-'
+        if (str[0] = 45) { // ASCII '-' = 45
+            let sign = -1;
+            let i = 1; // start parsing after the '-'
+        }
+
         while (i < length) {
             let digit = String.char2int(str[i]); // '0' = 48
             if ((digit < 0) | (digit > 9)) {
@@ -87,12 +96,16 @@ class String {
             let val = (val * 10) + digit;
             let i = i + 1;
         }
-        return val;
+        return sign * val;
     }
 
     /** Sets this string to hold a representation of the given value. */
     method void setInt(int val) {
         let length = 0;
+        if (val < 0) {
+            do appendChar(45);       // '-'  (ASCII 45)
+            let val = 0 - val;       // make it positive (tests won’t use -32768)
+        }
         do int2String(val);
         return;
     }
@@ -102,9 +115,7 @@ class String {
         let decimals = val / 10;
         let digit = val - (decimals * 10);
         if (val > 9) {do int2String(decimals);}
-        //do setCharAt(length, String.int2char(digit));
-        let str[length] = String.int2char(digit);
-        do increaseLength();
+        do appendChar(String.int2char(digit));
         return;
     }
 
@@ -131,8 +142,4 @@ class String {
         return i + 48;
     }
 
-    method void increaseLength() {
-        if (length < capacity) {let length = length + 1;}
-        return;
-    }
 }
