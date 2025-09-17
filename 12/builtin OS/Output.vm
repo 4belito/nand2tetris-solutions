@@ -1690,7 +1690,7 @@ push constant 0
 return
 function Output.printChar 0
 push argument 0
-call String.newLine 0
+call ng.StrinewLine 0
 eq
 if-goto IF_TRUE0
 goto IF_FALSE0

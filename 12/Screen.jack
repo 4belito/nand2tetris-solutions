@@ -50,7 +50,7 @@ class Screen {
     /** Draws the (x,y) pixel, using the current color. */
     function void drawPixel(int x, int y) {
         var int address,value,i;
-        let address = 16384 + (32*y) + (x / 16);
+        let address = Screen.address(x,y);
         let value = Memory.peek(address);
         let i = x & 15; // x % 16
         if (color){
@@ -131,7 +131,7 @@ class Screen {
         let w2 = x2 / 16;            // last  word index
         let r1 = x1 & 15;            // bit index within first word
         let r2 = x2 & 15;            // bit index within last  word
-        let addr = 16384 + (32 * y);
+        let addr = Screen.address(0,y);
         
         // Build masks:
         // left-edge mask = bits r1..15  →  ~((1<<r1) - 1)
@@ -185,5 +185,9 @@ class Screen {
             let y1 = y1 + 1;
         }
         return;
+    }
+
+    function int address(int x, int y) {
+        return 16384 + (32*y) + (x / 16);
     }
 }

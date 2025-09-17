@@ -17,9 +17,14 @@ class Output {
 
     // Character map for displaying characters
     static Array charMaps; 
+    static int cursorI, cursorJ; // cursor location: row i, column j
 
     /** Initializes the screen, and locates the cursor at the screen's top-left. */
     function void init() {
+        do Output.initMap();
+        let cursorI = 0;   
+        let cursorJ = 0;
+    return;
     }
 
     // Initializes the character map array
@@ -175,11 +180,27 @@ class Output {
     /** Moves the cursor to the j-th column of the i-th row,
      *  and erases the character displayed there. */
     function void moveCursor(int i, int j) {
+        do Output.moveCursorOnly(i,j);
+        do Output.eraseCharacter(i,j);
+        // draw the cursor
+        return;
     }
 
     /** Displays the given character at the cursor location,
      *  and advances the cursor one column forward. */
     function void printChar(char c) {
+        var int row,address;
+        var Array map;
+        let map = Output.getMap(c);
+        let address = Output.getCursrAddress();
+        let row = 0;
+        while (row < 11) {
+            do Memory.poke(address+(32*row),map[row]);
+            let row = row + 1;
+        }
+        // advance the cursor
+        do Output.advanceCursor();
+        return;
     }
 
     /** displays the given string starting at the cursor location,
@@ -198,5 +219,44 @@ class Output {
 
     /** Moves the cursor one column back. */
     function void backSpace() {
+    }
+
+    function int getCursrAddress() {
+        return 16384 + (32*cursorI*11) + (cursorJ / 2);
+    }
+
+    function void advanceCursor() {
+        if (cursorJ = 63) { // end of line
+            let cursorJ = 0;
+            if (cursorI = 22) { // end of screen
+                let cursorI = 0;
+            } else {
+                let cursorI = cursorI + 1;
+            }
+        } else {
+            let cursorJ = cursorJ + 1;
+        }
+    }
+
+    function int getCursrX() {
+        return cursorJ * 8;
+    }
+
+    function int getCursrY() {
+        return cursorI * 11;
+    }
+
+    function void moveCursorOnly(int i, int j) {
+        let cursorI = i;
+        let cursorJ = j;
+        return;
+    }
+
+    function void eraseCharacter(int i, int j) {
+        let x = j * 8;
+        let y = i * 11;
+        do Screen.setColor(false);
+        do Screen.drawRectangle(x, y, x+7, y+10); // erase the character there
+        return;
     }
 }
