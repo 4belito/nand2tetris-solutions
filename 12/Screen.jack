@@ -123,6 +123,10 @@ class Screen {
         return;
     }
 
+    function int address(int x, int y) {
+        return 16384 + (32*y) + (x / 16);
+    }
+
     /** Draws a horizontal line from (x1,y) to (x2,y), where x1 < x2. */
     function void drawHorizontalLine(int x1, int x2, int y) {
         var int w1, w2, i, r1, r2, addr, maskL, maskR;
@@ -185,9 +189,5 @@ class Screen {
             let y1 = y1 + 1;
         }
         return;
-    }
-
-    function int address(int x, int y) {
-        return 16384 + (32*y) + (x / 16);
     }
 }

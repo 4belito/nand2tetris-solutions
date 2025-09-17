@@ -14,10 +14,12 @@
  * as a small filled square, indicates where the next character will be displayed.
  */
 class Output {
-
     // Character map for displaying characters
-    static Array charMaps; 
     static int cursorI, cursorJ; // cursor location: row i, column j
+    static Array charMaps; 
+    
+    
+    
 
     /** Initializes the screen, and locates the cursor at the screen's top-left. */
     function void init() {
@@ -72,10 +74,11 @@ class Output {
         do Output.create(60,0,0,24,12,6,3,6,12,24,0,0);      // <
         do Output.create(61,0,0,0,63,0,0,63,0,0,0,0);        // =
         do Output.create(62,0,0,3,6,12,24,12,6,3,0,0);       // >
-        do Output.create(64,30,51,51,59,59,59,27,3,30,0,0);  // @
         do Output.create(63,30,51,51,24,12,12,0,12,12,0,0);  // ?
+        do Output.create(64,30,51,51,59,59,59,27,3,30,0,0);  // @
+        
 
-        do Output.create(65,12,30,51,51,63,51,51,51,51,0,0);          // A ** TO BE FILLED **
+        do Output.create(65,12,30,51,51,63,51,51,51,51,0,0); // A
         do Output.create(66,31,51,51,51,31,51,51,51,31,0,0); // B
         do Output.create(67,28,54,35,3,3,3,35,54,28,0,0);    // C
         do Output.create(68,15,27,51,51,51,51,51,27,15,0,0); // D
@@ -180,31 +183,25 @@ class Output {
     /** Moves the cursor to the j-th column of the i-th row,
      *  and erases the character displayed there. */
     function void moveCursor(int i, int j) {
-        do Output.moveCursorOnly(i,j);
-        do Output.eraseCharacter(i,j);
-        // draw the cursor
+        let cursorI = i;
+        let cursorJ = j;
+        do Output.eraseCharacter();
         return;
     }
 
     /** Displays the given character at the cursor location,
      *  and advances the cursor one column forward. */
     function void printChar(char c) {
-        var int row,address,pos,value,row_address;
+        var int row,address,pos,word,row_address;
         var Array map;
         let map = Output.getMap(c);
-        let address = Output.getCursrAddress();
-        if (cursorJ & 1 = 0) { // even column
-            // draw the character at the left side of the byte
-            let pos = 1;
-        } else { // odd column
-            // draw the character at the right side of the byte
-            let pos = 256;
-        }
+        let address = Output.getCursorAddress();
+        let pos = Output.getCursorWordSide();
         let row = 0;
         while (row < 11) {
             let row_address = address + (row * 32);
-            let value = Memory.peek(row_address);
-            do Memory.poke(row_address,value+(map[row]*pos));
+            let word = Memory.peek(row_address);
+            do Memory.poke(row_address,word+(map[row]*pos));
             let row = row + 1;
         }
         // advance the cursor
@@ -228,7 +225,7 @@ class Output {
      *  and advances the cursor appropriately. */
     function void printInt(int i) {
         var String s;
-        let s = String.new(12); // enough to hold -32768..32767
+        let s = String.new(6); // enough to hold -32768..32767
         do s.setInt(i);
         do Output.printString(s);
         do s.dispose();
@@ -251,11 +248,11 @@ class Output {
                 let cursorJ = 63;
             }
         }
-        do Output.eraseCharacter(cursorI,cursorJ);
+        do Output.eraseCharacter();
         return;
     }
 
-    function int getCursrAddress() {
+    function int getCursorAddress() {
         return 16384 + (32*cursorI*11) + (cursorJ / 2);
     }
 
@@ -278,18 +275,19 @@ class Output {
         return;
     }
 
-    function void moveCursorOnly(int i, int j) {
-        let cursorI = i;
-        let cursorJ = j;
-        return;
-    }
-
-    function void eraseCharacter(int i, int j) {
+    function void eraseCharacter() {
         var int x,y;
-        let x = j * 8;
-        let y = i * 11;
+        let x = cursorJ * 8;
+        let y = cursorI * 11;
         do Screen.setColor(false);
         do Screen.drawRectangle(x, y, x+7, y+10); // erase the character there
         return;
+    }
+
+    function int getCursorWordSide(){
+        if (cursorJ & 1 = 0) { // even column
+            return 1;
+        }
+        return 256;
     }
 }

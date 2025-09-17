@@ -1,0 +1,233 @@
+function Keyboard.init 0
+    push constant 0
+    return
+function Keyboard.keyPressed 0
+    push constant 24576
+    call Memory.peek 1
+    return
+function Keyboard.readChar 2
+    push constant 0
+    pop local 0
+label Keyboard_0
+    push local 0
+    push constant 0
+    eq
+    not
+    if-goto Keyboard_1
+    call Keyboard.keyPressed 0
+    pop local 0
+    goto Keyboard_0
+label Keyboard_1
+label Keyboard_2
+    call Keyboard.keyPressed 0
+    push constant 0
+    eq
+    not
+    not
+    if-goto Keyboard_3
+    goto Keyboard_2
+label Keyboard_3
+    push local 0
+    call Keyboard.isChar 1
+    not
+    if-goto Keyboard_5
+    push local 0
+    call Output.printChar 1
+    pop temp 0
+    goto Keyboard_4
+label Keyboard_5
+label Keyboard_4
+    push local 0
+    return
+function Keyboard.readLine 2
+    push argument 0
+    call Output.printString 1
+    pop temp 0
+    push constant 5
+    call String.new 1
+    pop local 0
+label Keyboard_6
+    push constant 1
+    neg
+    not
+    if-goto Keyboard_7
+    call Keyboard.readChar 0
+    pop local 1
+    push local 0
+    call String.length 1
+    push constant 5
+    eq
+    push local 1
+    call String.backSpace 0
+    eq
+    not
+    and
+    push local 1
+    call String.newLine 0
+    eq
+    not
+    and
+    not
+    if-goto Keyboard_9
+    call Output.backSpace 0
+    pop temp 0
+    goto Keyboard_8
+label Keyboard_9
+    push local 1
+    call String.newLine 0
+    eq
+    not
+    if-goto Keyboard_11
+    call Output.println 0
+    pop temp 0
+    push local 0
+    return
+    goto Keyboard_10
+label Keyboard_11
+    push local 1
+    call String.backSpace 0
+    eq
+    not
+    if-goto Keyboard_13
+    push local 0
+    call String.length 1
+    push constant 0
+    gt
+    not
+    if-goto Keyboard_15
+    push local 0
+    call String.eraseLastChar 1
+    pop temp 0
+    call Output.backSpace 0
+    pop temp 0
+    goto Keyboard_14
+label Keyboard_15
+label Keyboard_14
+    goto Keyboard_12
+label Keyboard_13
+    push local 0
+    push local 1
+    call String.appendChar 2
+    pop temp 0
+label Keyboard_12
+label Keyboard_10
+label Keyboard_8
+    goto Keyboard_6
+label Keyboard_7
+    push constant 1
+    call Sys.error 1
+    pop temp 0
+    push local 0
+    return
+function Keyboard.readInt 2
+    push argument 0
+    call Output.printString 1
+    pop temp 0
+    push constant 6
+    call String.new 1
+    pop local 0
+label Keyboard_16
+    push constant 1
+    neg
+    not
+    if-goto Keyboard_17
+    call Keyboard.readChar 0
+    pop local 1
+    push local 0
+    call String.length 1
+    push constant 6
+    eq
+    push local 1
+    call String.backSpace 0
+    eq
+    not
+    and
+    push local 1
+    call String.newLine 0
+    eq
+    not
+    and
+    not
+    if-goto Keyboard_19
+    call Output.backSpace 0
+    pop temp 0
+    goto Keyboard_18
+label Keyboard_19
+    push local 1
+    call String.newLine 0
+    eq
+    not
+    if-goto Keyboard_21
+    call Output.println 0
+    pop temp 0
+    push local 0
+    call String.intValue 1
+    return
+    goto Keyboard_20
+label Keyboard_21
+    push local 1
+    call String.backSpace 0
+    eq
+    not
+    if-goto Keyboard_23
+    push local 0
+    call String.length 1
+    push constant 0
+    gt
+    not
+    if-goto Keyboard_25
+    push local 0
+    call String.eraseLastChar 1
+    pop temp 0
+    call Output.backSpace 0
+    pop temp 0
+    goto Keyboard_24
+label Keyboard_25
+label Keyboard_24
+    goto Keyboard_22
+label Keyboard_23
+    push local 1
+    push constant 47
+    gt
+    push local 1
+    push constant 58
+    lt
+    and
+    push local 1
+    push constant 45
+    eq
+    push local 0
+    call String.length 1
+    push constant 0
+    eq
+    and
+    or
+    not
+    if-goto Keyboard_27
+    push local 0
+    push local 1
+    call String.appendChar 2
+    pop temp 0
+    goto Keyboard_26
+label Keyboard_27
+label Keyboard_26
+label Keyboard_22
+label Keyboard_20
+label Keyboard_18
+    goto Keyboard_16
+label Keyboard_17
+    push constant 2
+    call Sys.error 1
+    pop temp 0
+    push local 0
+    call String.intValue 1
+    return
+function Keyboard.isChar 0
+    push argument 0
+    push constant 31
+    gt
+    push argument 0
+    push constant 128
+    lt
+    and
+    return

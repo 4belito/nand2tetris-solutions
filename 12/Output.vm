@@ -459,20 +459,6 @@ function Output.initMap 1
     push constant 0
     call Output.create 12
     pop temp 0
-    push constant 64
-    push constant 30
-    push constant 51
-    push constant 51
-    push constant 59
-    push constant 59
-    push constant 59
-    push constant 27
-    push constant 3
-    push constant 30
-    push constant 0
-    push constant 0
-    call Output.create 12
-    pop temp 0
     push constant 63
     push constant 30
     push constant 51
@@ -487,16 +473,30 @@ function Output.initMap 1
     push constant 0
     call Output.create 12
     pop temp 0
+    push constant 64
+    push constant 30
+    push constant 51
+    push constant 51
+    push constant 59
+    push constant 59
+    push constant 59
+    push constant 27
+    push constant 3
+    push constant 30
+    push constant 0
+    push constant 0
+    call Output.create 12
+    pop temp 0
     push constant 65
-    push constant 0
-    push constant 0
-    push constant 0
-    push constant 0
-    push constant 0
-    push constant 0
-    push constant 0
-    push constant 0
-    push constant 0
+    push constant 12
+    push constant 30
+    push constant 51
+    push constant 51
+    push constant 63
+    push constant 51
+    push constant 51
+    push constant 51
+    push constant 51
     push constant 0
     push constant 0
     call Output.create 12
@@ -1482,21 +1482,21 @@ label Output_0
     return
 function Output.moveCursor 0
     push argument 0
+    pop static 1
     push argument 1
-    call Output.moveCursorOnly 2
-    pop temp 0
-    push argument 0
-    push argument 1
-    call Output.eraseCharacter 2
+    pop static 2
+    call Output.eraseCharacter 0
     pop temp 0
     push constant 0
     return
-function Output.printChar 3
+function Output.printChar 6
     push argument 0
     call Output.getMap 1
-    pop local 2
-    call Output.getCursrAddress 0
+    pop local 5
+    call Output.getCursorAddress 0
     pop local 1
+    call Output.getCursorWordSide 0
+    pop local 2
     push constant 0
     pop local 0
 label Output_2
@@ -1506,15 +1506,24 @@ label Output_2
     not
     if-goto Output_3
     push local 1
-    push constant 32
     push local 0
+    push constant 32
     call Math.multiply 2
     add
+    pop local 4
+    push local 4
+    call Memory.peek 1
+    pop local 3
+    push local 4
+    push local 3
     push local 0
-    push local 2
+    push local 5
     add
     pop pointer 1
     push that 0
+    push local 2
+    call Math.multiply 2
+    add
     call Memory.poke 2
     pop temp 0
     push local 0
@@ -1551,7 +1560,7 @@ label Output_5
     push constant 0
     return
 function Output.printInt 1
-    push constant 12
+    push constant 6
     call String.new 1
     pop local 0
     push local 0
@@ -1567,22 +1576,8 @@ function Output.printInt 1
     push constant 0
     return
 function Output.println 0
-    push static 1
-    push constant 22
-    eq
-    not
-    if-goto Output_7
-    push constant 0
-    pop static 1
-    goto Output_6
-label Output_7
-    push static 1
-    push constant 1
-    add
-    pop static 1
-label Output_6
-    push constant 0
-    pop static 2
+    call Output.advanceLine 0
+    pop temp 0
     push constant 0
     return
 function Output.backSpace 0
@@ -1590,35 +1585,33 @@ function Output.backSpace 0
     push constant 0
     gt
     not
-    if-goto Output_9
+    if-goto Output_7
     push static 2
     push constant 1
     sub
     pop static 2
-    goto Output_8
-label Output_9
+    goto Output_6
+label Output_7
     push static 1
     push constant 0
     gt
     not
-    if-goto Output_11
+    if-goto Output_9
     push static 1
     push constant 1
     sub
     pop static 1
     push constant 63
     pop static 2
-    goto Output_10
-label Output_11
-label Output_10
+    goto Output_8
+label Output_9
 label Output_8
-    push static 1
-    push static 2
-    call Output.eraseCharacter 2
+label Output_6
+    call Output.eraseCharacter 0
     pop temp 0
     push constant 0
     return
-function Output.getCursrAddress 0
+function Output.getCursorAddress 0
     push constant 16384
     push constant 32
     push static 1
@@ -1631,13 +1624,32 @@ function Output.getCursrAddress 0
     call Math.divide 2
     add
     return
+function Output.advanceLine 0
+    push static 1
+    push constant 22
+    eq
+    not
+    if-goto Output_11
+    push constant 0
+    pop static 1
+    goto Output_10
+label Output_11
+    push static 1
+    push constant 1
+    add
+    pop static 1
+label Output_10
+    push constant 0
+    pop static 2
+    push constant 0
+    return
 function Output.advanceCursor 0
     push static 2
     push constant 63
     eq
     not
     if-goto Output_13
-    call Output.println 0
+    call Output.advanceLine 0
     pop temp 0
     goto Output_12
 label Output_13
@@ -1648,29 +1660,12 @@ label Output_13
 label Output_12
     push constant 0
     return
-function Output.getCursrX 0
+function Output.eraseCharacter 2
     push static 2
     push constant 8
     call Math.multiply 2
-    return
-function Output.getCursrY 0
-    push static 1
-    push constant 11
-    call Math.multiply 2
-    return
-function Output.moveCursorOnly 0
-    push argument 0
-    pop static 1
-    push argument 1
-    pop static 2
-    push constant 0
-    return
-function Output.eraseCharacter 2
-    push argument 1
-    push constant 8
-    call Math.multiply 2
     pop local 0
-    push argument 0
+    push static 1
     push constant 11
     call Math.multiply 2
     pop local 1
@@ -1688,4 +1683,19 @@ function Output.eraseCharacter 2
     call Screen.drawRectangle 4
     pop temp 0
     push constant 0
+    return
+function Output.getCursorWordSide 0
+    push static 2
+    push constant 1
+    and
+    push constant 0
+    eq
+    not
+    if-goto Output_15
+    push constant 1
+    return
+    goto Output_14
+label Output_15
+label Output_14
+    push constant 256
     return
