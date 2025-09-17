@@ -10,9 +10,8 @@
  * string-oriented operations.
  */
 class String {
+    field Array str;
     field int capacity,length;
-    field Array str;   
-    
     
     constructor String new(int maxLength) {
         if (maxLength > 0) {
@@ -41,7 +40,6 @@ class String {
     method char charAt(int j) {
         if ((j < 0) | (j = length) | (j> length)) {
             do Sys.error(15);
-            return 0;
         }
         return str[j];
     }
@@ -103,8 +101,8 @@ class String {
     method void setInt(int val) {
         let length = 0;
         if (val < 0) {
-            do appendChar(45);       // '-'  (ASCII 45)
-            let val = 0 - val;       // make it positive (tests won’t use -32768)
+            do appendChar(45);      
+            let val = 0 - val;       
         }
         do int2String(val);
         return;

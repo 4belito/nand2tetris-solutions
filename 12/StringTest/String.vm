@@ -62,8 +62,6 @@ function String.charAt 0
     push constant 15
     call Sys.error 1
     pop temp 0
-    push constant 0
-    return
     goto String_4
 label String_5
 label String_4
