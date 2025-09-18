@@ -31,10 +31,12 @@ This repository contains my implementations for:
 - **Project 2:** ALU design
 - **Project 3:** Sequential logic (flip-flops, memory)
 - **Project 4:** Machine Language Programs (`.asm`)
-- **Projects 5–6:** Assembler and CPU
+- **Projects 5:** CPU
+- **Projects 6:** Assembler
 - **Projects 7–8:** Virtual Machine Translator
-- **Projects 9–11:** Jack Compiler and High-Level Programs (`.jack`)
-- **Project 12:** Simple Operating System components
+- **Projects 9:** High-Level Programs (`.jack`)
+- **Projects 10–11:** Jack Compiler
+- **Project 12:** Operating System
 
 ---
 

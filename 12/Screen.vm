@@ -259,7 +259,42 @@ label Screen_16
 label Screen_9
     push constant 0
     return
-function Screen.drawRectangle 0
+function Screen.drawRectangle 8
+    push argument 0
+    push constant 16
+    call Math.divide 2
+    pop local 0
+    push argument 2
+    push constant 16
+    call Math.divide 2
+    pop local 1
+    push argument 0
+    push constant 15
+    and
+    pop local 3
+    push argument 2
+    push constant 15
+    and
+    pop local 4
+    push local 3
+    push static 2
+    add
+    pop pointer 1
+    push that 0
+    push constant 1
+    sub
+    not
+    pop local 6
+    push local 4
+    push constant 1
+    add
+    push static 2
+    add
+    pop pointer 1
+    push that 0
+    push constant 1
+    sub
+    pop local 7
 label Screen_18
     push argument 1
     push argument 3
@@ -270,10 +305,16 @@ label Screen_18
     or
     not
     if-goto Screen_19
-    push argument 0
-    push argument 2
+    push constant 0
     push argument 1
-    call Screen.drawHorizontalLine 3
+    call Screen.address 2
+    pop local 5
+    push local 5
+    push local 0
+    push local 1
+    push local 6
+    push local 7
+    call Screen.drawHorizontalLineFromMask 5
     pop temp 0
     push argument 1
     push constant 1
@@ -380,16 +421,26 @@ function Screen.drawHorizontalLine 8
     push constant 1
     sub
     pop local 7
+    push local 5
     push local 0
     push local 1
+    push local 6
+    push local 7
+    call Screen.drawHorizontalLineFromMask 5
+    pop temp 0
+    push constant 0
+    return
+function Screen.drawHorizontalLineFromMask 1
+    push argument 1
+    push argument 2
     eq
     not
     if-goto Screen_23
-    push local 5
-    push local 0
+    push argument 0
+    push argument 1
     add
-    push local 6
-    push local 7
+    push argument 3
+    push argument 4
     and
     call Screen.draMask 2
     pop temp 0
@@ -398,37 +449,37 @@ function Screen.drawHorizontalLine 8
     goto Screen_22
 label Screen_23
 label Screen_22
-    push local 5
-    push local 0
+    push argument 0
+    push argument 1
     add
-    push local 6
+    push argument 3
     call Screen.draMask 2
     pop temp 0
-    push local 5
-    push local 1
+    push argument 0
+    push argument 2
     add
-    push local 7
+    push argument 4
     call Screen.draMask 2
     pop temp 0
-    push local 0
+    push argument 1
     push constant 1
     add
-    pop local 2
+    pop local 0
 label Screen_24
-    push local 2
-    push local 1
+    push local 0
+    push argument 2
     lt
     not
     if-goto Screen_25
-    push local 5
-    push local 2
+    push argument 0
+    push local 0
     add
     call Screen.drawWord 1
     pop temp 0
-    push local 2
+    push local 0
     push constant 1
     add
-    pop local 2
+    pop local 0
     goto Screen_24
 label Screen_25
     push constant 0
