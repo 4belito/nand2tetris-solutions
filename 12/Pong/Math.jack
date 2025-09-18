@@ -1,0 +1,139 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/12/Math.jack
+/**
+ *  A library of commonly used mathematical functions.
+ *  All functions runs in O(n), where n is the number of bits used
+ *  for representing a two's complement integer value (16 in the Hack computer). 
+ *  Note: Jack compilers implement multiplication and division
+ *  using calls to OS functions in this class.
+ */
+class Math {
+    static int n;             // Number of bits used for representing a two's complement integer
+    static Array twoToThe; // Stores 2^0, 2^1, 2^2,..., 2^(n-1)
+
+    // Initializes the Math library.
+    function void init() {
+        var int i, power;
+        let n = 16; // for the Hack computer
+        let twoToThe = Array.new(n);
+        let i = 0;
+        let power = 1;
+        while (i < n) {
+            let twoToThe[i] = power;
+            let power = power + power; // power *= 2
+            let i = i + 1;
+        }
+        return;
+    }
+
+    /** Returns the product of x and y. 
+     *  When a Jack compiler detects the multiplication operator '*'
+     *  in an expression, it handles it by invoking this method. 
+     *  Thus, in Jack, x * y and Math.multiply(x,y) return the same value. */
+    function int multiply(int x, int y) {
+        var int sum, i;
+        let sum = 0;
+        let i = 0;
+        while (i<n) {
+            if (Math.bit(y,i)) {
+                let sum = sum + x;
+            }
+            let x = x + x; // x *= 2
+            let i = i + 1;
+        }
+        return sum;
+    }
+
+    /** Returns the integer part of x / y.
+     *  When a Jack compiler detects the division operator '/'
+     *  an an expression, it handles it by invoking this method.
+     *  Thus, x/y and Math.divide(x,y) return the same value. */
+    function int divide(int x, int y) {
+        var int q,qq,posdiv;
+        var boolean neg;
+
+        // divide by zero
+        if (y = 0) { 
+            do Sys.error(3); 
+            return 0; 
+        }
+        // sign handling
+        let neg = ((x < 0) & (y > 0)) | ((x > 0) & (y < 0));
+        let x = Math.abs(x);
+        let y = Math.abs(y); 
+
+        // base case with overflow guard (from the slide)
+        let posdiv = Math.posDiv(x, y); 
+
+        if (neg) { return -posdiv;} 
+        else { return posdiv;}
+    }
+
+    function int posDiv(int x, int y) {
+        var int q,qq;
+
+        // base case with overflow guard (from the slide)
+        if ((y > x) | (y < 0)) { return 0; }
+        let q = Math.posDiv(x, y + y); 
+        let qq = q + q; 
+        if (x  < Math.multiply(qq+1,y)) {
+            return qq;
+        } else {
+            return qq + 1;
+        }
+    }   
+
+    /** Returns the integer part of the square root of x. */
+    function int sqrt(int x) {
+        var int y, j, yp,ypyp;
+        let y = 0;
+        let j = (n / 2)- 1;
+        while (j > -1) {
+            let yp = y + twoToThe[j];
+            let ypyp = yp * yp;
+            if (((ypyp < x) | (ypyp = x)) & (ypyp > 0)) {
+                let y = yp;
+            }
+            let j = j - 1;
+        }
+        return y;
+    }
+
+    /** Returns the greater value. */
+    function int max(int a, int b) {
+        if (a > b) {
+            return a;
+        } else {
+            return b;
+        }
+    }
+
+    /** Returns the smaller value. */
+    function int min(int a, int b) {
+        if (a < b) {
+            return a;
+        } else {
+            return b;
+        }
+    }
+
+    /** Returns the absolute value of x. */
+    function int abs(int x) {
+        if (x > 0) {
+            return x;
+        } else {
+            return -x;
+        }
+    }
+
+    // Rturns true if the i-th bit of x is 1, false otherwise.
+    function boolean bit(int x, int i) {
+        if (~((x & twoToThe[i]) = 0)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+}
