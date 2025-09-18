@@ -13,7 +13,6 @@ class String {
     field int capacity,length;
     field Array str;
     
-    
     constructor String new(int maxLength) {
         if (maxLength > 0) {
             let str = Array.new(maxLength);

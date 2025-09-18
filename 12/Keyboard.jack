@@ -6,9 +6,12 @@
  * A library for handling user input from the keyboard.
  */
 class Keyboard {
-
+    static int MAX_LINE;
+    static int MAX_INT;
     /** Initializes the keyboard. */
     function void init() {
+        let MAX_LINE = 64; // max length of an input line
+        let MAX_INT = 6;   // max length of an input integer (including the
         return;
     } 
 
@@ -40,38 +43,26 @@ class Keyboard {
      *  then echoes the key to the screen, and returns the character 
      *  of the pressed key. */
     function char readChar() {
-        var char c,cnew;
-        // wait for key pressed
-        let c = 0;
-        while (c = 0) {
-            let c = keyPressed();
+        var char key;
+        let key = 0;
+        // wait for press
+        while (key = 0) {
+            let key = Keyboard.keyPressed();
         }
-        while (keyPressed()=0) {}
+        // wait for release
+        while (~(Keyboard.keyPressed()=0)) {}
         // echo the character
-        do Output.printChar(c);
-        return c;
+        if (Keyboard.isPrintable(key)){do Output.printChar(key);}
+        return key;
     }
 
     /**	Displays the message on the screen, reads from the keyboard the entered
      *  text until a newline character is detected, echoes the text to the screen,
      *  and returns its value. Also handles user backspaces. */
     function String readLine(String message) {
-        var String line;
-        var char c;
-        let str = String.new(64);
-        while (str.length() < 64) {
-            let c = Keyboard.readChar() ;
-            if (c = String.newLine()) {
-                do Output.printChar(c); // echo the newline
-                return str;
-            }
-            if (c = String.backSpace()) {
-                do str.backSpace();
-                do Output.backSpace();
-            } else {
-                do str.appendChar(c);   
-            }
-        }
+        var String str;
+        do Output.printString(message);
+        let str = Keyboard.readBuffer(MAX_LINE, false);
         return str;
     }
    
@@ -81,24 +72,74 @@ class Keyboard {
      *  and returns its integer value (until the first non-digit character in the
      *  entered text is detected). Also handles user backspaces. */
     function int readInt(String message) {
-        var String line;
+        var String str;
+        var boolean valid;
+        let valid = false;
+        while (~valid) {
+            do Output.printString(message);
+            let str = Keyboard.readBuffer(MAX_INT, true);
+            if (Keyboard.isIntString(str)){let valid = true;}
+        }
+        return str.intValue();
+    }
+
+    function String readBuffer(int cap, boolean onlyInt) {
+        var String str;
         var char c;
-        let str = String.new(6);
-        while (str.length() < 6) {
-            let c = Keyboard.readChar() ;
-            if (c = String.newLine()) {
-                do Output.printChar(c); // echo the newline
-                return str.toInt();
-            }
-            if (c = String.backSpace()) {
-                do str.backSpace();
+
+        let str = String.new(cap);
+        while (true) {
+            let c = Keyboard.readChar();
+
+            // Full? and not a control that should be allowed through
+            if ((str.length() = cap) & (~(c = String.backSpace())) & (~(c = String.newLine()))) {
+                // user saw the echo already; erase it
                 do Output.backSpace();
             } else {
-                if ((c > 47) & (c < 58)) { // '0'..'9'
-                    do str.appendChar(c);   
+                if (c = String.newLine()) {
+                    do Output.println();     // echo newline
+                    return str;
+                } else {
+                    if (c = String.backSpace()) {
+                        if (str.length() > 0) {
+                            do str.eraseLastChar();
+                            do Output.backSpace();
+                        }
+                    } else {
+                        if (onlyInt) {
+                            if (Keyboard.isIntChar(c, str)) {
+                                do str.appendChar(c);
+                            } else {
+                                // non-integer printable was echoed by readChar; erase it
+                                if (Keyboard.isPrintable(c)) { do Output.backSpace(); }
+                            }
+                        } else {
+                            // general text: accept anything printable
+                            do str.appendChar(c);
+                        }
+                    }
                 }
             }
         }
-        return str.toInt();
+        // Unreachable
+        return str;
+    }
+
+
+    function boolean isPrintable(char key) {
+        return (key>31) & (key<128);
+    }
+
+    function boolean isDigit(char key) {
+        return (key>47) & (key<58);
+    }
+
+    function boolean isIntChar(char key, String str) {
+        return Keyboard.isDigit(key) | ((key = 45) & (str.length()=0)); // '0'..'9' or '-'
+    }
+
+    function boolean isIntString(String str) {
+        if (str.length()=0) {return false;}
+        return ~((str.length()=1) & (str.charAt(0)=45));
     }
 }
