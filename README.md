@@ -2,6 +2,13 @@
 
 Step-by-step solutions to the [Nand2Tetris](https://www.nand2tetris.org/) course. *Build a Modern Computer From First Principles*
 
+
+<div align="center">
+  <img src="https://github.com/4belito/nand2tetris-solutions/blob/main/snake.gif?raw=true" style="width:100%; max-width:900px;" />
+  <p><em>Snake Jack Program</em></p>
+</div>
+
+
 ---
 
 ## 📚 Course Links
