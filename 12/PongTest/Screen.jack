@@ -103,8 +103,22 @@ class Screen {
     /** Draws a filled rectangle whose top left corner is (x1, y1)
      *  and bottom right corner is (x2,y2), using the current color. */
     function void drawRectangle(int x1, int y1, int x2, int y2) {
+        var int w1, w2, i, r1, r2, addr, maskL, maskR;
+
+        let w1 = x1 / 16;            // first word index
+        let w2 = x2 / 16;            // last  word index
+        let r1 = x1 & 15;            // bit index within first word
+        let r2 = x2 & 15;            // bit index within last  word
+        
+        // Build masks:
+        // left-edge mask = bits r1..15  →  ~((1<<r1) - 1)
+        let maskL = ~ (powersOfTwo[r1] - 1);
+        // right-edge mask = bits 0..r2  →  (1<<(r2+1)) - 1
+        let maskR = (powersOfTwo[r2 + 1]) - 1;
+
         while ((y1 < y2)|(y1 = y2)) {
-            do Screen.drawHorizontalLine(x1, x2, y1);
+            let addr = Screen.address(0,y1);
+            do Screen.drawHorizontalLineFromMask(addr,w1,w2, maskL,maskR);
             let y1 = y1 + 1;
         }
         return;
@@ -143,6 +157,15 @@ class Screen {
         // right-edge mask = bits 0..r2  →  (1<<(r2+1)) - 1
         let maskR = (powersOfTwo[r2 + 1]) - 1;
 
+        do Screen.drawHorizontalLineFromMask(addr,w1,w2, maskL,maskR);
+        return;
+    }
+
+
+    /** Draws a horizontal line from word w1 to word w2 at the specified address,
+     *  using the specified left and right edge masks. */
+    function void drawHorizontalLineFromMask(int addr,int w1, int w2, int maskL,int maskR) {
+        var int i;
         if (w1 = w2) {
             do Screen.draMask(addr+w1, maskL & maskR);
             return;
