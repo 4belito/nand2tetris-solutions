@@ -70,19 +70,6 @@ label Math_3
     push local 0
     return
 function Math.divide 4
-    push argument 1
-    push constant 0
-    eq
-    not
-    if-goto Math_7
-    push constant 3
-    call Sys.error 1
-    pop temp 0
-    push constant 0
-    return
-    goto Math_6
-label Math_7
-label Math_6
     push argument 0
     push constant 0
     lt
@@ -111,15 +98,15 @@ label Math_6
     pop local 2
     push local 3
     not
-    if-goto Math_9
+    if-goto Math_7
     push local 2
     neg
     return
-    goto Math_8
-label Math_9
+    goto Math_6
+label Math_7
     push local 2
     return
-label Math_8
+label Math_6
 function Math.posDiv 2
     push argument 1
     push argument 0
@@ -129,12 +116,12 @@ function Math.posDiv 2
     lt
     or
     not
-    if-goto Math_11
+    if-goto Math_9
     push constant 0
     return
-    goto Math_10
-label Math_11
-label Math_10
+    goto Math_8
+label Math_9
+label Math_8
     push argument 0
     push argument 1
     push argument 1
@@ -153,16 +140,16 @@ label Math_10
     call Math.multiply 2
     lt
     not
-    if-goto Math_13
+    if-goto Math_11
     push local 1
     return
-    goto Math_12
-label Math_13
+    goto Math_10
+label Math_11
     push local 1
     push constant 1
     add
     return
-label Math_12
+label Math_10
 function Math.sqrt 4
     push constant 0
     pop local 0
@@ -172,13 +159,13 @@ function Math.sqrt 4
     push constant 1
     sub
     pop local 1
-label Math_14
+label Math_12
     push local 1
     push constant 1
     neg
     gt
     not
-    if-goto Math_15
+    if-goto Math_13
     push local 0
     push local 1
     push static 1
@@ -203,24 +190,37 @@ label Math_14
     gt
     and
     not
-    if-goto Math_17
+    if-goto Math_15
     push local 2
     pop local 0
-    goto Math_16
-label Math_17
-label Math_16
+    goto Math_14
+label Math_15
+label Math_14
     push local 1
     push constant 1
     sub
     pop local 1
-    goto Math_14
-label Math_15
+    goto Math_12
+label Math_13
     push local 0
     return
 function Math.max 0
     push argument 0
     push argument 1
     gt
+    not
+    if-goto Math_17
+    push argument 0
+    return
+    goto Math_16
+label Math_17
+    push argument 1
+    return
+label Math_16
+function Math.min 0
+    push argument 0
+    push argument 1
+    lt
     not
     if-goto Math_19
     push argument 0
@@ -230,33 +230,20 @@ label Math_19
     push argument 1
     return
 label Math_18
-function Math.min 0
+function Math.abs 0
     push argument 0
-    push argument 1
-    lt
+    push constant 0
+    gt
     not
     if-goto Math_21
     push argument 0
     return
     goto Math_20
 label Math_21
-    push argument 1
-    return
-label Math_20
-function Math.abs 0
-    push argument 0
-    push constant 0
-    gt
-    not
-    if-goto Math_23
-    push argument 0
-    return
-    goto Math_22
-label Math_23
     push argument 0
     neg
     return
-label Math_22
+label Math_20
 function Math.bit 0
     push argument 0
     push argument 1
@@ -269,12 +256,12 @@ function Math.bit 0
     eq
     not
     not
-    if-goto Math_25
+    if-goto Math_23
     push constant 1
     neg
     return
-    goto Math_24
-label Math_25
+    goto Math_22
+label Math_23
     push constant 0
     return
-label Math_24
+label Math_22

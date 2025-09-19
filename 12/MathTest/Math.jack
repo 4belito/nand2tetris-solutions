@@ -54,11 +54,6 @@ class Math {
         var int q,qq,posdiv;
         var boolean neg;
 
-        // divide by zero
-        if (y = 0) { 
-            do Sys.error(3); 
-            return 0; 
-        }
         // sign handling
         let neg = ((x < 0) & (y > 0)) | ((x > 0) & (y < 0));
         let x = Math.abs(x);

@@ -38,26 +38,18 @@ class String {
 
     /** Returns the character at the j-th location of this string. */
     method char charAt(int j) {
-        if ((j < 0) | (j = length) | (j> length)) {
-            do Sys.error(15);
-        }
         return str[j];
     }
 
     /** Sets the character at the j-th location of this string to c. */
     method void setCharAt(int j, char c) {
-        if ((j < 0) | (j = length) | (j> length)) {
-            do Sys.error(16);
-        }
         let str[j] = c;
         return;
     }
 
     /** Appends c to this string's end and returns this string. */
     method String appendChar(char c) {
-        if (length = capacity) {
-            do Sys.error(17); 
-        } else{
+        if (length < capacity) {
             let str[length] = c;
             let length = length + 1;
         }

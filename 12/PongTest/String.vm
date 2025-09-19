@@ -47,25 +47,6 @@ function String.charAt 0
     push argument 0
     pop pointer 0
     push argument 1
-    push constant 0
-    lt
-    push argument 1
-    push this 1
-    eq
-    or
-    push argument 1
-    push this 1
-    gt
-    or
-    not
-    if-goto String_5
-    push constant 15
-    call Sys.error 1
-    pop temp 0
-    goto String_4
-label String_5
-label String_4
-    push argument 1
     push this 2
     add
     pop pointer 1
@@ -74,25 +55,6 @@ label String_4
 function String.setCharAt 0
     push argument 0
     pop pointer 0
-    push argument 1
-    push constant 0
-    lt
-    push argument 1
-    push this 1
-    eq
-    or
-    push argument 1
-    push this 1
-    gt
-    or
-    not
-    if-goto String_7
-    push constant 16
-    call Sys.error 1
-    pop temp 0
-    goto String_6
-label String_7
-label String_6
     push argument 1
     push this 2
     add
@@ -108,14 +70,9 @@ function String.appendChar 0
     pop pointer 0
     push this 1
     push this 0
-    eq
+    lt
     not
-    if-goto String_9
-    push constant 17
-    call Sys.error 1
-    pop temp 0
-    goto String_8
-label String_9
+    if-goto String_5
     push this 1
     push this 2
     add
@@ -128,7 +85,9 @@ label String_9
     push constant 1
     add
     pop this 1
-label String_8
+    goto String_4
+label String_5
+label String_4
     push pointer 0
     return
 function String.eraseLastChar 0
@@ -138,14 +97,14 @@ function String.eraseLastChar 0
     push constant 0
     gt
     not
-    if-goto String_11
+    if-goto String_7
     push this 1
     push constant 1
     sub
     pop this 1
-    goto String_10
-label String_11
-label String_10
+    goto String_6
+label String_7
+label String_6
     push constant 0
     return
 function String.intValue 4
@@ -165,21 +124,21 @@ function String.intValue 4
     push constant 45
     eq
     not
-    if-goto String_13
+    if-goto String_9
     push constant 1
     neg
     pop local 3
     push constant 1
     pop local 0
-    goto String_12
-label String_13
-label String_12
-label String_14
+    goto String_8
+label String_9
+label String_8
+label String_10
     push local 0
     push this 1
     lt
     not
-    if-goto String_15
+    if-goto String_11
     push local 0
     push this 2
     add
@@ -195,12 +154,12 @@ label String_14
     gt
     or
     not
-    if-goto String_17
+    if-goto String_13
     push local 2
     return
-    goto String_16
-label String_17
-label String_16
+    goto String_12
+label String_13
+label String_12
     push local 2
     push constant 10
     call Math.multiply 2
@@ -211,8 +170,8 @@ label String_16
     push constant 1
     add
     pop local 0
-    goto String_14
-label String_15
+    goto String_10
+label String_11
     push local 3
     push local 2
     call Math.multiply 2
@@ -226,7 +185,7 @@ function String.setInt 0
     push constant 0
     lt
     not
-    if-goto String_19
+    if-goto String_15
     push pointer 0
     push constant 45
     call String.appendChar 2
@@ -235,9 +194,9 @@ function String.setInt 0
     push argument 1
     sub
     pop argument 1
-    goto String_18
-label String_19
-label String_18
+    goto String_14
+label String_15
+label String_14
     push pointer 0
     push argument 1
     call String.int2String 2
@@ -261,14 +220,14 @@ function String.int2String 2
     push constant 9
     gt
     not
-    if-goto String_21
+    if-goto String_17
     push pointer 0
     push local 0
     call String.int2String 2
     pop temp 0
-    goto String_20
-label String_21
-label String_20
+    goto String_16
+label String_17
+label String_16
     push pointer 0
     push local 1
     call String.int2char 1
