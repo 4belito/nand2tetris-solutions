@@ -1,13 +1,15 @@
-'''VMTranslator.py
+"""
+VMTranslator.py
 This script translates VM commands into Hack assembly code.
 It uses the Parser class to read VM commands and the CodeWriter class to write the corresponding assembly code.
 It takes a VM file as input and generates an assembly file with the same name but with a .asm extension.
-'''
-
+"""
 
 import argparse
-from parser import Parser, CMDType
+
 from codewriter import CodeWriter
+from parser import CMDType, Parser
+
 
 def main():
     parser = argparse.ArgumentParser()
@@ -15,7 +17,7 @@ def main():
     args = parser.parse_args()
     filepath = args.filepath
     output_filepath = filepath.replace(".vm", ".asm")
-    writer = CodeWriter(output_filepath)  
+    writer = CodeWriter(output_filepath)
     vm_parser = Parser(filepath)
     while vm_parser.has_more_commands():
         vm_parser.advance()
