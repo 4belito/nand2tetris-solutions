@@ -2,11 +2,30 @@
 
 Step-by-step solutions to the [Nand2Tetris](https://www.nand2tetris.org/) course. *Build a Modern Computer From First Principles*
 
+<p align="center">
+  <img src="assets/readme_media/the_big_picture.png" alt="Nand2Tetris: the big picture" width="900" />
+  <br/>
+  <em>Nand2Tetris overview: from logic gates → CPU → OS (and from high-level code → machine code).</em>
+</p>
+
+
+<p align="center">
+  <img src="assets/readme_media/from_high2low_level.png" alt="From high-level to low-level" width="900" />
+  <br/>
+  <em>Pipeline: Jack → VM → Assembly → Hack machine code.</em>
+</p>
+
+---
+
+
+## 🎮 Demo (Project 9)
+
 
 <div align="center">
   <img src="https://github.com/4belito/nand2tetris-solutions/blob/main/snake.gif?raw=true" style="width:100%; max-width:900px;" />
-  <p><em>Snake Jack Program</em></p>
+  <em>Snake game written in Jack (Project 9)</em>
 </div>
+
 
 
 ---

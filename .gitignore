@@ -1,5 +1,6 @@
 __pycache__/
+.vscode/
 *.py[cod]
 *.pyo
-Snake.mov
-Snake_.mov
+*.mov
+
