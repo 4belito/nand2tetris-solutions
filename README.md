@@ -20,13 +20,10 @@ Step-by-step solutions to the [Nand2Tetris](https://www.nand2tetris.org/) course
 
 ## 🎮 Demo (Project 9)
 
-
 <div align="center">
-  <img src="https://github.com/4belito/nand2tetris-solutions/blob/main/snake.gif?raw=true" style="width:100%; max-width:900px;" />
-  <em>Snake game written in Jack (Project 9)</em>
+  <img src="https://github.com/4belito/nand2tetris-solutions/blob/main/assets/readme_media/snake.gif?raw=true" style="width:100%; max-width:900px;" />
+  <p><em>Snake game written in Jack (Project 9)</em></p>
 </div>
-
-
 
 ---
 
